@@ -4,5 +4,5 @@ import { RtlComponent } from '../../pages/rtl/rtl.component';
 
 
 export const AuthLayoutRoutes: Routes = [
-    { path: 'rtl',          component: RtlComponent },
+    // { path: 'rtl',          component: RtlComponent },
 ];

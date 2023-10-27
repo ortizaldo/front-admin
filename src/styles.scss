@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+.sidebar .nav li.active>a:not([data-toggle="collapse"])::before,
+.off-canvas-sidebar .nav li.active>a:not([data-toggle="collapse"])::before {
+  background-image: initial;
+  background-color: rgb(20, 23, 24);
+  display: none;
+}
