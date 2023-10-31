@@ -5,10 +5,36 @@
         <div class="login_box">
           <div class="left">
             <div class="contact">
-              <form action="">
+              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <h3>SIGN IN</h3>
-                <input type="text" placeholder="USERNAME" />
-                <input type="text" placeholder="PASSWORD" />
+                <input
+                  formControlName="email"
+                  type="text"
+                  placeholder="USERNAME"
+                />
+                <div
+                  *ngIf="
+                    loginForm.get('email').invalid &&
+                    (loginForm.get('email').dirty ||
+                      loginForm.get('email').touched)
+                  "
+                >
+                  Please provide an email.
+                </div>
+                <input
+                  formControlName="password"
+                  type="text"
+                  placeholder="PASSWORD"
+                />
+                <div
+                  *ngIf="
+                    loginForm.get('password').invalid &&
+                    (loginForm.get('password').dirty ||
+                      loginForm.get('password').touched)
+                  "
+                >
+                  Please provide a password.
+                </div>
                 <button class="submit">LET'S GO</button>
               </form>
             </div>

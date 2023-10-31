@@ -7,10 +7,9 @@ import { TokenStorageService } from './token-storage.service';
 
 const API_URL = 'http://localhost:8080/api/auth/';
 
-const HTTP_OPTIONS = {
+const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-
 @Injectable({
   providedIn: 'root'
 })
@@ -37,39 +36,32 @@ export class AuthService {
     console.log(message);
   }
 
-  login(loginData: any): Observable<any> {
-    this.tokenService.removeToken();
-    this.tokenService.removeRefreshToken();
-    const body = new HttpParams()
-      .set('username', loginData.username)
-      .set('password', loginData.password)
-      .set('grant_type', 'password');
-
-    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
-      .pipe(
-        tap(res => {
-          this.tokenService.saveToken(res.access_token);
-          this.tokenService.saveRefreshToken(res.refresh_token);
-        }),
-        catchError(AuthService.handleError)
-      );
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(
+      environment.api + 'login',
+      {
+        username,
+        password,
+      },
+      httpOptions
+    );
   }
 
-  refreshToken(refreshData: any): Observable<any> {
-    this.tokenService.removeToken();
-    this.tokenService.removeRefreshToken();
-    const body = new HttpParams()
-      .set('refresh_token', refreshData.refresh_token)
-      .set('grant_type', 'refresh_token');
-    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
-      .pipe(
-        tap(res => {
-          this.tokenService.saveToken(res.access_token);
-          this.tokenService.saveRefreshToken(res.refresh_token);
-        }),
-        catchError(AuthService.handleError)
-      );
-  }
+  // refreshToken(refreshData: any): Observable<any> {
+  //   this.tokenService.removeToken();
+  //   this.tokenService.removeRefreshToken();
+  //   const body = new HttpParams()
+  //     .set('refresh_token', refreshData.refresh_token)
+  //     .set('grant_type', 'refresh_token');
+  //   return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
+  //     .pipe(
+  //       tap(res => {
+  //         this.tokenService.saveToken(res.access_token);
+  //         this.tokenService.saveRefreshToken(res.refresh_token);
+  //       }),
+  //       catchError(AuthService.handleError)
+  //     );
+  // }
 
   logout(): void {
     this.tokenService.removeToken();
