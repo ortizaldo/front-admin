@@ -32,19 +32,24 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('%clogin.component.ts line:35 this.loginForm', 'color: #007acc;', this.loginForm);
 
-    this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
+    if (this.loginForm.invalid) return;
+
+    this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data);
+        // this.tokenStorage.saveToken(data.accessToken);
+        // this.tokenStorage.saveUser(data);
 
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        // this.isLoginFailed = false;
+        // this.isLoggedIn = true;
+        // this.roles = this.tokenStorage.getUser().roles;
+        // this.reloadPage();
       },
       err => {
+        console.log("🚀 ~ file: login.component.ts:50 ~ LoginComponent ~ onSubmit ~ err:", err)
         this.errorMessage = err.error.message;
+        console.log("🚀 ~ file: login.component.ts:51 ~ LoginComponent ~ onSubmit ~ this.errorMessage:", this.errorMessage)
         this.isLoginFailed = true;
       }
     );

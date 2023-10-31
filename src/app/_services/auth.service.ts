@@ -8,7 +8,7 @@ import { TokenStorageService } from './token-storage.service';
 const API_URL = 'http://localhost:8080/api/auth/';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
 };
 @Injectable({
   providedIn: 'root'
@@ -37,10 +37,12 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<any> {
+    console.log("🚀 ~ file: auth.service.ts:40 ~ AuthService ~ login ~ password:", password)
+    console.log("🚀 ~ file: auth.service.ts:40 ~ AuthService ~ login ~ username:", username)
     return this.http.post(
       environment.api + 'login',
       {
-        username,
+        email: username,
         password,
       },
       httpOptions
