@@ -15,13 +15,6 @@
               >
                 <label
                   class="btn btn-sm btn-danger btn-simple"
-                  (click)="
-                    data = datasets[0];
-                    updateOptions();
-                    clicked = true;
-                    clicked1 = false;
-                    clicked2 = false
-                  "
                   [ngClass]="{ active: clicked === true }"
                 >
                   <input checked="checked" name="options" type="radio" />
@@ -37,13 +30,6 @@
                 </label>
                 <label
                   class="btn btn-sm btn-danger btn-simple"
-                  (click)="
-                    data = datasets[1];
-                    updateOptions();
-                    clicked = false;
-                    clicked1 = true;
-                    clicked2 = false
-                  "
                   [ngClass]="{ active: clicked1 === true }"
                 >
                   <input class="d-none d-sm-none" name="options" type="radio" />
@@ -59,13 +45,6 @@
                 </label>
                 <label
                   class="btn btn-sm btn-danger btn-simple"
-                  (click)="
-                    data = datasets[2];
-                    updateOptions();
-                    clicked = false;
-                    clicked1 = false;
-                    clicked2 = true
-                  "
                   [ngClass]="{ active: clicked2 === true }"
                 >
                   <input class="d-none" name="options" type="radio" />
