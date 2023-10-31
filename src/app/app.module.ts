@@ -7,13 +7,13 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from "./app.component";
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { ComponentsModule } from "./components/components.module";
 import { authInterceptorProviders } from "./_helpers/auth.interceptor";
+import { LoginComponent } from "./pages/auth/login/login.component";
 
 @NgModule({
   imports: [
@@ -26,7 +26,7 @@ import { authInterceptorProviders } from "./_helpers/auth.interceptor";
     AppRoutingModule,
     ToastrModule.forRoot()
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
+  declarations: [AppComponent, AdminLayoutComponent, LoginComponent],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
