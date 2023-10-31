@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, ReplaySubject, combineLatest, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, Observable, ReplaySubject, catchError, combineLatest, map, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { TokenStorageService } from './token-storage.service';
 
-const AUTH_API = 'http://localhost:8080/api/auth/';
+const API_URL = 'http://localhost:8080/api/auth/';
 
-const httpOptions = {
+const HTTP_OPTIONS = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
@@ -14,63 +15,77 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  private isAuthenticatedSubject$ = new BehaviorSubject<boolean>(false);
-  isAuthenticated$ = this.isAuthenticatedSubject$.asObservable();
 
-  private isDoneLoadingSubject$ = new ReplaySubject<boolean>();
-  public isDoneLoading$ = this.isDoneLoadingSubject$.asObservable();
+  redirectUrl = '';
 
-  canActivateProtectedRoutes$: Observable<boolean> = combineLatest([this.isAuthenticated$, this.isDoneLoading$]).pipe(
-    map((values) => values.every((b) => b))
-  );
-
-  constructor(private http: HttpClient, private router: Router) {
-    window.addEventListener("storage", (event) => {
-      // The `key` is `null` if the event was caused by `.clear()`
-      if (event.key !== "access_token" && event.key !== null) {
-        return;
-      }
-
-      console.warn("Noticed changes to access_token (most likely from another tab), updating isAuthenticated");
-      // this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken());
-
-      // if (!this.oauthService.hasValidAccessToken()) {
-      //   this.navigateToLoginPage();
-      // }
-    });
+  constructor(private http: HttpClient, private tokenService: TokenStorageService) {
+    // no const
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'signin', {
-      username,
-      password
-    }, httpOptions);
+  private static handleError(error: HttpErrorResponse): any {
+    if (error.error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.error.message);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
-  // login(targetUrl?: string) {
-  //   // Note: before version 9.1.0 of the library you needed to
-  //   // call encodeURIComponent on the argument to the method.
-  //   this.oauthService.initLoginFlow(targetUrl || this.router.url, {
-  //     prompt: "login",
-  //   });
-  // }
-
-  register(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'signup', {
-      username,
-      email,
-      password
-    }, httpOptions);
+  private static log(message: string): any {
+    console.log(message);
   }
 
-  public get apiPrefixUrl() {
-    // return `${environment.api}${environment.api_prefix}/api/${this.accountId}`;
-    return `${environment.api}/`;
+  login(loginData: any): Observable<any> {
+    this.tokenService.removeToken();
+    this.tokenService.removeRefreshToken();
+    const body = new HttpParams()
+      .set('username', loginData.username)
+      .set('password', loginData.password)
+      .set('grant_type', 'password');
+
+    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
+      .pipe(
+        tap(res => {
+          this.tokenService.saveToken(res.access_token);
+          this.tokenService.saveRefreshToken(res.refresh_token);
+        }),
+        catchError(AuthService.handleError)
+      );
   }
 
-  navigateToLoginPage() {
-    // TODO: Remember current URL
-    // this.router.navigateByUrl('/should-login');
-    this.router.navigateByUrl(`/auth/login`);
+  refreshToken(refreshData: any): Observable<any> {
+    this.tokenService.removeToken();
+    this.tokenService.removeRefreshToken();
+    const body = new HttpParams()
+      .set('refresh_token', refreshData.refresh_token)
+      .set('grant_type', 'refresh_token');
+    return this.http.post<any>(API_URL + 'oauth/token', body, HTTP_OPTIONS)
+      .pipe(
+        tap(res => {
+          this.tokenService.saveToken(res.access_token);
+          this.tokenService.saveRefreshToken(res.refresh_token);
+        }),
+        catchError(AuthService.handleError)
+      );
+  }
+
+  logout(): void {
+    this.tokenService.removeToken();
+    this.tokenService.removeRefreshToken();
+  }
+
+  register(data: any): Observable<any> {
+    return this.http.post<any>(API_URL + 'oauth/signup', data)
+      .pipe(
+        tap(_ => AuthService.log('register')),
+        catchError(AuthService.handleError)
+      );
+  }
+
+  secured(): Observable<any> {
+    return this.http.get<any>(API_URL + 'secret')
+      .pipe(catchError(AuthService.handleError));
   }
 }

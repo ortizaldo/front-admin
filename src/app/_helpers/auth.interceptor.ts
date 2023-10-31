@@ -1,26 +1,65 @@
-import { HTTP_INTERCEPTORS, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { TokenStorageService } from '../_services/token-storage.service';
-import { Observable } from 'rxjs';
-
-const TOKEN_HEADER_KEY = 'Authorization';
+import { AuthService } from '../_services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private token: TokenStorageService) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let authReq = req;
-    const token = this.token.getToken();
-    if (token != null) {
-      authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token) });
+  constructor(
+    private router: Router,
+    private tokenService: TokenStorageService,
+    private authService: AuthService) {
+  }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): any {
+
+    const token = this.tokenService.getToken();
+    const refreshToken = this.tokenService.getRefreshToken();
+
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: 'Bearer ' + token
+        }
+      });
     }
-    return next.handle(authReq);
+
+    if (!request.headers.has('Content-Type')) {
+      request = request.clone({
+        setHeaders: {
+          'content-type': 'application/json'
+        }
+      });
+    }
+
+    request = request.clone({
+      headers: request.headers.set('Accept', 'application/json')
+    });
+
+    return next.handle(request).pipe(
+      map((event: HttpEvent<any>) => {
+        if (event instanceof HttpResponse) {
+          console.log('event--->>>', event);
+        }
+        return event;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log(error.error.error);
+        if (error.status === 401) {
+          if (error.error.error === 'invalid_token') {
+            this.authService.refreshToken({ refresh_token: refreshToken })
+              .subscribe(() => {
+                location.reload();
+              });
+          } else {
+            this.router.navigate(['login']).then(_ => console.log('redirect to login'));
+          }
+        }
+        return throwError(() => new Error(error.error.error));
+      }));
   }
 }
-
-export const authInterceptorProviders = [
-  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-];

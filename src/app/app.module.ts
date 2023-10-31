@@ -12,8 +12,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { ComponentsModule } from "./components/components.module";
-import { authInterceptorProviders } from "./_helpers/auth.interceptor";
 import { LoginComponent } from "./pages/auth/login/login.component";
+import { AuthInterceptor } from "./_helpers/auth.interceptor";
 
 @NgModule({
   imports: [
@@ -27,7 +27,7 @@ import { LoginComponent } from "./pages/auth/login/login.component";
     ToastrModule.forRoot()
   ],
   declarations: [AppComponent, AdminLayoutComponent, LoginComponent],
-  providers: [authInterceptorProviders],
+  providers: [AuthInterceptor],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
