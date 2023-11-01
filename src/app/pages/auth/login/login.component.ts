@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_services/auth.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private fb: FormBuilder, private toastr: ToastrService, private router: Router) {
 
   }
 
@@ -32,30 +34,62 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('%clogin.component.ts line:35 this.loginForm', 'color: #007acc;', this.loginForm);
-
     if (this.loginForm.invalid) return;
-
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(
       data => {
-        // this.tokenStorage.saveToken(data.accessToken);
-        // this.tokenStorage.saveUser(data);
+        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveUser(data.user);
 
-        // this.isLoginFailed = false;
-        // this.isLoggedIn = true;
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
         // this.roles = this.tokenStorage.getUser().roles;
-        // this.reloadPage();
+        this.redirectDashboard();
       },
       err => {
-        console.log("🚀 ~ file: login.component.ts:50 ~ LoginComponent ~ onSubmit ~ err:", err)
-        this.errorMessage = err.error.message;
-        console.log("🚀 ~ file: login.component.ts:51 ~ LoginComponent ~ onSubmit ~ this.errorMessage:", this.errorMessage)
+        const _err = err.error.err;
+        this.errorMessage = _err.message;
+        this.showNotification('top', 'right', _err.title, _err.message, "alert-warning")
         this.isLoginFailed = true;
       }
     );
   }
 
+  showNotification(from, align, title = '', message = '', color = "alert-info") {
+    // let strColor = "alert-info";
+    // switch (color) {
+    //   case 1:
+    //     strColor = "alert-info"
+    //     break;
+    //   case 2:
+    //     strColor = "alert-success"
+    //     break;
+    //   case 3:
+    //     strColor = "alert-warning"
+    //     break;
+    //   case 4:
+    //     strColor = "alert-danger"
+    //     break;
+    //   case 5:
+    //     strColor = "alert-primary"
+    //     break;
+    //   default:
+    //     break;
+    // }
+
+    this.toastr.info(`<span class="tim-icons icon-bell-55" [data-notify]="icon"></span> ${title}</b> - ${message}.`, '', {
+      disableTimeOut: true,
+      closeButton: true,
+      enableHtml: true,
+      toastClass: `alert ${color} alert-with-icon`,
+      positionClass: 'toast-' + from + '-' + align
+    });
+  }
+
   reloadPage(): void {
     window.location.reload();
+  }
+
+  redirectDashboard(): void {
+    this.router.navigate(['/']).then(() => console.log('Redirect to login'));
   }
 }

@@ -37,8 +37,6 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<any> {
-    console.log("🚀 ~ file: auth.service.ts:40 ~ AuthService ~ login ~ password:", password)
-    console.log("🚀 ~ file: auth.service.ts:40 ~ AuthService ~ login ~ username:", username)
     return this.http.post(
       environment.api + 'login',
       {
@@ -48,6 +46,18 @@ export class AuthService {
       httpOptions
     );
   }
+
+  // TO-DO agregar metodo para eliminar tokens desde el backend
+  // removeTokens(): Observable<any> {
+  //   return this.http.post(
+  //     environment.api + 'login',
+  //     {
+  //       email: username,
+  //       password,
+  //     },
+  //     httpOptions
+  //   );
+  // }
 
   // refreshToken(refreshData: any): Observable<any> {
   //   this.tokenService.removeToken();

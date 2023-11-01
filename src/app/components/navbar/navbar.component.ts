@@ -3,6 +3,7 @@ import { ROUTES } from "../sidebar/sidebar.component";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { TokenStorageService } from "src/app/_services/token-storage.service";
 
 @Component({
   selector: "app-navbar",
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     location: Location,
+    private tokenStorageService: TokenStorageService,
     private element: ElementRef,
     private router: Router,
     private modalService: NgbModal
@@ -176,6 +178,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  logout() {
+    this.tokenStorageService.signOut();
+    window.location.reload();
   }
 
   private getDismissReason(reason: any): string {

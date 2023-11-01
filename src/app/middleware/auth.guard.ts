@@ -21,11 +21,7 @@ export class AuthGuard implements CanActivate {
 
   checkLogin(url: string): boolean {
     console.log("🚀 ~ file: auth.guard.ts:22 ~ AuthGuard ~ checkLogin ~ url:", url)
-    // if (this.tokenService.getRefreshToken()) {
-    //   return true;
-    // }
-
-    if (false) {
+    if (this.tokenService.getToken()) {
       return true;
     }
 
