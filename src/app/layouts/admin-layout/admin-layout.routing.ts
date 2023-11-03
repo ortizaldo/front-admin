@@ -7,14 +7,15 @@ import { NotificationsComponent } from "../../pages/admin/notifications/notifica
 import { UserComponent } from "../../pages/admin/user/user.component";
 import { TablesComponent } from "../../pages/admin/tables/tables.component";
 import { TypographyComponent } from "../../pages/admin/typography/typography.component";
+import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 // import { RtlComponent } from "../../pages/admin/rtl/rtl.component";
 
 export const AdminLayoutRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
+  { path: "profile", component: ProfileComponent },
   // { path: "icons", component: IconsComponent },
   // { path: "maps", component: MapComponent },
   // { path: "notifications", component: NotificationsComponent },
-  // { path: "user", component: UserComponent },
   // { path: "tables", component: TablesComponent },
   // { path: "typography", component: TypographyComponent },
   // { path: "rtl", component: RtlComponent }

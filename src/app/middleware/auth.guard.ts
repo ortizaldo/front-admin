@@ -14,13 +14,11 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     const url: string = state.url;
-    console.log("🚀 ~ file: auth.guard.ts:17 ~ AuthGuard ~ url:", url)
 
     return this.checkLogin(url);
   }
 
   checkLogin(url: string): boolean {
-    console.log("🚀 ~ file: auth.guard.ts:22 ~ AuthGuard ~ checkLogin ~ url:", url)
     if (this.tokenService.getToken()) {
       return true;
     }

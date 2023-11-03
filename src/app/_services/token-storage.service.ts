@@ -29,6 +29,10 @@ export class TokenStorageService {
     return localStorage.getItem(REFRESH_TOKEN)!;
   }
 
+  getDataUser(): string {
+    return localStorage.getItem(REFRESH_TOKEN)!;
+  }
+
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(USER_KEY);
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
