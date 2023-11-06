@@ -1,184 +1,115 @@
-
-<div class=" content">
-  <div class=" row">
-    <div class=" col-md-8">
-      <div class=" card">
-        <div class=" card-header"><h5 class=" title">Edit Profile</h5></div>
-        <div class=" card-body">
-          <form>
-            <div class=" row">
-              <div class=" col-md-5 pr-md-1">
-                <div class=" form-group">
-                  <label> Company (disabled) </label>
-                  <input
-                    class=" form-control"
-                    disabled=""
-                    placeholder="Company"
-                    type="text"
-                    value="Creative Code Inc."
-                  />
+<div class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-chart">
+        <div class="card-body table">
+          <p-table
+            #dt
+            [value]="customers"
+            [(selection)]="selectedCustomers"
+            dataKey="id"
+            styleClass="p-datatable-customers"
+            [rowHover]="true"
+            [scrollable]="false"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [paginator]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [filterDelay]="0"
+            [globalFilterFields]="[
+              'name',
+              'country.name',
+              'representative.name',
+              'status'
+            ]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="card-header table-header row">
+                <div class="col m-auto"><h3>Usuarios</h3></div>
+                <div class="col-6">&nbsp;</div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"
+                        ><i class="pi pi-search"></i
+                      ></span>
+                    </div>
+                    <input
+                      pInputText
+                      class="form-control"
+                      type="text"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      placeholder="Global Search"
+                    />
+                  </div>
                 </div>
               </div>
-              <div class=" col-md-3 px-md-1">
-                <div class=" form-group">
-                  <label> Username </label>
-                  <input
-                    class=" form-control"
-                    placeholder="Username"
-                    type="text"
-                    value="michael23"
-                  />
-                </div>
-              </div>
-              <div class=" col-md-4 pl-md-1">
-                <div class=" form-group">
-                  <label for="exampleInputEmail1"> Email address </label>
-                  <input
-                    class=" form-control"
-                    placeholder="mike@email.com"
-                    type="email"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class=" row">
-              <div class=" col-md-6 pr-md-1">
-                <div class=" form-group">
-                  <label> First Name </label>
-                  <input
-                    class=" form-control"
-                    placeholder="Company"
-                    type="text"
-                    value="Mike"
-                  />
-                </div>
-              </div>
-              <div class=" col-md-6 pl-md-1">
-                <div class=" form-group">
-                  <label> Last Name </label>
-                  <input
-                    class=" form-control"
-                    placeholder="Last Name"
-                    type="text"
-                    value="Andrew"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class=" row">
-              <div class=" col-md-12">
-                <div class=" form-group">
-                  <label> Address </label>
-                  <input
-                    class=" form-control"
-                    placeholder="Home Address"
-                    type="text"
-                    value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class=" row">
-              <div class=" col-md-4 pr-md-1">
-                <div class=" form-group">
-                  <label> City </label>
-                  <input
-                    class=" form-control"
-                    placeholder="City"
-                    type="text"
-                    value="Mike"
-                  />
-                </div>
-              </div>
-              <div class=" col-md-4 px-md-1">
-                <div class=" form-group">
-                  <label> Country </label>
-                  <input
-                    class=" form-control"
-                    placeholder="Country"
-                    type="text"
-                    value="Andrew"
-                  />
-                </div>
-              </div>
-              <div class=" col-md-4 pl-md-1">
-                <div class=" form-group">
-                  <label> Postal Code </label>
-                  <input
-                    class=" form-control"
-                    placeholder="ZIP Code"
-                    type="number"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class=" row">
-              <div class=" col-md-8">
-                <div class=" form-group">
-                  <label> About Me </label>
-                  <textarea
-                    class=" form-control"
-                    cols="80"
-                    placeholder="Here can be your description"
-                    rows="4"
-                    value="Mike"
-                  >
-Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.
-</textarea
-                  >
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class=" card-footer">
-          <button class=" btn btn-fill btn-danger" type="submit">Save</button>
-        </div>
-      </div>
-    </div>
-    <div class=" col-md-4">
-      <div class=" card card-user">
-        <div class=" card-body">
-          <p class=" card-text"></p>
-          <div class=" author">
-            <div class=" block block-one"></div>
-            <div class=" block block-two"></div>
-            <div class=" block block-three"></div>
-            <div class=" block block-four"></div>
-            <a href="javascript:void(0)">
-              <img alt="..." class=" avatar" src="assets/img/emilyz.jpg" />
-
-              <h5 class=" title">Mike Andrew</h5>
-            </a>
-            <p class=" description">Ceo/Co-Founder</p>
-          </div>
-          <div class=" card-description">
-            Do not be scared of the truth because we need to restart the human
-            foundation in truth And I love you like Kanye loves Kanye I love
-            Rick Owens’ bed design but the back is...
-          </div>
-        </div>
-        <div class=" card-footer">
-          <div class=" button-container">
-            <button
-              class=" btn btn-icon btn-round btn-facebook"
-              href="javascript:void(0)"
-            >
-              <i class=" fab fa-facebook"> </i>
-            </button>
-            <button
-              class=" btn btn-icon btn-round btn-twitter"
-              href="javascript:void(0)"
-            >
-              <i class=" fab fa-twitter"> </i>
-            </button>
-            <button
-              class=" btn btn-icon btn-round btn-google"
-              href="javascript:void(0)"
-            >
-              <i class=" fab fa-google-plus"> </i>
-            </button>
-          </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="th-custom" style="width: 3rem"></th>
+                <th class="th-custom">Name</th>
+                <th class="th-custom">Country</th>
+                <th class="th-custom">Representative</th>
+                <th class="th-custom">Date</th>
+                <th class="th-custom">Status</th>
+                <th class="th-custom">Activity</th>
+                <th class="th-custom" style="width: 8rem"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr class="p-selectable-row">
+                <td>
+                  <p-tableCheckbox [value]="customer"></p-tableCheckbox>
+                </td>
+                <td>
+                  <span class="p-column-title">Name</span>
+                  {{ customer.name }}
+                </td>
+                <td>
+                  <span class="p-column-title">Country</span>
+                  <span class="image-text">{{ customer.country.name }}</span>
+                </td>
+                <td>
+                  <span class="p-column-title">Representative</span>
+                  <span class="image-text">{{
+                    customer.representative.name
+                  }}</span>
+                </td>
+                <td>
+                  <span class="p-column-title">Date</span>
+                  {{ customer.date }}
+                </td>
+                <td>
+                  <span class="p-column-title">Status</span>
+                  <span [class]="'customer-badge status-' + customer.status">{{
+                    customer.status
+                  }}</span>
+                </td>
+                <td>
+                  <span class="p-column-title">Activity</span>
+                  <p-progressBar
+                    [value]="customer.activity"
+                    [showValue]="false"
+                  ></p-progressBar>
+                </td>
+                <td style="text-align: center">
+                  <button
+                    pButton
+                    type="button"
+                    class="p-button-secondary"
+                    icon="pi pi-cog"
+                  ></button>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="8">No se encontraron usuarios.</td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
       </div>
     </div>

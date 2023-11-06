@@ -3,6 +3,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { TableModule } from 'primeng/table';
 
 import { AdminLayoutRoutes } from "./admin-layout.routing";
 import { DashboardComponent } from "../../pages/admin/dashboard/dashboard.component";
@@ -24,7 +25,8 @@ import { ComponentsModule } from "src/app/components/components.module";
     FormsModule,
     HttpClientModule,
     NgbModule,
-    ComponentsModule
+    ComponentsModule,
+    TableModule
   ],
   declarations: [
     DashboardComponent,

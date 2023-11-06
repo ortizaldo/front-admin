@@ -1,11 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Table } from "primeng/table";
 
 @Component({
   selector: "app-user",
-  templateUrl: "user.component.html"
+  templateUrl: "user.component.html",
+  styleUrls: ["user.component.css"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class UserComponent implements OnInit {
-  constructor() {}
+  customers!: any[];
+  selectedCustomers: any[];
 
-  ngOnInit() {}
+  representatives: any[];
+
+  statuses: any[];
+
+  loading: boolean = true;
+
+  @ViewChild('dt') table: Table;
+  constructor() { }
+
+  ngOnInit() { }
 }

@@ -13,7 +13,7 @@ import { ProfileComponent } from "src/app/pages/admin/profile/profile.component"
 export const AdminLayoutRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
   { path: "profile", component: ProfileComponent },
-  // { path: "icons", component: IconsComponent },
+  { path: "users", component: UserComponent },
   // { path: "maps", component: MapComponent },
   // { path: "notifications", component: NotificationsComponent },
   // { path: "tables", component: TablesComponent },

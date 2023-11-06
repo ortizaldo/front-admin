@@ -11,19 +11,25 @@ export const ROUTES: RouteInfo[] = [
   {
     path: "/dashboard",
     title: "Dashboard",
-    icon: "icon-chart-pie-36",
+    icon: "pi pi-chart-line",
     class: ""
   },
   {
     path: "/users",
     title: "Usuarios",
-    icon: "icon-chart-pie-36",
+    icon: "pi pi-users",
     class: ""
   },
   {
     path: "/dashboard",
     title: "Derby",
-    icon: "icon-chart-pie-36",
+    icon: "pi pi-briefcase",
+    class: ""
+  },
+  {
+    path: "/catalogs",
+    title: "Catalogos",
+    icon: "pi pi-folder",
     class: ""
   },
 ];

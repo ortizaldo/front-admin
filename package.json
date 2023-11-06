@@ -62,6 +62,7 @@
   "private": false,
   "dependencies": {
     "@angular/animations": "12.1.2",
+    "@angular/cdk": "^12.1.2",
     "@angular/common": "12.1.2",
     "@angular/compiler": "12.1.2",
     "@angular/core": "12.1.2",
@@ -74,6 +75,8 @@
     "chart.js": "2.9.4",
     "core-js": "3.15.2",
     "ngx-toastr": "14.0.0",
+    "primeicons": "^6.0.1",
+    "primeng": "^12.2.3",
     "rxjs": "7.2.0",
     "tslib": "2.3.0",
     "zone.js": "0.11.4"
