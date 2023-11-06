@@ -45,48 +45,19 @@
   <ng-template pTemplate="header">
     <tr>
       <th class="th-custom" style="width: 3rem"></th>
-      <th class="th-custom">Name</th>
-      <th class="th-custom">Country</th>
-      <th class="th-custom">Representative</th>
-      <th class="th-custom">Date</th>
-      <th class="th-custom">Status</th>
-      <th class="th-custom">Activity</th>
+      <th *ngFor="let col of columns">
+        <span class="p-column-title">{{ col.header }}</span>
+      </th>
       <th class="th-custom" style="width: 8rem"></th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-customer>
+  <ng-template pTemplate="body" let-data>
     <tr class="p-selectable-row">
       <td>
-        <p-tableCheckbox [value]="customer"></p-tableCheckbox>
+        <p-tableCheckbox [value]="data"></p-tableCheckbox>
       </td>
-      <td>
-        <span class="p-column-title">Name</span>
-        {{ customer.name }}
-      </td>
-      <td>
-        <span class="p-column-title">Country</span>
-        <span class="image-text">{{ customer.country.name }}</span>
-      </td>
-      <td>
-        <span class="p-column-title">Representative</span>
-        <span class="image-text">{{ customer.representative.name }}</span>
-      </td>
-      <td>
-        <span class="p-column-title">Date</span>
-        {{ customer.date }}
-      </td>
-      <td>
-        <span class="p-column-title">Status</span>
-        <span [class]="'customer-badge status-' + customer.status">{{
-          customer.status
-        }}</span>
-      </td>
-      <td>
-        <span class="p-column-title">Activity</span>
-        <p-progressBar
-          [value]="customer.activity"
-          [showValue]="false"
-        ></p-progressBar>
+      <td *ngFor="let col of columns">
+        {{ data[col.field] }}
       </td>
       <td style="text-align: center">
         <button

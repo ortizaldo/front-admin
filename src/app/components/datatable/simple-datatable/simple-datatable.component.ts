@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { Table } from "primeng/table";
+import { catchError, tap } from "rxjs";
+import { CrudService } from "src/app/_services/crud.service";
 
 @Component({
   selector: "app-simple-datatable",
@@ -15,9 +17,8 @@ export class SimpleDatatable implements OnInit {
   @Input() title: string = "";
 
   @ViewChild('dt') table: Table;
-  constructor() { }
+  constructor(private crudService: CrudService) { }
 
   ngOnInit() {
-    this.loading = false;
   }
 }
