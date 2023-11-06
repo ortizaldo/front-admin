@@ -8,12 +8,9 @@ import { Table } from "primeng/table";
   encapsulation: ViewEncapsulation.None,
 })
 export class UserComponent implements OnInit {
-  customers!: any[];
-  selectedCustomers: any[];
-
-  representatives: any[];
-
-  statuses: any[];
+  users!: any[];
+  selectedUsers: any[];
+  columns: any[];
 
   loading: boolean = true;
 

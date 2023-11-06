@@ -17,6 +17,7 @@ import { TypographyComponent } from "../../pages/admin/typography/typography.com
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
+import { DatatableCustomModule } from "src/app/components/datatable/datatable-custom.module";
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { ComponentsModule } from "src/app/components/components.module";
     HttpClientModule,
     NgbModule,
     ComponentsModule,
-    TableModule
+    TableModule,
+    DatatableCustomModule,
   ],
   declarations: [
     DashboardComponent,
