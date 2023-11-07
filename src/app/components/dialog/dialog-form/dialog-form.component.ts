@@ -10,6 +10,7 @@ import { ConfirmationService } from 'primeng/api';
 export class DialogFormComponent implements OnInit {
   @Input() openDialog: boolean = false;
   @Input() headerDetails: string = "";
+  @Input() size: any = { width: '450px' };
   @Output() closeDialog: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private confirmationService: ConfirmationService) { }
