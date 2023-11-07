@@ -6,6 +6,8 @@
   (onHide)="hideDialog()"
   styleClass="p-fluid"
 >
+  <ng-container *ngTemplateOutlet="model.template"></ng-container>
+
   <ng-template pTemplate="content">
     <!-- <div class="p-field">
       <label for="name">Name</label>
@@ -95,14 +97,13 @@
       </div>
     </div> -->
   </ng-template>
-
   <ng-template pTemplate="footer">
     <button
       pButton
       pRipple
       label="Cancel"
-      icon="pi pi-times"
-      class="p-button-text"
+      icon="pi pi-trash"
+      class="p-button-danger"
       (click)="hideDialog()"
     ></button>
     <button
@@ -110,7 +111,7 @@
       pRipple
       label="Save"
       icon="pi pi-check"
-      class="p-button-text"
+      class="p-button-success p-mr-2"
       (click)="saveProduct()"
     ></button>
   </ng-template>

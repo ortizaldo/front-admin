@@ -16,9 +16,16 @@
     </div>
   </div>
 </div>
+
 <app-dialog-form
   [openDialog]="userDialog"
   [size]="{ width: '50vw' }"
   [headerDetails]="'Crear Usuario'"
   (closeDialog)="openNew($event)"
-></app-dialog-form>
+  [model]="myModel"
+>
+</app-dialog-form>
+
+<ng-template #myTemplate>
+  <h1>This is my Template</h1>
+</ng-template>

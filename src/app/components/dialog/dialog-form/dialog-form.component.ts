@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
@@ -11,7 +11,11 @@ export class DialogFormComponent implements OnInit {
   @Input() openDialog: boolean = false;
   @Input() headerDetails: string = "";
   @Input() size: any = { width: '450px' };
+  @Input() model: any;
+
   @Output() closeDialog: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input() labelTemplate: TemplateRef<any>;
 
   constructor(private confirmationService: ConfirmationService) { }
 

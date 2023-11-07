@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
 
@@ -16,6 +16,11 @@ export class UserComponent implements OnInit {
   userDialog: boolean = false;
   loading: boolean = true;
 
+  myModel = {
+  };
+
+  @ViewChild('myTemplate', { static: true }) myTemplate: TemplateRef<any>;
+
 
   constructor(private crudService: CrudService) { }
 
@@ -29,6 +34,10 @@ export class UserComponent implements OnInit {
       { field: 'phoneNumber', header: 'Telefono' },
     ]
     this.getUsers();
+
+    this.myModel = {
+      template: this.myTemplate
+    }
   }
 
   getUsers() {
