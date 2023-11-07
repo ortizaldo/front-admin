@@ -21,6 +21,7 @@ import { DatatableCustomModule } from "src/app/components/datatable/datatable-cu
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from "primeng/api";
+import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.module";
 @NgModule({
   imports: [
     CommonModule,
@@ -31,8 +32,7 @@ import { ConfirmationService } from "primeng/api";
     ComponentsModule,
     TableModule,
     DatatableCustomModule,
-    DialogModule,
-    ConfirmDialogModule,
+    DialogCustomModule,
   ],
   declarations: [
     DashboardComponent,
@@ -44,6 +44,5 @@ import { ConfirmationService } from "primeng/api";
     MapComponent,
     // RtlComponent
   ],
-  providers: [ConfirmationService]
 })
 export class AdminLayoutModule { }
