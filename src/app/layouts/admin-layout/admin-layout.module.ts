@@ -18,7 +18,9 @@ import { TypographyComponent } from "../../pages/admin/typography/typography.com
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 import { DatatableCustomModule } from "src/app/components/datatable/datatable-custom.module";
-
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from "primeng/api";
 @NgModule({
   imports: [
     CommonModule,
@@ -29,6 +31,8 @@ import { DatatableCustomModule } from "src/app/components/datatable/datatable-cu
     ComponentsModule,
     TableModule,
     DatatableCustomModule,
+    DialogModule,
+    ConfirmDialogModule,
   ],
   declarations: [
     DashboardComponent,
@@ -39,6 +43,7 @@ import { DatatableCustomModule } from "src/app/components/datatable/datatable-cu
     NotificationsComponent,
     MapComponent,
     // RtlComponent
-  ]
+  ],
+  providers: [ConfirmationService]
 })
 export class AdminLayoutModule { }

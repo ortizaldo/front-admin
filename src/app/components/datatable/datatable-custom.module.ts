@@ -4,9 +4,11 @@ import { RouterModule } from "@angular/router";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { TableModule } from 'primeng/table';
 import { SimpleDatatable } from "./simple-datatable/simple-datatable.component";
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgbModule, TableModule],
+  imports: [CommonModule, RouterModule, NgbModule, TableModule, ToolbarModule, ButtonModule],
   declarations: [SimpleDatatable],
   exports: [SimpleDatatable]
 })

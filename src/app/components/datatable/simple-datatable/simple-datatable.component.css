@@ -92,3 +92,35 @@
   margin: 0.143rem;
   padding: 0 0.5rem;
 }
+.p-button.p-button-success,
+.p-buttonset.p-button-success>.p-button,
+.p-splitbutton.p-button-success>.p-button {
+  color: #ffffff;
+  background: #00f2c3;
+  border: 1px solid #00f2c3;
+}
+
+.p-button.p-button-success:enabled:hover,
+.p-buttonset.p-button-success>.p-button:enabled:hover,
+.p-splitbutton.p-button-success>.p-button:enabled:hover {
+  background: #41d796;
+  color: #ffffff;
+  border-color: #41d796;
+}
+
+.p-button.p-button-danger,
+.p-buttonset.p-button-danger>.p-button,
+.p-splitbutton.p-button-danger>.p-button {
+  color: #ffffff;
+  background: #fd5d93;
+  border: 1px solid #fd5d93;
+}
+
+
+.p-toolbar {
+  background: transparent;
+  border: 1px solid #27293d;
+  padding: 1rem;
+  border-radius: 3px;
+}
+

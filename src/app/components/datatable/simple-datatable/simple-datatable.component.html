@@ -1,3 +1,46 @@
+<p-toolbar styleClass="p-1">
+  <ng-template class="row p-1" pTemplate="left">
+    <div class="col p-1">
+      <button
+        pButton
+        pRipple
+        label="New"
+        icon="pi pi-plus"
+        class="p-button-success p-mr-2"
+        (click)="openDialog()"
+      ></button>
+    </div>
+    <div class="col p-1">
+      <button
+        pButton
+        pRipple
+        [label]="Delete"
+        icon="pi pi-trash"
+        class="p-button-danger"
+        (click)="deleteSelectedProducts()"
+        [disabled]="!selectedProducts || !selectedProducts.length"
+      ></button>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="right">
+    <p-fileUpload
+      mode="basic"
+      accept="image/*"
+      [maxFileSize]="1000000"
+      label="Import"
+      chooseLabel="Import"
+      class="p-mr-2 p-d-inline-block"
+    ></p-fileUpload>
+    <button
+      pButton
+      pRipple
+      label="Export"
+      icon="pi pi-upload"
+      class="p-button-help"
+    ></button>
+  </ng-template>
+</p-toolbar>
 <p-table
   #dt
   [value]="data"
@@ -13,6 +56,7 @@
   [loading]="loading"
   currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
   [filterDelay]="0"
+  [paginatorDropdownAppendTo]="'body'"
   [globalFilterFields]="[
     'name',
     'country.name',

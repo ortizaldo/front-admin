@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ConfirmationService } from "primeng/api";
 import { Table } from "primeng/table";
 import { tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
@@ -15,9 +16,10 @@ export class UserComponent implements OnInit {
   columns: any[];
 
   loading: boolean = true;
+  userDialog: boolean = false;
 
   @ViewChild('dt') table: Table;
-  constructor(private crudService: CrudService) { }
+  constructor(private crudService: CrudService, private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
     this.columns = [
@@ -53,5 +55,10 @@ export class UserComponent implements OnInit {
       )
       .subscribe();
 
+  }
+
+  openNew(cmd) {
+    const { openDialog } = cmd;
+    this.userDialog = openDialog;
   }
 }
