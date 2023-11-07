@@ -7,18 +7,18 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService } from "primeng/api";
 import { DialogModule } from "primeng/dialog";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
-import { AppDialogFormComponent } from './app-dialog-form/app-dialog-form.component';
-// import { SimpleDatatable } from "./simple-datatable/simple-datatable.component";
+import { DialogFormComponent } from './dialog-form/dialog-form.component';
 
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgbModule, DialogModule,
     ConfirmDialogModule, ButtonModule],
-  // declarations: [SimpleDatatable],
-  // exports: [SimpleDatatable]
   providers: [ConfirmationService],
   declarations: [
-    AppDialogFormComponent
-  ]
+    DialogFormComponent
+  ],
+  exports: [
+    DialogFormComponent
+  ],
 })
 export class DialogCustomModule { }
