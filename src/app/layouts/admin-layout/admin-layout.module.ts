@@ -13,15 +13,13 @@ import { NotificationsComponent } from "../../pages/admin/notifications/notifica
 import { UserComponent } from "../../pages/admin/user/user.component";
 import { TablesComponent } from "../../pages/admin/tables/tables.component";
 import { TypographyComponent } from "../../pages/admin/typography/typography.component";
-// import { RtlComponent } from "../../pages/admin/rtl/rtl.component";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 import { DatatableCustomModule } from "src/app/components/datatable/datatable-custom.module";
-import { DialogModule } from 'primeng/dialog';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from "primeng/api";
 import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.module";
+import { FormGralModule } from "src/app/components/form-general/form-general.module";
+import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -33,6 +31,7 @@ import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.modu
     TableModule,
     DatatableCustomModule,
     DialogCustomModule,
+    FormGralModule,
   ],
   declarations: [
     DashboardComponent,
@@ -42,6 +41,7 @@ import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.modu
     TypographyComponent,
     NotificationsComponent,
     MapComponent,
+    ProfileComponent
     // RtlComponent
   ],
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { tap } from "rxjs";
+import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
 
 @Component({
@@ -45,20 +45,12 @@ export class UserComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.users = data.data;
-          console.log("🚀 ~ file: simple-datatable.component.ts:30 ~ SimpleDatatable ~ tap ~ data:", data.data);
           this.loading = false;
-          // this.optionsSelect.typeOfRepresentative = data.data;
-          // if (this._data) {
-          //   this.selectedValue.typeOfRepresentative = this._data.typeResponsible;
-          //   this.updateModel(this.selectedValue.typeOfRepresentative, "typeOfRepresentative");
-          // }
-          // this.isLoading = false;
         }),
-        // catchError(err => {
-        //   // const response = this.apiResponsesService.data(err);
-        //   // this.alerts.error(response.title, response.message);
-        //   // throw err;
-        // })
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
       )
       .subscribe();
 

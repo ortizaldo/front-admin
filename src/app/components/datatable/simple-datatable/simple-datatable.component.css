@@ -11,7 +11,7 @@
 }
 
 .form-control:focus {
-  border-color: transparent;
+  border-color: .5px solid #e14eca;
   background-color: transparent;
   box-shadow: none;
 }
