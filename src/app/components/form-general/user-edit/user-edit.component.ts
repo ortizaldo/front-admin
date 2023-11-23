@@ -36,7 +36,6 @@ export class UserEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('%cuser-edit.component.ts line:39 this.data', 'color: #007acc;', this.data);
     this.userForm = this.fb.group({
       company: new FormControl('', [Validators.required]),
       firstName: new FormControl(this.data?.firstName, [Validators.required]),
