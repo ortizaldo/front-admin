@@ -106,7 +106,6 @@ export class UserEditComponent implements OnInit {
 
           if (type === "state") {
             this.states = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
-            console.log("🚀 ~ file: user-edit.component.ts:110 ~ UserEditComponent ~ tap ~ this.states:", this.states)
           }
 
           if (type === "municipality") {
