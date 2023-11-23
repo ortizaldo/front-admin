@@ -7,8 +7,9 @@
           styleClass="form-control"
           [options]="companys"
           [(ngModel)]="selectedCompany"
+          [appendTo]="'body'"
           formControlName="company"
-          optionLabel="Compañia"
+          optionLabel="name"
         ></p-dropdown>
       </div>
     </div>
@@ -52,7 +53,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="form-group">
         <label>Domicilio</label>
         <input
@@ -63,7 +64,7 @@
         />
       </div>
     </div>
-    <div class="col-md-4 pl-md-1">
+    <div class="col-md-3 pl-md-1">
       <div class="form-group">
         <label>Codigo Postal</label>
         <input
@@ -71,6 +72,17 @@
           placeholder="Codigo Postal"
           type="number"
           formControlName="postalCode"
+        />
+      </div>
+    </div>
+    <div class="col-md-3 pl-md-1">
+      <div class="form-group">
+        <label>Telefono</label>
+        <input
+          class="form-control"
+          placeholder="Telefono"
+          type="text"
+          formControlName="phoneNumber"
         />
       </div>
     </div>
@@ -83,51 +95,12 @@
           styleClass="form-control"
           [options]="countrys"
           [(ngModel)]="selectedCountry"
-          optionLabel="País"
+          optionLabel="description"
           [appendTo]="'body'"
-          (onBlur)="onChange($event)"
-          editable="true"
+          (onChange)="onChange($event, 'state')"
+          editable="false"
           formControlName="country"
         >
-          <!-- <ng-template pTemplate="filter" let-options="options">
-            <div class="flex p-3">
-              <div class="p-inputgroup" (click)="$event.stopPropagation()">
-                <span class="p-inputgroup-addon"
-                  ><i class="pi pi-search"></i
-                ></span>
-                <input
-                  type="text"
-                  pInputText
-                  placeholder="Filter"
-                  [(ngModel)]="filterValue"
-                  (keyup)="options.filter($event)"
-                />
-              </div>
-              <button
-                pButton
-                icon="pi pi-times"
-                class="ml-3"
-                (click)="myResetFunction(options)"
-              ></button>
-            </div>
-          </ng-template> -->
-          <ng-template pTemplate="selectedItem">
-            <div
-              class="country-item country-item-value"
-              *ngIf="selectedCountry"
-            >
-              <div>{{ selectedCountry.description }}</div>
-            </div>
-          </ng-template>
-          <ng-template let-country pTemplate="item">
-            <div class="country-item">
-              <!-- <img
-                src="assets/showcase/images/demo/flag/flag_placeholder.png"
-                [class]="'flag flag-' + country.code.toLowerCase()"
-              /> -->
-              <div>{{ country.description }}</div>
-            </div>
-          </ng-template>
         </p-dropdown>
       </div>
     </div>
@@ -138,19 +111,22 @@
           styleClass="form-control"
           [options]="states"
           [(ngModel)]="selectedState"
-          optionLabel="Estado"
+          optionLabel="description"
+          (onChange)="onChange($event, 'municipality')"
+          [appendTo]="'body'"
           formControlName="state"
         ></p-dropdown>
       </div>
     </div>
     <div class="col-md-4 pl-md-1">
       <div class="form-group">
-        <label>Estado</label>
+        <label>Municipio</label>
         <p-dropdown
           styleClass="form-control"
           [options]="municipalitys"
           [(ngModel)]="selectedMunicipality"
-          optionLabel="Municipio"
+          [appendTo]="'body'"
+          optionLabel="description"
           formControlName="municipality"
         ></p-dropdown>
       </div>

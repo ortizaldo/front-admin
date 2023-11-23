@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,9 +9,27 @@ import { environment } from 'src/environments/environment';
 export class CrudService {
   constructor(private http: HttpClient) { }
 
-  get(endpoint: string, id: string = ""): Observable<any> {
+  get<T>(endpoint?: string, params: any = {}, options?: any): Observable<T> {
+    const paramsStr = {};
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        paramsStr[key] = JSON.stringify(params[key]);
+      }
+    }
+    const opts = {
+      ...{
+        responseType: "json",
+      },
+      ...options,
+      ...{ params: paramsStr },
+    };
+    return this.http.get<T>(endpoint, opts).pipe(map((r: any) => r));
+  }
+
+  getMany(endpoint: string, id: string = "", params: any): Observable<any> {
     const url = id ? `${environment.api}/${endpoint}/${id}` : `${environment.api}/${endpoint}`;
-    return this.http.get(url, { responseType: 'json' });
+    const options = { responseType: 'json' };
+    return this.get<any>(url, params, options);
   }
 
   post(body: any = {}): Observable<any> {

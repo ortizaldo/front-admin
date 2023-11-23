@@ -41,7 +41,18 @@ export class UserComponent implements OnInit {
   }
 
   getUsers() {
-    this.crudService.get("users")
+    const params = {
+      select: [
+        "_id",
+        "company",
+        "firstName",
+        "lastName",
+        "email",
+        "typeUser",
+        "phoneNumber"
+      ]
+    };
+    this.crudService.getMany("users", null, params)
       .pipe(
         tap((data: any) => {
           this.users = data.data;

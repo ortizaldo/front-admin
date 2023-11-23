@@ -8,7 +8,7 @@
   display: block;
   width: 100%;
   height: calc(2.249999625rem + 2px);
-  padding: 0.5rem 0.7rem;
+  // padding: 0.5rem 0.7rem;
   font-size: 0.875rem;
   line-height: 1.428571;
   color: #1d253b;
@@ -25,3 +25,10 @@
   background-color: whitesmoke;
   box-shadow: none;
 }
+
+// .form-group .form-control,
+// .input-group .form-control {
+//   padding: 0px!important;
+// }
+
+.p-dropdown.form-control{ padding: 0px !important; }
