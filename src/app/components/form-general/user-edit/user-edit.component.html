@@ -1,4 +1,4 @@
-<form [formGroup]="userForm" id="form">
+<form [formGroup]="form" id="form">
   <div class="row">
     <div class="col-md-5 pr-md-1">
       <div class="form-group">
@@ -88,7 +88,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4 pr-md-1">
+    <div class="col-md-4">
       <div class="form-group">
         <label>Pais</label>
         <p-dropdown
@@ -104,7 +104,7 @@
         </p-dropdown>
       </div>
     </div>
-    <div class="col-md-4 px-md-1">
+    <div class="col-md-4">
       <div class="form-group">
         <label>Estado</label>
         <p-dropdown
@@ -114,11 +114,12 @@
           optionLabel="description"
           (onChange)="onChange($event, 'municipality')"
           [appendTo]="'body'"
+          editable="false"
           formControlName="state"
         ></p-dropdown>
       </div>
     </div>
-    <div class="col-md-4 pl-md-1">
+    <div class="col-md-4">
       <div class="form-group">
         <label>Municipio</label>
         <p-dropdown
@@ -127,6 +128,7 @@
           [(ngModel)]="selectedMunicipality"
           [appendTo]="'body'"
           optionLabel="description"
+          editable="false"
           formControlName="municipality"
         ></p-dropdown>
       </div>

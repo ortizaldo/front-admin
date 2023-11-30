@@ -4,10 +4,17 @@
       <div class="card">
         <div class="card-header"><h5 class="title">Editar Perfil</h5></div>
         <div class="card-body">
-          <app-user-edit [data]="user"></app-user-edit>
+          <app-user-edit [data]="user" [form]="userForm"></app-user-edit>
         </div>
         <div class="card-footer">
-          <button class="btn btn-fill btn-danger" type="submit">Guardar</button>
+          <button
+            class="btn btn-fill btn-danger"
+            type="submit"
+            [disabled]="userForm.invalid"
+            (click)="saveUser()"
+          >
+            Guardar
+          </button>
         </div>
       </div>
     </div>

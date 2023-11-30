@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
 
@@ -9,6 +10,7 @@ import { CrudService } from "src/app/_services/crud.service";
   encapsulation: ViewEncapsulation.None,
 })
 export class UserComponent implements OnInit {
+  userForm: FormGroup;
   users!: any[];
   selectedUsers: any[];
   columns: any[];
@@ -22,7 +24,7 @@ export class UserComponent implements OnInit {
   @ViewChild('myTemplate', { static: true }) myTemplate: TemplateRef<any>;
 
 
-  constructor(private crudService: CrudService) { }
+  constructor(private fb: FormBuilder, private crudService: CrudService) { }
 
   ngOnInit() {
     this.columns = [
@@ -38,6 +40,19 @@ export class UserComponent implements OnInit {
     this.myModel = {
       template: this.myTemplate
     }
+
+    this.userForm = this.fb.group({
+      company: new FormControl('', [Validators.required]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+      phoneNumber: new FormControl('', [Validators.required]),
+      addressStreet: new FormControl('', [Validators.required]),
+      postalCode: new FormControl('', [Validators.required]),
+      country: new FormControl('', [Validators.required]),
+      state: new FormControl('', [Validators.required]),
+      municipality: new FormControl('', [Validators.required]),
+    });
   }
 
   getUsers() {

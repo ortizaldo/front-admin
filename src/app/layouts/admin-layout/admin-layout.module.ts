@@ -15,11 +15,16 @@ import { TablesComponent } from "../../pages/admin/tables/tables.component";
 import { TypographyComponent } from "../../pages/admin/typography/typography.component";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { SlideMenuModule } from 'primeng/slidemenu';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentsModule } from "src/app/components/components.module";
 import { DatatableCustomModule } from "src/app/components/datatable/datatable-custom.module";
 import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.module";
 import { FormGralModule } from "src/app/components/form-general/form-general.module";
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
+import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -32,9 +37,14 @@ import { ProfileComponent } from "src/app/pages/admin/profile/profile.component"
     DatatableCustomModule,
     DialogCustomModule,
     FormGralModule,
+    PanelMenuModule,
+    TabMenuModule,
+    SlideMenuModule,
+    NgbDropdownModule,
   ],
   declarations: [
     DashboardComponent,
+    CatalogsComponent,
     UserComponent,
     TablesComponent,
     IconsComponent,

@@ -1,32 +1,32 @@
-.table th,
+app-user .table th,
 .table td {
   padding: 1rem;
   vertical-align: top;
   border-top: none !important;
 }
 
-.table thead th {
+app-user .table thead th {
   vertical-align: bottom;
   border-bottom: 0.125rem solid #525f7f !important;
 }
 
-.form-control:focus {
+/* app-user .form-control:focus {
   border-color: transparent;
   background-color: transparent;
   box-shadow: none;
-}
+} */
 
-.input-group:focus-within {
+/* app-user .input-group:focus-within {
   outline: .5px solid #e14eca;
   border-radius: .25rem;
-}
+} */
 
-.th-custom{
+app-user .th-custom{
   border-bottom: none;
   color: #cac3da;
 }
 
-.p-datatable .p-datatable-header {
+app-user .p-datatable .p-datatable-header {
   background: transparent !important;
   color: #495057;
   border: 1px solid transparent;
@@ -35,11 +35,11 @@
   font-weight: 600;
 }
 
-.p-datatable {
+app-user .p-datatable {
   background: transparent !important;
 }
 
-.p-datatable .p-datatable-thead>tr>th {
+app-user .p-datatable .p-datatable-thead>tr>th {
   text-align: left;
   padding: 1rem 1rem;
   border: 1px solid #e9ecef;
@@ -50,7 +50,7 @@
   transition: box-shadow 0.2s;
 }
 
-.p-paginator {
+app-user .p-paginator {
   background: #27293d;
   color: #dddddd;
   border: solid #1e1e2f;
@@ -59,31 +59,31 @@
   border-radius: 3px;
 }
 
-.p-datatable .p-datatable-tbody>tr>td {
+app-user .p-datatable .p-datatable-tbody>tr>td {
   text-align: left;
   border: 1px solid #1e1e2f;
   border-width: 0 0 1px 0;
   padding: 1rem 1rem;
 }
 
-.p-datatable .p-datatable-tbody>tr {
+app-user .p-datatable .p-datatable-tbody>tr {
   background: #27293d;
   color: #dddddd;
   transition: box-shadow 0.2s;
   outline-color: #1e1e2f;
 }
 
-.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+app-user .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
   background: #e9ecef;
   color: #dddddd;
 }
 
-.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+app-user .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
   background: #3d4062;
   color: #dddddd;
 }
 
-.p-paginator .p-paginator-current {
+app-user .p-paginator .p-paginator-current {
   background-color: transparent;
   border: 0 none;
   color: #dddddd;

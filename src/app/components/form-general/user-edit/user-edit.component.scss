@@ -22,7 +22,14 @@
 
 .form-control:focus {
   border-color: #1d253b;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+app-user-edit .form-control:focus {
+  border-color: #1d253b;
   background-color: whitesmoke;
+  color: black;
   box-shadow: none;
 }
 
@@ -31,4 +38,4 @@
 //   padding: 0px!important;
 // }
 
-.p-dropdown.form-control{ padding: 0px !important; }
+// .p-dropdown.form-control{ padding: 5px !important; }

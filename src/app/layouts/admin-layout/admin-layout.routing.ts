@@ -8,12 +8,14 @@ import { UserComponent } from "../../pages/admin/user/user.component";
 import { TablesComponent } from "../../pages/admin/tables/tables.component";
 import { TypographyComponent } from "../../pages/admin/typography/typography.component";
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
+import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
 // import { RtlComponent } from "../../pages/admin/rtl/rtl.component";
 
 export const AdminLayoutRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
   { path: "profile", component: ProfileComponent },
   { path: "users", component: UserComponent },
+  { path: "catalogs", component: CatalogsComponent },
   // { path: "maps", component: MapComponent },
   // { path: "notifications", component: NotificationsComponent },
   // { path: "tables", component: TablesComponent },

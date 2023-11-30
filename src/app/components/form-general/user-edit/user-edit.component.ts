@@ -18,6 +18,7 @@ import { Municipality } from 'src/app/interfaces/municipality';
 })
 export class UserEditComponent implements OnInit {
   @Input() data: User | undefined;
+  @Input() form: FormGroup;
   @Input() companys: any[] | undefined;
   @Input() countrys: Country[] | undefined;
   @Input() states: State[] | undefined;
@@ -27,7 +28,7 @@ export class UserEditComponent implements OnInit {
   selectedState: State;
   selectedMunicipality: Municipality;
   selectedCompany: any | undefined = {};
-  userForm: FormGroup;
+
 
   groupedCities: SelectItemGroup[];
 
@@ -36,25 +37,12 @@ export class UserEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userForm = this.fb.group({
-      company: new FormControl('', [Validators.required]),
-      firstName: new FormControl(this.data?.firstName, [Validators.required]),
-      lastName: new FormControl(this.data?.lastName, [Validators.required]),
-      email: new FormControl(this.data?.email, [Validators.required]),
-      phoneNumber: new FormControl(this.data?.phoneNumber, [Validators.required]),
-      addressStreet: new FormControl('', [Validators.required]),
-      postalCode: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
-      state: new FormControl('', [Validators.required]),
-      municipality: new FormControl('', [Validators.required]),
-    });
+
 
     this.getCountries();
   }
 
   onChange(evt: any, endpoint: string) {
-    console.log("🚀 ~ file: user-edit.component.ts:57 ~ UserEditComponent ~ onChange ~ endpoint:", endpoint)
-    console.log('%cuser-edit.component.ts line:58 this.selectedState', 'color: #007acc;', this.selectedState);
     let params: any = {};
     if (endpoint === "state") {
       params = {
@@ -106,10 +94,12 @@ export class UserEditComponent implements OnInit {
 
           if (type === "state") {
             this.states = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+            this.selectedState = this.states[0];
           }
 
           if (type === "municipality") {
             this.municipalitys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+            this.selectedMunicipality = this.municipalitys[0];
           }
         }),
         catchError(err => {
