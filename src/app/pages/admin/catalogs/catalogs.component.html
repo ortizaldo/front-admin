@@ -6,23 +6,28 @@
           <div class="row">
             <div class="col-sm-6 text-left">
               <h5 class="card-category">Captura de catalogos</h5>
-              <!-- <h2 class="card-title">Catalogos</h2> -->
-              <button
-                #btn
-                class="card-title"
-                type="button"
-                pButton
-                icon="pi pi-bars"
-                label="Catalogos"
-                (click)="menu3.toggle($event)"
-              ></button>
-              <p-slideMenu
-                #menu3
-                [model]="items"
-                [popup]="true"
-                [viewportHeight]="250"
-                appendTo="body"
-              ></p-slideMenu>
+              <div class="row">
+                <div class="col">
+                  <h2 class="card-title">Catalogos</h2>
+                </div>
+                <div class="col">
+                  <button
+                    #btn
+                    class="card-title"
+                    type="button"
+                    pButton
+                    icon="pi pi-bars"
+                    (click)="menu3.toggle($event)"
+                  ></button>
+                  <p-slideMenu
+                    #menu3
+                    [model]="items"
+                    [popup]="true"
+                    [viewportHeight]="250"
+                    appendTo="body"
+                  ></p-slideMenu>
+                </div>
+              </div>
             </div>
             <div class="col-sm-6"></div>
           </div>

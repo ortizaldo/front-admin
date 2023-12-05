@@ -73,6 +73,36 @@ export class CatalogsComponent implements OnInit {
           },
           {
             label: 'Municipio',
+            command: (event: any) => {
+              this.title = 'Catalogo municipio';
+              const select = [
+                "_id",
+                "description",
+                "country",
+                "state",
+                "createdAt",
+                "deleted",
+              ];
+
+              const populate = [
+                {
+                  path: 'country',
+                  select: 'description'
+                },
+                {
+                  path: 'state',
+                  select: 'description'
+                }
+              ];
+
+              self.columns = [
+                { field: 'country', header: 'Pais' },
+                { field: 'state', header: 'Estado' },
+                { field: 'description', header: 'Municipio' },
+              ]
+              self.getCatalog('municipality', select, populate);
+              self.showDtl(event);
+            }
           },
         ]
       },
@@ -112,6 +142,13 @@ export class CatalogsComponent implements OnInit {
           if (endpoint === 'state') {
             data.data.forEach((item: any) => {
               item.country = item.country.description;
+            });
+          }
+
+          if (endpoint === 'municipality') {
+            data.data.forEach((item: any) => {
+              item.country = item.country.description;
+              item.state = item.state.description;
             });
           }
           this.data = data.data;
