@@ -25,6 +25,7 @@ import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.modu
 import { FormGralModule } from "src/app/components/form-general/form-general.module";
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
+import { ButtonModule } from 'primeng/button';
 @NgModule({
   imports: [
     CommonModule,
@@ -41,6 +42,7 @@ import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.compone
     TabMenuModule,
     SlideMenuModule,
     NgbDropdownModule,
+    ButtonModule,
   ],
   declarations: [
     DashboardComponent,
