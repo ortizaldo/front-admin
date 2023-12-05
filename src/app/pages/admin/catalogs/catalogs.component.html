@@ -3,33 +3,33 @@
     <div class="col-12">
       <div class="card card-chart">
         <div class="card-header">
-          <div class="row">
+          <div class="row d-flex flex-row">
             <div class="col-sm-6 text-left">
               <h5 class="card-category">Captura de catalogos</h5>
-              <div class="row">
-                <div class="col">
-                  <h2 class="card-title">Catalogos</h2>
-                </div>
-                <div class="col">
-                  <button
-                    #btn
-                    class="card-title"
-                    type="button"
-                    pButton
-                    icon="pi pi-bars"
-                    (click)="menu3.toggle($event)"
-                  ></button>
-                  <p-slideMenu
-                    #menu3
-                    [model]="items"
-                    [popup]="true"
-                    [viewportHeight]="250"
-                    appendTo="body"
-                  ></p-slideMenu>
-                </div>
-              </div>
             </div>
             <div class="col-sm-6"></div>
+          </div>
+          <div class="row d-flex flex-row">
+            <div class="p-2">
+              <h2 class="card-title">Catalogos</h2>
+            </div>
+            <div class="p-2">
+              <button
+                #btn
+                class="btn btn-info btn-fab btn-icon btn-round"
+                type="button"
+                (click)="menu3.toggle($event)"
+              >
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <p-slideMenu
+                #menu3
+                [model]="items"
+                [popup]="true"
+                [viewportHeight]="250"
+                appendTo="body"
+              ></p-slideMenu>
+            </div>
           </div>
         </div>
         <div class="card-body p-4">
@@ -48,29 +48,50 @@
                 [data]="data"
                 [columns]="columns"
                 [selectedData]="selectedAny"
+                (dialogChange)="openNew($event)"
               ></app-simple-datatable>
             </div>
           </div>
-          <!-- <div class="row">
-            <div class="col-sm-3 text-left">
-              <p-panelMenu
-                [model]="items"
-                [style]="{ width: '300px' }"
-              ></p-panelMenu>
-            </div>
-            <div class="col-sm-9">
-              <app-simple-datatable
-                *ngIf="data"
-                [loading]="false"
-                [title]="title"
-                [data]="data"
-                [columns]="columns"
-                [selectedData]="selectedAny"
-              ></app-simple-datatable>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<app-dialog-form
+  [openDialog]="catalogDialog"
+  [size]="{ width: '50vw' }"
+  [headerDetails]="headerDetails"
+  (closeDialog)="openNew($event)"
+  [model]="myModel"
+>
+</app-dialog-form>
+
+<ng-template #catalogTemplate>
+  <div class="row">
+    <div class="col-12" *ngIf="catalogDialog">
+      <app-catalog-form [data]="null" [form]="catalogForm"></app-catalog-form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #buttonsTemplate>
+  <button
+    pButton
+    pRipple
+    label="Cancel"
+    icon="pi pi-trash"
+    class="p-button-danger"
+    (click)="hideDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Save"
+    icon="pi pi-check"
+    class="p-button-success p-mr-2"
+    type="submit"
+    [disabled]="catalogForm.invalid"
+    (click)="saveCatalog()"
+  ></button>
+</ng-template>

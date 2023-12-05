@@ -9,6 +9,7 @@ import { UserReadComponent } from './user-read/user-read.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { DropdownModule } from "primeng/dropdown";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CatalogFormComponent } from "./catalog-form/catalog-form.component";
 
 @NgModule({
   imports: [
@@ -24,12 +25,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   declarations: [
     UserReadComponent,
-    UserEditComponent
+    UserEditComponent,
+    CatalogFormComponent
   ],
   // declarations: [SimpleDatatable],
   exports: [
     UserReadComponent,
-    UserEditComponent
+    UserEditComponent,
+    CatalogFormComponent
   ],
 })
 export class FormGralModule { }

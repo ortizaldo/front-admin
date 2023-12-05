@@ -1,0 +1,145 @@
+<form [formGroup]="form" id="form">
+  <!-- <div class="row">
+    <div class="col-md-5 pr-md-1">
+      <div class="form-group">
+        <label> Compañia </label>
+        <p-dropdown
+          styleClass="form-control"
+          [options]="companys"
+          [(ngModel)]="selectedCompany"
+          [appendTo]="'body'"
+          formControlName="company"
+          optionLabel="name"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-md-4 pl-md-1">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Correo electrónico</label>
+        <input
+          class="form-control"
+          placeholder="mike@email.com"
+          type="email"
+          value="{{ data?.email }}"
+          formControlName="email"
+        />
+      </div>
+    </div>
+  </div> -->
+  <div class="row">
+    <div class="col-md-6 pr-md-1">
+      <div class="form-group">
+        <label>Descripción</label>
+        <input
+          class="form-control"
+          placeholder="Nombre"
+          type="text"
+          value="{{ data?.description }}"
+          formControlName="description"
+        />
+        <div
+          *ngIf="
+            form.get('description').invalid &&
+            (form.get('description').dirty || form.get('description').touched)
+          "
+        >
+          Por favor capturar el nombre del registro
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-6 pl-md-1">
+      <div class="form-group">
+        <label>Apellidos</label>
+        <input
+          class="form-control"
+          placeholder="Apellidos"
+          type="text"
+          value="{{ data?.lastName }}"
+          formControlName="lastName"
+        />
+      </div>
+    </div> -->
+  </div>
+  <!-- <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Domicilio</label>
+        <input
+          class="form-control"
+          placeholder="Domicilio"
+          type="text"
+          formControlName="addressStreet"
+        />
+      </div>
+    </div>
+    <div class="col-md-3 pl-md-1">
+      <div class="form-group">
+        <label>Codigo Postal</label>
+        <input
+          class="form-control"
+          placeholder="Codigo Postal"
+          type="number"
+          formControlName="postalCode"
+        />
+      </div>
+    </div>
+    <div class="col-md-3 pl-md-1">
+      <div class="form-group">
+        <label>Telefono</label>
+        <input
+          class="form-control"
+          placeholder="Telefono"
+          type="text"
+          formControlName="phoneNumber"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Pais</label>
+        <p-dropdown
+          styleClass="form-control"
+          [options]="countrys"
+          [(ngModel)]="selectedCountry"
+          optionLabel="description"
+          [appendTo]="'body'"
+          (onChange)="onChange($event, 'state')"
+          editable="false"
+          formControlName="country"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Estado</label>
+        <p-dropdown
+          styleClass="form-control"
+          [options]="states"
+          [(ngModel)]="selectedState"
+          optionLabel="description"
+          (onChange)="onChange($event, 'municipality')"
+          [appendTo]="'body'"
+          editable="false"
+          formControlName="state"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Municipio</label>
+        <p-dropdown
+          styleClass="form-control"
+          [options]="municipalitys"
+          [(ngModel)]="selectedMunicipality"
+          [appendTo]="'body'"
+          optionLabel="description"
+          editable="false"
+          formControlName="municipality"
+        ></p-dropdown>
+      </div>
+    </div>
+  </div> -->
+</form>

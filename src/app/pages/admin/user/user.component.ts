@@ -21,7 +21,7 @@ export class UserComponent implements OnInit {
   myModel = {
   };
 
-  @ViewChild('myTemplate', { static: true }) myTemplate: TemplateRef<any>;
+  @ViewChild('userTemplate', { static: true }) userTemplate: TemplateRef<any>;
 
 
   constructor(private fb: FormBuilder, private crudService: CrudService) { }
@@ -38,7 +38,7 @@ export class UserComponent implements OnInit {
     this.getUsers();
 
     this.myModel = {
-      template: this.myTemplate
+      template: this.userTemplate
     }
 
     this.userForm = this.fb.group({

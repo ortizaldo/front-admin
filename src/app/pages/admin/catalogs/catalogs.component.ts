@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MenuItem } from 'primeng/api';
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
@@ -9,6 +10,7 @@ import { CrudService } from "src/app/_services/crud.service";
   styleUrls: ["catalogs.component.scss"],
 })
 export class CatalogsComponent implements OnInit {
+  catalogForm: FormGroup;
   public items: MenuItem[];
   collapsed = true;
   title: string;
@@ -17,9 +19,30 @@ export class CatalogsComponent implements OnInit {
   columns: any[];
   selectedAny: any;
 
-  constructor(private crudService: CrudService) { }
+  catalogDialog: boolean = false;
+  headerDetails: string = "Crear registro";
+
+  myModel = {
+  };
+
+  @ViewChild('catalogTemplate', { static: true }) catalogTemplate: TemplateRef<any>;
+  @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
+  constructor(private fb: FormBuilder, private crudService: CrudService) { }
 
   ngOnInit() {
+    this.catalogForm = this.fb.group({
+      description: new FormControl('', [Validators.required]),
+      // firstName: new FormControl('', [Validators.required]),
+      // lastName: new FormControl('', [Validators.required]),
+      // email: new FormControl('', [Validators.required]),
+      // phoneNumber: new FormControl('', [Validators.required]),
+      // addressStreet: new FormControl('', [Validators.required]),
+      // postalCode: new FormControl('', [Validators.required]),
+      // country: new FormControl('', [Validators.required]),
+      // state: new FormControl('', [Validators.required]),
+      // municipality: new FormControl('', [Validators.required]),
+    });
+
     const self = this;
     this.items = [
       {
@@ -120,11 +143,23 @@ export class CatalogsComponent implements OnInit {
           self.showDtl(event);
         }
       },
-    ]
+    ];
+
+    this.myModel = {
+      template: this.catalogTemplate,
+      templateButtons: this.buttonsTemplate
+    }
+
+    this.initDTL();
   }
 
   showDtl(event) {
     console.log(event);
+  }
+
+  openNew(cmd) {
+    const { openDialog } = cmd;
+    this.catalogDialog = openDialog;
   }
 
   openModal(event) {
@@ -161,5 +196,33 @@ export class CatalogsComponent implements OnInit {
       )
       .subscribe();
 
+  }
+
+  initDTL() {
+    // this.catalogDialog = true;
+    this.headerDetails = "Crear registro de País";
+    this.catalogForm = new FormGroup({
+      description: new FormControl('', [Validators.required]),
+    });
+    this.title = 'Catalogo país';
+    const select = [
+      "_id",
+      "description",
+      "createdAt",
+      "deleted",
+    ];
+
+    this.columns = [
+      { field: 'description', header: 'Pais' },
+    ]
+    this.getCatalog('country', select, []);
+  }
+
+  saveCatalog() {
+    console.log('%cprofile.component.ts line:34 this.userForm', 'color: #007acc;', this.catalogForm.value);
+  }
+
+  hideDialog() {
+    this.catalogDialog = false;
   }
 }

@@ -41,19 +41,18 @@
 
 .p-datatable .p-datatable-thead>tr>th {
   text-align: left;
-  padding: 1rem 1rem;
-  border: 1px solid #e9ecef;
+  padding: 1rem rem 1rem;
+  border: 1px solid #5e6185;
   border-width: 0 0 1px 0;
   font-weight: 600;
-  color: #f8f9fa;
-  background: #1e1e26;
+  color: #5e6185;
+  background: #eeeeee;
   transition: box-shadow 0.2s;
 }
 
 .p-paginator {
-  background: #27293d;
-  color: #dddddd;
-  border: solid #1e1e2f;
+  background: transparent !important;
+  color: #5e6185;
   border-width: 0;
   padding: 0.5rem 1rem rem;
   border-radius: 3px;
@@ -67,20 +66,20 @@
 }
 
 .p-datatable .p-datatable-tbody>tr {
-  background: #27293d;
-  color: #dddddd;
+  background: #f9f9f9;
+  color: #000000;
   transition: box-shadow 0.2s;
-  outline-color: #1e1e2f;
+  outline-color: black;
 }
 
 .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
-  background: #e9ecef;
-  color: #dddddd;
+  background: #c3c3c3;
+  color: black;
 }
 
 .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
-  background: #3d4062;
-  color: #dddddd;
+  background: #c3c3c3;
+  color: black;
 }
 
 .p-paginator .p-paginator-current {
@@ -119,7 +118,6 @@
 
 .p-toolbar {
   background: transparent;
-  border: 1px solid #27293d;
   padding: 1rem;
   border-radius: 3px;
 }
