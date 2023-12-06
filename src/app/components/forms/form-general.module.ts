@@ -9,7 +9,7 @@ import { UserReadComponent } from './user-read/user-read.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { DropdownModule } from "primeng/dropdown";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SimpleCatalogComponent } from "./catalog-simple/catalog-form.component";
+import { SimpleCatalogComponent } from "./simple-catalog/simple-catalog.component";
 
 @NgModule({
   imports: [

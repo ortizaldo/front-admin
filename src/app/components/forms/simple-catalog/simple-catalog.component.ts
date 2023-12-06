@@ -11,9 +11,9 @@ import { State } from 'src/app/interfaces/state';
 import { Municipality } from 'src/app/interfaces/municipality';
 
 @Component({
-  selector: 'app-catalog-form',
-  templateUrl: './catalog-form.component.html',
-  styleUrls: ['./catalog-form.component.scss'],
+  selector: 'app-simple-catalog',
+  templateUrl: './simple-catalog.component.html',
+  styleUrls: ['./simple-catalog.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class SimpleCatalogComponent implements OnInit {

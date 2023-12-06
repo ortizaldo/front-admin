@@ -70,7 +70,10 @@
 <ng-template #catalogTemplate>
   <div class="row">
     <div class="col-12" *ngIf="catalogDialog">
-      <app-catalog-form [data]="null" [form]="catalogForm"></app-catalog-form>
+      <app-simple-catalog
+        [data]="null"
+        [form]="catalogForm"
+      ></app-simple-catalog>
     </div>
   </div>
 </ng-template>
