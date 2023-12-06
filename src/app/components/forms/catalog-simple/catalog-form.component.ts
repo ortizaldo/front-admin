@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user';
 
@@ -16,8 +16,9 @@ import { Municipality } from 'src/app/interfaces/municipality';
   styleUrls: ['./catalog-form.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CatalogFormComponent implements OnInit {
+export class SimpleCatalogComponent implements OnInit {
   @Input() data: any | undefined;
+  @Input() label: string;
   @Input() form: FormGroup;
   @Input() companys: any[] | undefined;
   @Input() countrys: Country[] | undefined;
@@ -29,16 +30,13 @@ export class CatalogFormComponent implements OnInit {
   selectedMunicipality: Municipality;
   selectedCompany: any | undefined = {};
 
-
-  groupedCities: SelectItemGroup[];
-
   items: SelectItem[];
+
+  @ViewChild('form') formElement: ElementRef;
   constructor(private fb: FormBuilder, private crudService: CrudService) {
   }
 
   ngOnInit(): void {
-
-
     this.getCountries();
   }
 

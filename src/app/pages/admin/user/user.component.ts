@@ -90,6 +90,5 @@ export class UserComponent implements OnInit {
   hideDialog(cmd) {
     const { openDialog } = cmd;
     this.userDialog = openDialog;
-    // this.submitted = false;
   }
 }

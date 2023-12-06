@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CatalogFormComponent } from './catalog-form.component';
+import { SimpleCatalogComponent } from './catalog-form.component';
 
-describe('CatalogFormComponent', () => {
-  let component: CatalogFormComponent;
-  let fixture: ComponentFixture<CatalogFormComponent>;
+describe('SimpleCatalogComponent', () => {
+  let component: SimpleCatalogComponent;
+  let fixture: ComponentFixture<SimpleCatalogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CatalogFormComponent]
+      declarations: [SimpleCatalogComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CatalogFormComponent);
+    fixture = TestBed.createComponent(SimpleCatalogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

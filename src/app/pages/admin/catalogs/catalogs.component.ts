@@ -111,6 +111,10 @@ export class CatalogsComponent implements OnInit {
     this.title = 'Catalogo estado';
     this.headerDetails = "Crear registro de Estado";
     this.endpoint = 'state';
+    this.catalogForm = new FormGroup({
+      description: new FormControl('', [Validators.required]),
+      country: new FormControl('', [Validators.required]),
+    });
     const select = [
       "_id",
       "description",

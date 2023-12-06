@@ -22,7 +22,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentsModule } from "src/app/components/components.module";
 import { DatatableCustomModule } from "src/app/components/datatable/datatable-custom.module";
 import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.module";
-import { FormGralModule } from "src/app/components/form-general/form-general.module";
+import { FormGralModule } from "src/app/components/forms/form-general.module";
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
 import { ButtonModule } from 'primeng/button';
