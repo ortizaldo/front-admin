@@ -32,8 +32,8 @@ export class CrudService {
     return this.get<any>(url, params, options);
   }
 
-  post(body: any = {}): Observable<any> {
-    return this.http.post(environment.api + '/all', { responseType: 'json' });
+  post(body: any = {}, endpoint: string = "", id: string = ""): Observable<any> {
+    return this.http.post(`${environment.api}/${endpoint}`, body, { responseType: 'json' });
   }
 
   put(body: any = {}, id: string = ""): Observable<any> {

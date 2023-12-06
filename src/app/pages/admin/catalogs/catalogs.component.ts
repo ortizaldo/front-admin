@@ -14,6 +14,7 @@ export class CatalogsComponent implements OnInit {
   public items: MenuItem[];
   collapsed = true;
   title: string;
+  endpoint: string;
   loading: boolean = true;
   data: any[];
   columns: any[];
@@ -52,79 +53,19 @@ export class CatalogsComponent implements OnInit {
           {
             label: 'Pais',
             command: (event: any) => {
-              this.title = 'Catalogo país';
-              const select = [
-                "_id",
-                "description",
-                "createdAt",
-                "deleted",
-              ];
-
-              self.columns = [
-                { field: 'description', header: 'Pais' },
-              ]
-              self.getCatalog('country', select, []);
-              self.showDtl(event);
+              self.enableCountry();
             }
           },
           {
             label: 'Estado',
             command: (event: any) => {
-              this.title = 'Catalogo estado';
-              const select = [
-                "_id",
-                "description",
-                "country",
-                "createdAt",
-                "deleted",
-              ];
-
-              const populate = [
-                {
-                  path: 'country',
-                  select: 'description'
-                }
-              ];
-
-              self.columns = [
-                { field: 'country', header: 'Pais' },
-                { field: 'description', header: 'Estado' },
-              ]
-              self.getCatalog('state', select, populate);
-              self.showDtl(event);
+              this.enableState();
             }
           },
           {
             label: 'Municipio',
             command: (event: any) => {
-              this.title = 'Catalogo municipio';
-              const select = [
-                "_id",
-                "description",
-                "country",
-                "state",
-                "createdAt",
-                "deleted",
-              ];
-
-              const populate = [
-                {
-                  path: 'country',
-                  select: 'description'
-                },
-                {
-                  path: 'state',
-                  select: 'description'
-                }
-              ];
-
-              self.columns = [
-                { field: 'country', header: 'Pais' },
-                { field: 'state', header: 'Estado' },
-                { field: 'description', header: 'Municipio' },
-              ]
-              self.getCatalog('municipality', select, populate);
-              self.showDtl(event);
+              this.enableMunicipality();
             }
           },
         ]
@@ -133,14 +74,7 @@ export class CatalogsComponent implements OnInit {
         label: 'Compañia',
         icon: 'fa fa-briefcase',
         command: (event: any) => {
-          this.title = 'Catalogo compañia';
-          const select = [
-            "_id",
-            "name",
-            "logo",
-          ];
-          self.getCatalog('companies', select, []);
-          self.showDtl(event);
+          this.enableCompany();
         }
       },
     ];
@@ -153,8 +87,102 @@ export class CatalogsComponent implements OnInit {
     this.initDTL();
   }
 
-  showDtl(event) {
-    console.log(event);
+  enableCountry() {
+    this.title = 'Catalogo país';
+    this.headerDetails = "Crear registro de País";
+    this.endpoint = 'country';
+    this.catalogForm = new FormGroup({
+      description: new FormControl('', [Validators.required]),
+    });
+    const select = [
+      "_id",
+      "description",
+      "createdAt",
+      "deleted",
+    ];
+
+    this.columns = [
+      { field: 'description', header: 'Pais' },
+    ]
+    this.getCatalog('country', select, []);
+  }
+
+  enableState() {
+    this.title = 'Catalogo estado';
+    this.headerDetails = "Crear registro de Estado";
+    this.endpoint = 'state';
+    const select = [
+      "_id",
+      "description",
+      "country",
+      "createdAt",
+      "deleted",
+    ];
+
+    const populate = [
+      {
+        path: 'country',
+        select: 'description'
+      }
+    ];
+
+    this.columns = [
+      { field: 'country', header: 'Pais' },
+      { field: 'description', header: 'Estado' },
+    ]
+    this.getCatalog('state', select, populate);
+  }
+
+  enableMunicipality() {
+    this.title = 'Catalogo municipio';
+    this.headerDetails = "Crear registro de Municipio";
+    this.endpoint = 'municipality';
+    const select = [
+      "_id",
+      "description",
+      "country",
+      "state",
+      "createdAt",
+      "deleted",
+    ];
+
+    const populate = [
+      {
+        path: 'country',
+        select: 'description'
+      },
+      {
+        path: 'state',
+        select: 'description'
+      }
+    ];
+
+    this.columns = [
+      { field: 'country', header: 'Pais' },
+      { field: 'state', header: 'Estado' },
+      { field: 'description', header: 'Municipio' },
+    ]
+    this.getCatalog('municipality', select, populate);
+  }
+
+  enableCompany() {
+    this.title = 'Catalogo compania';
+    this.headerDetails = "Crear registro de Compañia";
+    this.endpoint = 'companies';
+    this.catalogForm = new FormGroup({
+      description: new FormControl('', [Validators.required]),
+    });
+    const select = [
+      "_id",
+      "name",
+      "logo",
+    ];
+
+    this.columns = [
+      { field: 'name', header: 'Compañia' },
+      { field: 'logo', header: 'Logo' },
+    ]
+    this.getCatalog('companies', select, []);
   }
 
   openNew(cmd) {
@@ -201,6 +229,7 @@ export class CatalogsComponent implements OnInit {
   initDTL() {
     // this.catalogDialog = true;
     this.headerDetails = "Crear registro de País";
+    this.endpoint = 'country';
     this.catalogForm = new FormGroup({
       description: new FormControl('', [Validators.required]),
     });
@@ -219,7 +248,21 @@ export class CatalogsComponent implements OnInit {
   }
 
   saveCatalog() {
-    console.log('%cprofile.component.ts line:34 this.userForm', 'color: #007acc;', this.catalogForm.value);
+    this.crudService.post(this.catalogForm.value, this.endpoint)
+      .pipe(
+        tap((data: any) => {
+          this.data.unshift(data.data);
+          this.loading = false;
+          this.catalogDialog = false;
+
+          this.enableCountry();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
   }
 
   hideDialog() {

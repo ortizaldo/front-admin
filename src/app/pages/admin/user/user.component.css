@@ -5,10 +5,10 @@ app-user .table th,
   border-top: none !important;
 }
 
-app-user .table thead th {
+/* app-user .table thead th {
   vertical-align: bottom;
   border-bottom: 0.125rem solid #525f7f !important;
-}
+} */
 
 /* app-user .form-control:focus {
   border-color: transparent;
@@ -21,7 +21,7 @@ app-user .table thead th {
   border-radius: .25rem;
 } */
 
-app-user .th-custom{
+/* app-user .th-custom{
   border-bottom: none;
   color: #cac3da;
 }
@@ -91,4 +91,4 @@ app-user .p-paginator .p-paginator-current {
   height: 2.357rem;
   margin: 0.143rem;
   padding: 0 0.5rem;
-}
+} */
