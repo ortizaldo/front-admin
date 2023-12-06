@@ -69,9 +69,10 @@
 
 <ng-template #catalogTemplate>
   <div class="row">
-    <div class="col-12" *ngIf="catalogDialog">
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'country'">
       <app-simple-catalog
         [data]="null"
+        [label]="'País'"
         [form]="catalogForm"
       ></app-simple-catalog>
     </div>

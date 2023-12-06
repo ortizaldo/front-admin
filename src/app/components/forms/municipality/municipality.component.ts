@@ -11,9 +11,9 @@ import { State } from 'src/app/interfaces/state';
 import { Municipality } from 'src/app/interfaces/municipality';
 
 @Component({
-  selector: 'app-municiplity',
-  templateUrl: './municiplity.component.html',
-  styleUrls: ['./municiplity.component.scss'],
+  selector: 'app-municipality',
+  templateUrl: './municipality.component.html',
+  styleUrls: ['./municipality.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class MunicipalityComponent implements OnInit {

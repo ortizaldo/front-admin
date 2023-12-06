@@ -10,6 +10,9 @@ import { UserEditComponent } from './user-edit/user-edit.component';
 import { DropdownModule } from "primeng/dropdown";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SimpleCatalogComponent } from "./simple-catalog/simple-catalog.component";
+import { StateComponent } from "./state/state.component";
+import { MunicipalityComponent } from "./municipality/municipality.component";
+import { CompanyComponent } from "./company/company.component";
 
 @NgModule({
   imports: [
@@ -26,13 +29,19 @@ import { SimpleCatalogComponent } from "./simple-catalog/simple-catalog.componen
   declarations: [
     UserReadComponent,
     UserEditComponent,
-    SimpleCatalogComponent
+    SimpleCatalogComponent,
+    StateComponent,
+    MunicipalityComponent,
+    CompanyComponent,
   ],
   // declarations: [SimpleDatatable],
   exports: [
     UserReadComponent,
     UserEditComponent,
-    SimpleCatalogComponent
+    SimpleCatalogComponent,
+    StateComponent,
+    MunicipalityComponent,
+    CompanyComponent,
   ],
 })
 export class FormGralModule { }
