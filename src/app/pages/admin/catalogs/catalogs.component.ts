@@ -33,15 +33,6 @@ export class CatalogsComponent implements OnInit {
   ngOnInit() {
     this.catalogForm = this.fb.group({
       description: new FormControl('', [Validators.required]),
-      // firstName: new FormControl('', [Validators.required]),
-      // lastName: new FormControl('', [Validators.required]),
-      // email: new FormControl('', [Validators.required]),
-      // phoneNumber: new FormControl('', [Validators.required]),
-      // addressStreet: new FormControl('', [Validators.required]),
-      // postalCode: new FormControl('', [Validators.required]),
-      // country: new FormControl('', [Validators.required]),
-      // state: new FormControl('', [Validators.required]),
-      // municipality: new FormControl('', [Validators.required]),
     });
 
     const self = this;
@@ -141,6 +132,11 @@ export class CatalogsComponent implements OnInit {
     this.title = 'Catalogo municipio';
     this.headerDetails = "Crear registro de Municipio";
     this.endpoint = 'municipality';
+    this.catalogForm = new FormGroup({
+      description: new FormControl('', [Validators.required]),
+      country: new FormControl('', [Validators.required]),
+      state: new FormControl('', [Validators.required]),
+    });
     const select = [
       "_id",
       "description",
@@ -192,10 +188,6 @@ export class CatalogsComponent implements OnInit {
   openNew(cmd) {
     const { openDialog } = cmd;
     this.catalogDialog = openDialog;
-  }
-
-  openModal(event) {
-    console.log(event);
   }
 
   getCatalog(endpoint, select, populate) {
@@ -259,7 +251,15 @@ export class CatalogsComponent implements OnInit {
           this.loading = false;
           this.catalogDialog = false;
 
-          this.enableCountry();
+          if (this.endpoint === 'country') {
+            this.enableState();
+          }
+          if (this.endpoint === 'state') {
+            this.enableState();
+          }
+          if (this.endpoint === 'municipality') {
+            this.enableMunicipality();
+          }
         }),
         catchError(err => {
           this.loading = false;

@@ -76,6 +76,14 @@
         [form]="catalogForm"
       ></app-simple-catalog>
     </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'state'">
+      <app-state [data]="null" [form]="catalogForm"></app-state>
+    </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'municipality'">
+      <app-municipality [data]="null" [form]="catalogForm"></app-municipality>
+    </div>
   </div>
 </ng-template>
 
