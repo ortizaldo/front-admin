@@ -243,6 +243,12 @@ export class CatalogsComponent implements OnInit {
     this.getCatalog('country', select, []);
   }
 
+  /**
+ * Saves the catalog data by making a POST request to the specified endpoint.
+ *
+ * @param {type} paramName - description of parameter
+ * @return {type} description of return value
+ */
   saveCatalog() {
     this.crudService.post(this.catalogForm.value, this.endpoint)
       .pipe(

@@ -16,6 +16,7 @@ export class SimpleDatatable implements OnInit {
   @Input() selectedData: any[];
   @Input() columns: any[];
   @Input() loading: boolean = true;
+  @Input() export: boolean = false;
   @Input() title: string = "";
   @Output() dialogChange: EventEmitter<any> = new EventEmitter<any>();
 
