@@ -45,10 +45,12 @@
                 *ngIf="data"
                 [loading]="false"
                 [title]="title"
+                [emptyMessage]="emptyMessage"
                 [data]="data"
                 [columns]="columns"
                 [selectedData]="selectedAny"
                 (dialogChange)="openNew($event)"
+                (deleteRecords)="deleteSelected($event)"
               ></app-simple-datatable>
             </div>
           </div>
@@ -107,3 +109,9 @@
     (click)="saveCatalog()"
   ></button>
 </ng-template>
+
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  acceptButtonStyleClass="p-button-success"
+  rejectButtonStyleClass="p-button-danger"
+></p-confirmDialog>

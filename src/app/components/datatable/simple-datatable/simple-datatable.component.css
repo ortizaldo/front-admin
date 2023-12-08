@@ -122,3 +122,27 @@
   border-radius: 3px;
 }
 
+.p-dialog .p-dialog-header {
+  border-bottom: 1px solid #7d86c3;
+  background: #eeeeee;
+  color: #4b5179;
+  padding: 0.5rem;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.p-dialog .p-dialog-content {
+  background: #eeeeee;
+  color: #4b5179;
+  padding: 1.2rem;
+}
+
+.p-dialog .p-dialog-footer {
+  border-top: 1px solid #7d86c3;
+  background: #eeeeee;
+  color: #4b5179;
+  padding: 0.5rem;
+  text-align: right;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}

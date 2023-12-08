@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
-
+import * as _ from "underscore";
 @Component({
   selector: "app-catalogs",
   templateUrl: "catalogs.component.html",
@@ -14,6 +14,7 @@ export class CatalogsComponent implements OnInit {
   public items: MenuItem[];
   collapsed = true;
   title: string;
+  emptyMessage: string;
   endpoint: string;
   loading: boolean = true;
   data: any[];
@@ -28,7 +29,7 @@ export class CatalogsComponent implements OnInit {
 
   @ViewChild('catalogTemplate', { static: true }) catalogTemplate: TemplateRef<any>;
   @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
-  constructor(private fb: FormBuilder, private crudService: CrudService) { }
+  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.catalogForm = this.fb.group({
@@ -81,6 +82,7 @@ export class CatalogsComponent implements OnInit {
   enableCountry() {
     this.title = 'Catalogo país';
     this.headerDetails = "Crear registro de País";
+    this.emptyMessage = "No se encontraron paises";
     this.endpoint = 'country';
     this.catalogForm = new FormGroup({
       description: new FormControl('', [Validators.required]),
@@ -101,6 +103,7 @@ export class CatalogsComponent implements OnInit {
   enableState() {
     this.title = 'Catalogo estado';
     this.headerDetails = "Crear registro de Estado";
+    this.emptyMessage = "No se encontraron estados";
     this.endpoint = 'state';
     this.catalogForm = new FormGroup({
       description: new FormControl('', [Validators.required]),
@@ -131,6 +134,7 @@ export class CatalogsComponent implements OnInit {
   enableMunicipality() {
     this.title = 'Catalogo municipio';
     this.headerDetails = "Crear registro de Municipio";
+    this.emptyMessage = "No se encontraron municipios";
     this.endpoint = 'municipality';
     this.catalogForm = new FormGroup({
       description: new FormControl('', [Validators.required]),
@@ -224,6 +228,7 @@ export class CatalogsComponent implements OnInit {
 
   initDTL() {
     // this.catalogDialog = true;
+    this.emptyMessage = "No se encontraron paises";
     this.headerDetails = "Crear registro de País";
     this.endpoint = 'country';
     this.catalogForm = new FormGroup({
@@ -258,7 +263,7 @@ export class CatalogsComponent implements OnInit {
           this.catalogDialog = false;
 
           if (this.endpoint === 'country') {
-            this.enableState();
+            this.enableCountry();
           }
           if (this.endpoint === 'state') {
             this.enableState();
@@ -273,6 +278,80 @@ export class CatalogsComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  deleteOne(item: any) {
+    this.crudService.deleteOne(this.endpoint, item._id, {
+      filters: {
+        hardDelete: true,
+      },
+    })
+      .pipe(
+        tap((data: any) => {
+          this.loading = false;
+          if (this.endpoint === 'country') {
+            this.enableCountry();
+          }
+          if (this.endpoint === 'state') {
+            this.enableState();
+          }
+          if (this.endpoint === 'municipality') {
+            this.enableMunicipality();
+          }
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  deleteMany(items: any[]) {
+    this.crudService.deleteMany(this.endpoint, items, {
+      filters: {
+        hardDelete: true,
+      },
+    })
+      .pipe(
+        tap((data: any) => {
+          this.loading = false;
+
+          if (this.endpoint === 'country') {
+            this.enableCountry();
+          }
+          if (this.endpoint === 'state') {
+            this.enableState();
+          }
+          if (this.endpoint === 'municipality') {
+            this.enableMunicipality();
+          }
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  deleteSelected(event) {
+    this.confirmationService.confirm({
+      message: 'Estas seguro de eliminar este registro?',
+      header: 'Eliminar registro',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (event.data.length > 1) {
+          let items = [];
+          event.data.forEach((item: any) => {
+            items.push(item._id);
+          });
+          this.deleteMany(items);
+        } else {
+          this.deleteOne(event.data[0]);
+        }
+      }
+    });
   }
 
   hideDialog() {

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ConfirmationService, MessageService } from "primeng/api";
 import { Table } from "primeng/table";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
@@ -18,7 +19,9 @@ export class SimpleDatatable implements OnInit {
   @Input() loading: boolean = true;
   @Input() export: boolean = false;
   @Input() title: string = "";
+  @Input() emptyMessage: string = "No se encontraron registros.";
   @Output() dialogChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('dt') table: Table;
   constructor(private crudService: CrudService) { }
@@ -28,5 +31,10 @@ export class SimpleDatatable implements OnInit {
 
   openDialog() {
     this.dialogChange.emit({ openDialog: true });
+  }
+
+  deleteSelected() {
+    this.deleteRecords.emit({ data: this.selectedData });
+    this.selectedData = null;
   }
 }

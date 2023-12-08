@@ -40,7 +40,37 @@ export class CrudService {
     return this.http.put(environment.api + '/all', { responseType: 'json' });
   }
 
-  delete(id: string = ""): Observable<any> {
-    return this.http.delete(environment.api + '/all', { responseType: 'json' });
+  // delete(endpoint: string = "", params: any, id: string = ""): Observable<any> {
+  //   // return this.http.delete(`${environment.api}/${endpoint}`, body, { responseType: 'json' });
+  //   const url = id ? `${environment.api}/${endpoint}/${id}` : `${environment.api}/${endpoint}`;
+  //   const options = { responseType: 'json' };
+  //   return this.get<any>(url, params, options);
+  // }
+
+  deleteOne(endpoint: string, id: string, params: any = {}) {
+    const paramsStr = {};
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        paramsStr[key] = JSON.stringify(params[key]);
+      }
+    }
+    return this.http.delete(`${environment.api}/${endpoint}/${id}`, {
+      params: paramsStr,
+    });
+  }
+
+  deleteMany(endpoint: string, ids: string[], params: any = {}) {
+    const paramsStr = {};
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        paramsStr[key] = JSON.stringify(params[key]);
+      }
+    }
+    return this.http.delete(`${environment.api}/${endpoint}`, {
+      params: {
+        items: ids,
+        ...paramsStr,
+      },
+    });
   }
 }
