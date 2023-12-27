@@ -41,6 +41,10 @@ export class StateComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.countrys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+
+          if (this.data) {
+            this.selectedCountry = this.countrys.find(x => x._id == this.data.country._id);
+          }
         }),
         catchError(err => {
           return err

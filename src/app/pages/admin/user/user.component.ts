@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ConfirmationService, MessageService } from "primeng/api";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
 
@@ -24,7 +25,7 @@ export class UserComponent implements OnInit {
   @ViewChild('userTemplate', { static: true }) userTemplate: TemplateRef<any>;
 
 
-  constructor(private fb: FormBuilder, private crudService: CrudService) { }
+  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.columns = [
@@ -80,6 +81,63 @@ export class UserComponent implements OnInit {
       )
       .subscribe();
 
+  }
+
+  deleteSelected(event) {
+    this.confirmationService.confirm({
+      message: 'Estas seguro de eliminar este registro?',
+      header: 'Eliminar registro',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (event.data.length > 1) {
+          let items = [];
+          event.data.forEach((item: any) => {
+            items.push(item._id);
+          });
+          this.deleteMany(items);
+        } else {
+          this.deleteOne(event.data[0]);
+        }
+      }
+    });
+  }
+
+  deleteOne(item: any) {
+    this.crudService.deleteOne("users", item._id, {
+      filters: {
+        hardDelete: false,
+      },
+    })
+      .pipe(
+        tap((data: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
+          this.getUsers();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  deleteMany(items: any[]) {
+    this.crudService.deleteMany("users", items, {
+      filters: {
+        hardDelete: false,
+      },
+    })
+      .pipe(
+        tap((data: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
+          this.getUsers();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
   }
 
   openNew(cmd) {

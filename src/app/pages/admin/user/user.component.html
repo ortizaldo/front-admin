@@ -10,6 +10,7 @@
             [columns]="columns"
             [selectedData]="selectedUsers"
             (dialogChange)="openNew($event)"
+            (deleteRecords)="deleteSelected($event)"
           ></app-simple-datatable>
         </div>
       </div>

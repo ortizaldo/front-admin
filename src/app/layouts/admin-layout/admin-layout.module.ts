@@ -26,7 +26,6 @@ import { FormGralModule } from "src/app/components/forms/form-general.module";
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
 import { ButtonModule } from 'primeng/button';
-import { ConfirmationService, MessageService } from "primeng/api";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 @NgModule({
   imports: [
@@ -59,7 +58,6 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
     MapComponent,
     ProfileComponent
     // RtlComponent
-  ],
-  providers: [MessageService, ConfirmationService]
+  ]
 })
 export class AdminLayoutModule { }

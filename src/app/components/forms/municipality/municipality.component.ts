@@ -77,6 +77,12 @@ export class MunicipalityComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.countrys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+
+          if (this.data) {
+            this.selectedCountry = this.countrys.find(x => x._id == this.data.country._id);
+
+            this.onChange(null, "state");
+          }
         }),
         catchError(err => {
           return err
@@ -92,12 +98,12 @@ export class MunicipalityComponent implements OnInit {
 
           if (type === "state") {
             this.states = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
-            this.selectedState = this.states[0];
+            this.selectedState = this.data ? this.states.find(x => x._id == this.data.state._id) : this.states[0];
           }
 
           if (type === "municipality") {
             this.municipalitys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
-            this.selectedMunicipality = this.municipalitys[0];
+            this.selectedMunicipality = this.data ? this.municipalitys.find(x => x._id == this.data.municipality._id) : this.municipalitys[0];
           }
         }),
         catchError(err => {

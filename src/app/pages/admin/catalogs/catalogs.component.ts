@@ -12,7 +12,10 @@ import * as _ from "underscore";
 export class CatalogsComponent implements OnInit {
   catalogForm: FormGroup;
   public items: MenuItem[];
+  public itemsDT: MenuItem[];
   collapsed = true;
+  isEditing = false;
+  catalog: any;
   title: string;
   emptyMessage: string;
   endpoint: string;
@@ -125,7 +128,7 @@ export class CatalogsComponent implements OnInit {
     ];
 
     this.columns = [
-      { field: 'country', header: 'Pais' },
+      { field: 'countryDesc', header: 'Pais' },
       { field: 'description', header: 'Estado' },
     ]
     this.getCatalog('state', select, populate);
@@ -162,8 +165,8 @@ export class CatalogsComponent implements OnInit {
     ];
 
     this.columns = [
-      { field: 'country', header: 'Pais' },
-      { field: 'state', header: 'Estado' },
+      { field: 'countryDesc', header: 'Pais' },
+      { field: 'stateDesc', header: 'Estado' },
       { field: 'description', header: 'Municipio' },
     ]
     this.getCatalog('municipality', select, populate);
@@ -190,8 +193,31 @@ export class CatalogsComponent implements OnInit {
   }
 
   openNew(cmd) {
+    this.isEditing = false;
+    this.catalog = null;
     const { openDialog } = cmd;
     this.catalogDialog = openDialog;
+  }
+
+  editSelected(data) {
+    this.catalog = data.data;
+    this.isEditing = true;
+    switch (this.endpoint) {
+      case 'state': {
+        this.headerDetails = "Editar registro de Estado";
+        break;
+      }
+      case 'municipality': {
+        this.headerDetails = "Editar registro de Municipio";
+        break;
+      }
+      case 'country': {
+        this.headerDetails = "Editar registro de País";
+        break;
+      }
+    }
+    this.catalogForm.patchValue(data.data);
+    this.catalogDialog = true;
   }
 
   getCatalog(endpoint, select, populate) {
@@ -204,14 +230,17 @@ export class CatalogsComponent implements OnInit {
         tap((data: any) => {
           if (endpoint === 'state') {
             data.data.forEach((item: any) => {
-              item.country = item.country.description;
+              item.countryDesc = item.country ? item.country.description : null;
+              item.countryId = item.country ? item.country._id : null;
             });
           }
 
           if (endpoint === 'municipality') {
             data.data.forEach((item: any) => {
-              item.country = item.country.description;
-              item.state = item.state.description;
+              item.countryDesc = item.country ? item.country.description : null;
+              item.countryId = item.country ? item.country._id : null;
+              item.stateId = item.state ? item.state._id : null;
+              item.stateDesc = item.state ? item.state.description : null;
             });
           }
           this.data = data.data;
@@ -271,6 +300,36 @@ export class CatalogsComponent implements OnInit {
           if (this.endpoint === 'municipality') {
             this.enableMunicipality();
           }
+          this.catalogForm.reset();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  editCatalog() {
+    console.log('%ccatalogs.component.ts line:343 this.catalog._id', 'color: #007acc;', this.catalog._id);
+    this.crudService.put(this.catalogForm.value, this.catalog._id, this.endpoint)
+      .pipe(
+        tap((data: any) => {
+          this.data.unshift(data.data);
+          this.loading = false;
+          this.catalogDialog = false;
+          this.isEditing = false;
+
+          if (this.endpoint === 'country') {
+            this.enableCountry();
+          }
+          if (this.endpoint === 'state') {
+            this.enableState();
+          }
+          if (this.endpoint === 'municipality') {
+            this.enableMunicipality();
+          }
+          this.catalogForm.reset();
         }),
         catchError(err => {
           this.loading = false;
@@ -289,6 +348,7 @@ export class CatalogsComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.loading = false;
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
           if (this.endpoint === 'country') {
             this.enableCountry();
           }
@@ -317,6 +377,7 @@ export class CatalogsComponent implements OnInit {
         tap((data: any) => {
           this.loading = false;
 
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
           if (this.endpoint === 'country') {
             this.enableCountry();
           }
@@ -355,6 +416,8 @@ export class CatalogsComponent implements OnInit {
   }
 
   hideDialog() {
+    this.selectedAny = [];
+    this.catalogForm.reset();
     this.catalogDialog = false;
   }
 }

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
-import { ConfirmationService, MessageService } from "primeng/api";
+import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
+import { ContextMenu } from "primeng/contextmenu";
 import { Table } from "primeng/table";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
@@ -19,22 +20,40 @@ export class SimpleDatatable implements OnInit {
   @Input() loading: boolean = true;
   @Input() export: boolean = false;
   @Input() title: string = "";
+  @Input() items: MenuItem[];
   @Input() emptyMessage: string = "No se encontraron registros.";
   @Output() dialogChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
+  @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
+
 
   @ViewChild('dt') table: Table;
-  constructor(private crudService: CrudService) { }
+  @ViewChild('contextMenuDT') contextMenu: ContextMenu;
+  constructor(private crudService: CrudService, private primengConfig: PrimeNGConfig) { }
 
   ngOnInit() {
+    this.primengConfig.ripple = true;
   }
 
   openDialog() {
     this.dialogChange.emit({ openDialog: true });
   }
 
+  showContextMenu(cm: ContextMenu, event: MouseEvent) {
+    cm.onShow.emit(event);
+    event.stopPropagation();
+  }
+
   deleteSelected() {
     this.deleteRecords.emit({ data: this.selectedData });
-    this.selectedData = null;
+  }
+
+  delete(data) {
+    this.deleteRecords.emit({ data: [data] });
+  }
+
+  editSelected(data) {
+    console.log("🚀 ~ file: simple-datatable.component.ts:56 ~ SimpleDatatable ~ editSelected ~ data:", data)
+    this.editRecords.emit({ data });
   }
 }

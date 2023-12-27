@@ -36,16 +36,9 @@ export class CrudService {
     return this.http.post(`${environment.api}/${endpoint}`, body, { responseType: 'json' });
   }
 
-  put(body: any = {}, id: string = ""): Observable<any> {
-    return this.http.put(environment.api + '/all', { responseType: 'json' });
+  put(body: any = {}, id: string = "", endpoint: string = ""): Observable<any> {
+    return this.http.put(`${environment.api}/${endpoint}/${id}`, body, { responseType: 'json' });
   }
-
-  // delete(endpoint: string = "", params: any, id: string = ""): Observable<any> {
-  //   // return this.http.delete(`${environment.api}/${endpoint}`, body, { responseType: 'json' });
-  //   const url = id ? `${environment.api}/${endpoint}/${id}` : `${environment.api}/${endpoint}`;
-  //   const options = { responseType: 'json' };
-  //   return this.get<any>(url, params, options);
-  // }
 
   deleteOne(endpoint: string, id: string, params: any = {}) {
     const paramsStr = {};

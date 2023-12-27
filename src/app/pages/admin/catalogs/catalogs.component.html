@@ -49,8 +49,10 @@
                 [data]="data"
                 [columns]="columns"
                 [selectedData]="selectedAny"
+                [items]="itemsDT"
                 (dialogChange)="openNew($event)"
                 (deleteRecords)="deleteSelected($event)"
+                (editRecords)="editSelected($event)"
               ></app-simple-datatable>
             </div>
           </div>
@@ -73,18 +75,21 @@
   <div class="row">
     <div class="col-12" *ngIf="catalogDialog && endpoint === 'country'">
       <app-simple-catalog
-        [data]="null"
+        [data]="catalog"
         [label]="'País'"
         [form]="catalogForm"
       ></app-simple-catalog>
     </div>
 
     <div class="col-12" *ngIf="catalogDialog && endpoint === 'state'">
-      <app-state [data]="null" [form]="catalogForm"></app-state>
+      <app-state [data]="catalog" [form]="catalogForm"></app-state>
     </div>
 
     <div class="col-12" *ngIf="catalogDialog && endpoint === 'municipality'">
-      <app-municipality [data]="null" [form]="catalogForm"></app-municipality>
+      <app-municipality
+        [data]="catalog"
+        [form]="catalogForm"
+      ></app-municipality>
     </div>
   </div>
 </ng-template>
@@ -106,7 +111,7 @@
     class="p-button-success p-mr-2"
     type="submit"
     [disabled]="catalogForm.invalid"
-    (click)="saveCatalog()"
+    (click)="!isEditing ? saveCatalog() : editCatalog()"
   ></button>
 </ng-template>
 

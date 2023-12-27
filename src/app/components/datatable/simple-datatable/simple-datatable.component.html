@@ -1,3 +1,5 @@
+<p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
+
 <p-toolbar styleClass="p-1">
   <ng-template class="row p-1" pTemplate="left">
     <div class="col p-1">
@@ -87,18 +89,21 @@
       <td *ngFor="let col of columns">
         {{ data[col.field] }}
       </td>
-      <td style="text-align: center">
-        <!-- <button
-          pButton
+      <td ngbDropdown>
+        <button
           type="button"
-          class="p-button-secondary"
-          icon="pi pi-cog"
-        ></button> -->
-        <p-speedDial
-          [model]="items"
-          direction="left"
-          icon="pi pi-cog"
-        ></p-speedDial>
+          class="btn btn-info btn-fab btn-icon btn-round"
+          (click)="editSelected(data)"
+        >
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-fab btn-icon btn-round"
+          (click)="delete(data)"
+        >
+          <i class="pi pi-trash"></i>
+        </button>
       </td>
     </tr>
   </ng-template>

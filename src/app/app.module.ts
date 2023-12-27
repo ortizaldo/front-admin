@@ -14,6 +14,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { ComponentsModule } from "./components/components.module";
 import { AuthInterceptor } from "./_helpers/auth.interceptor";
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
+import { ConfirmationService, MessageService } from "primeng/api";
 
 @NgModule({
   imports: [
@@ -27,7 +28,7 @@ import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component
     ToastrModule.forRoot()
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
-  providers: [AuthInterceptor],
+  providers: [AuthInterceptor, MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
