@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
@@ -13,23 +14,26 @@ import { CrudService } from "src/app/_services/crud.service";
 export class UserComponent implements OnInit {
   userForm: FormGroup;
   users!: any[];
+  user: any;
+  body: any;
+  title: string = "Crear usuario";
   selectedUsers: any[];
   columns: any[];
 
   userDialog: boolean = false;
+  isEditing: boolean = false;
   loading: boolean = true;
 
   myModel = {
   };
 
   @ViewChild('userTemplate', { static: true }) userTemplate: TemplateRef<any>;
+  @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
 
-
-  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.columns = [
-      { field: 'company', header: 'Compañia' },
       { field: 'firstName', header: 'Nombre' },
       { field: 'lastName', header: 'Apellidos' },
       { field: 'email', header: 'Email' },
@@ -39,11 +43,11 @@ export class UserComponent implements OnInit {
     this.getUsers();
 
     this.myModel = {
-      template: this.userTemplate
+      template: this.userTemplate,
+      templateButtons: this.buttonsTemplate
     }
 
     this.userForm = this.fb.group({
-      company: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
@@ -60,11 +64,11 @@ export class UserComponent implements OnInit {
     const params = {
       select: [
         "_id",
-        "company",
         "firstName",
         "lastName",
         "email",
         "typeUser",
+        "address",
         "phoneNumber"
       ]
     };
@@ -100,6 +104,16 @@ export class UserComponent implements OnInit {
         }
       }
     });
+  }
+
+  editSelected(data) {
+    this.userDialog = true;
+    this.title = "Editar usuario";
+    this.user = data.data;
+    this.isEditing = true;
+    this.userForm.patchValue(data.data);
+    const { addressStreet, postalCode, country, state, municipality } = data.data.address;
+    this.userForm.patchValue({ addressStreet, postalCode, country, state, municipality });
   }
 
   deleteOne(item: any) {
@@ -145,8 +159,69 @@ export class UserComponent implements OnInit {
     this.userDialog = openDialog;
   }
 
+  addToAddress() {
+    const { addressStreet, postalCode, country, state, municipality } = this.userForm.value;
+    this.body = { ...this.body, address: { addressStreet, postalCode, country, state, municipality } };
+
+    const keysToDelete = ["addressStreet", "postalCode", "country", "state", "municipality"];
+
+    const self = this;
+    keysToDelete.forEach(key => {
+      delete self.body[key];
+    });
+  }
+
+  saveUser() {
+    this.body = this.userForm.value;
+    this.addToAddress();
+    this.crudService.post(this.body, "users")
+      .pipe(
+        tap((data: any) => {
+          this.getUsers();
+          this.loading = false;
+          this.userDialog = false;
+          this.userForm.reset();
+          this.user = null;
+        }),
+        catchError(err => {
+          const _err = err.error ? err.error.err : err;
+          this.showNotification('top', 'right', "Error al registrar", _err.code == 11000 ? "Registro duplicado" : _err.message, "alert-warning")
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  showNotification(from, align, title = '', message = '', color = "alert-info") {
+    this.toastr.info(`<span class="tim-icons icon-bell-55" [data-notify]="icon"></span> ${title}</b> - ${message}.`, '', {
+      disableTimeOut: true,
+      closeButton: true,
+      enableHtml: true,
+      toastClass: `alert ${color} alert-with-icon`,
+      positionClass: 'toast-' + from + '-' + align
+    });
+  }
+
+  editUser() {
+    this.crudService.put(this.userForm.value, this.user._id, "users")
+      .pipe(
+        tap((data: any) => {
+          this.user.unshift(data.data);
+          this.loading = false;
+          this.userDialog = false;
+          this.isEditing = false;
+          this.userForm.reset();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
   hideDialog(cmd) {
-    const { openDialog } = cmd;
-    this.userDialog = openDialog;
+    // const { openDialog } = cmd;
+    this.userDialog = false;
   }
 }

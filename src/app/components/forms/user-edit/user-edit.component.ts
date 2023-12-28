@@ -17,7 +17,7 @@ import { Municipality } from 'src/app/interfaces/municipality';
   encapsulation: ViewEncapsulation.None,
 })
 export class UserEditComponent implements OnInit {
-  @Input() data: User | undefined;
+  @Input() data: any | undefined;
   @Input() form: FormGroup;
   @Input() companys: any[] | undefined;
   @Input() countrys: Country[] | undefined;
@@ -37,8 +37,6 @@ export class UserEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
     this.getCountries();
   }
 
@@ -79,6 +77,9 @@ export class UserEditComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.countrys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+          const { country } = this.data.address;
+          this.selectedCountry = this.data ? this.countrys.find(x => x._id == country) : this.states[0];
+          this.onChange(null, "state");
         }),
         catchError(err => {
           return err
@@ -95,11 +96,20 @@ export class UserEditComponent implements OnInit {
           if (type === "state") {
             this.states = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
             this.selectedState = this.states[0];
+            if (this.data) {
+              const { state } = this.data.address;
+              this.selectedState = this.data ? this.states.find(x => x._id == state) : this.states[0];
+              this.onChange(null, "municipality");
+            }
           }
 
           if (type === "municipality") {
             this.municipalitys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
             this.selectedMunicipality = this.municipalitys[0];
+            if (this.data) {
+              const { municipality } = this.data.address;
+              this.selectedMunicipality = this.data ? this.municipalitys.find(x => x._id == municipality) : this.municipalitys[0];
+            }
           }
         }),
         catchError(err => {

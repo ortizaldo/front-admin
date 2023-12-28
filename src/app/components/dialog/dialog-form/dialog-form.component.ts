@@ -12,6 +12,7 @@ export class DialogFormComponent implements OnInit {
   @Input() headerDetails: string = "";
   @Input() size: any = { width: '450px' };
   @Input() model: any;
+  @Input() title: string;
 
   @Output() closeDialog: EventEmitter<any> = new EventEmitter<any>();
 
@@ -20,7 +21,6 @@ export class DialogFormComponent implements OnInit {
   constructor(private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
-    console.log('%cdialog-form.component.ts line:16 openDialog', 'color: #007acc;', this.openDialog);
   }
 
   hideDialog() {

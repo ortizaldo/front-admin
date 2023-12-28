@@ -11,6 +11,7 @@
             [selectedData]="selectedUsers"
             (dialogChange)="openNew($event)"
             (deleteRecords)="deleteSelected($event)"
+            (editRecords)="editSelected($event)"
           ></app-simple-datatable>
         </div>
       </div>
@@ -21,16 +22,37 @@
 <app-dialog-form
   [openDialog]="userDialog"
   [size]="{ width: '50vw' }"
-  [headerDetails]="'Crear Usuario'"
+  [headerDetails]="title"
   (closeDialog)="openNew($event)"
   [model]="myModel"
 >
 </app-dialog-form>
 
+<ng-template #buttonsTemplate>
+  <button
+    pButton
+    pRipple
+    label="Cancel"
+    icon="pi pi-trash"
+    class="p-button-danger"
+    (click)="hideDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Save"
+    icon="pi pi-check"
+    class="p-button-success p-mr-2"
+    type="submit"
+    [disabled]="userForm.invalid"
+    (click)="!isEditing ? saveUser() : editUser()"
+  ></button>
+</ng-template>
+
 <ng-template #userTemplate>
   <div class="row">
     <div class="col-12" *ngIf="userDialog">
-      <app-user-edit [data]="null" [form]="userForm"></app-user-edit>
+      <app-user-edit [data]="user" [form]="userForm"></app-user-edit>
     </div>
   </div>
 </ng-template>

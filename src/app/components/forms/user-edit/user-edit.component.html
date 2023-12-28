@@ -1,33 +1,6 @@
 <form [formGroup]="form" id="form">
   <div class="row">
-    <div class="col-md-5 pr-md-1">
-      <div class="form-group">
-        <label> Compañia </label>
-        <p-dropdown
-          styleClass="form-control"
-          [options]="companys"
-          [(ngModel)]="selectedCompany"
-          [appendTo]="'body'"
-          formControlName="company"
-          optionLabel="name"
-        ></p-dropdown>
-      </div>
-    </div>
-    <div class="col-md-4 pl-md-1">
-      <div class="form-group">
-        <label for="exampleInputEmail1">Correo electrónico</label>
-        <input
-          class="form-control"
-          placeholder="mike@email.com"
-          type="email"
-          value="{{ data?.email }}"
-          formControlName="email"
-        />
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 pr-md-1">
+    <div class="col-md-4">
       <div class="form-group">
         <label>Nombre</label>
         <input
@@ -39,7 +12,7 @@
         />
       </div>
     </div>
-    <div class="col-md-6 pl-md-1">
+    <div class="col-md-4">
       <div class="form-group">
         <label>Apellidos</label>
         <input
@@ -48,6 +21,18 @@
           type="text"
           value="{{ data?.lastName }}"
           formControlName="lastName"
+        />
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Correo electrónico</label>
+        <input
+          class="form-control"
+          placeholder="mike@email.com"
+          type="email"
+          value="{{ data?.email }}"
+          formControlName="email"
         />
       </div>
     </div>
@@ -64,7 +49,7 @@
         />
       </div>
     </div>
-    <div class="col-md-3 pl-md-1">
+    <div class="col-md-3">
       <div class="form-group">
         <label>Codigo Postal</label>
         <input
@@ -75,7 +60,7 @@
         />
       </div>
     </div>
-    <div class="col-md-3 pl-md-1">
+    <div class="col-md-3">
       <div class="form-group">
         <label>Telefono</label>
         <input
