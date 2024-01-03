@@ -107,13 +107,16 @@ export class UserComponent implements OnInit {
   }
 
   editSelected(data) {
+    console.log("🚀 ~ file: user.component.ts:110 ~ UserComponent ~ editSelected ~ data:", data)
     this.userDialog = true;
     this.title = "Editar usuario";
     this.user = data.data;
     this.isEditing = true;
     this.userForm.patchValue(data.data);
-    const { addressStreet, postalCode, country, state, municipality } = data.data.address;
-    this.userForm.patchValue({ addressStreet, postalCode, country, state, municipality });
+    if (data.data.address) {
+      const { addressStreet, postalCode, country, state, municipality } = data.data.address;
+      this.userForm.patchValue({ addressStreet, postalCode, country, state, municipality });
+    }
   }
 
   deleteOne(item: any) {

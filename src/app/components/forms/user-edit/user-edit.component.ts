@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user';
-
+import * as _ from "underscore";
 import { SelectItem } from 'primeng/api';
 import { SelectItemGroup } from 'primeng/api';
 import { CrudService } from 'src/app/_services/crud.service';
@@ -77,9 +77,14 @@ export class UserEditComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.countrys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
-          const { country } = this.data.address;
-          this.selectedCountry = this.data ? this.countrys.find(x => x._id == country) : this.states[0];
-          this.onChange(null, "state");
+          console.log('%cuser-edit.component.ts line:80 this.data', 'color: #007acc;', this.data);
+          if (_.has(this.data, "address")) {
+            const { country } = this.data.address;
+            this.selectedCountry = this.data ? this.countrys.find(x => x._id == country) : this.states[0];
+            this.onChange(null, "state");
+          } else {
+            this.selectedCountry = this.countrys[0];
+          }
         }),
         catchError(err => {
           return err
@@ -96,19 +101,23 @@ export class UserEditComponent implements OnInit {
           if (type === "state") {
             this.states = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
             this.selectedState = this.states[0];
-            if (this.data) {
+            if (_.has(this.data, "address")) {
               const { state } = this.data.address;
               this.selectedState = this.data ? this.states.find(x => x._id == state) : this.states[0];
               this.onChange(null, "municipality");
+            } else {
+              this.selectedState = this.states[0];
             }
           }
 
           if (type === "municipality") {
             this.municipalitys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
             this.selectedMunicipality = this.municipalitys[0];
-            if (this.data) {
+            if (_.has(this.data, "address")) {
               const { municipality } = this.data.address;
               this.selectedMunicipality = this.data ? this.municipalitys.find(x => x._id == municipality) : this.municipalitys[0];
+            } else {
+              this.selectedMunicipality = this.municipalitys[0];
             }
           }
         }),
