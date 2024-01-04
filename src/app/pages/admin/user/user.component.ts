@@ -62,6 +62,9 @@ export class UserComponent implements OnInit {
 
   getUsers() {
     const params = {
+      filters: {
+        deleted: false,
+      },
       select: [
         "_id",
         "firstName",
@@ -107,7 +110,6 @@ export class UserComponent implements OnInit {
   }
 
   editSelected(data) {
-    console.log("🚀 ~ file: user.component.ts:110 ~ UserComponent ~ editSelected ~ data:", data)
     this.userDialog = true;
     this.title = "Editar usuario";
     this.user = data.data;
@@ -206,14 +208,16 @@ export class UserComponent implements OnInit {
   }
 
   editUser() {
-    this.crudService.put(this.userForm.value, this.user._id, "users")
+    this.body = this.userForm.value;
+    this.addToAddress();
+    this.crudService.put(this.body, this.user._id, "users")
       .pipe(
         tap((data: any) => {
-          this.user.unshift(data.data);
+          this.getUsers();
           this.loading = false;
           this.userDialog = false;
-          this.isEditing = false;
           this.userForm.reset();
+          this.user = null;
         }),
         catchError(err => {
           this.loading = false;
@@ -224,7 +228,7 @@ export class UserComponent implements OnInit {
   }
 
   hideDialog(cmd) {
-    // const { openDialog } = cmd;
+    this.userForm.reset();
     this.userDialog = false;
   }
 }

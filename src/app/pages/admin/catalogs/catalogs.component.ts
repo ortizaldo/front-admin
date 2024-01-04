@@ -223,7 +223,10 @@ export class CatalogsComponent implements OnInit {
   getCatalog(endpoint, select, populate) {
     let params = {
       select,
-      populate
+      populate,
+      filters: {
+        deleted: false
+      }
     };
     this.crudService.getMany(endpoint, null, params)
       .pipe(
