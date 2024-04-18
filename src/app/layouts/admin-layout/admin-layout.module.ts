@@ -27,6 +27,8 @@ import { ProfileComponent } from "src/app/pages/admin/profile/profile.component"
 import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { SplitterModule } from "primeng/splitter";
+import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
     NgbDropdownModule,
     ButtonModule,
     ReactiveFormsModule,
-    ConfirmDialogModule
+    SplitterModule,
+    ConfirmDialogModule,
   ],
   declarations: [
     DashboardComponent,
@@ -56,7 +59,8 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
     TypographyComponent,
     NotificationsComponent,
     MapComponent,
-    ProfileComponent
+    ProfileComponent,
+    DerbyComponent
     // RtlComponent
   ]
 })

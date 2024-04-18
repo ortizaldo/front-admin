@@ -9,10 +9,12 @@ import { TablesComponent } from "../../pages/admin/tables/tables.component";
 import { TypographyComponent } from "../../pages/admin/typography/typography.component";
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
+import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
 // import { RtlComponent } from "../../pages/admin/rtl/rtl.component";
 
 export const AdminLayoutRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
+  { path: "derby", component: DerbyComponent },
   { path: "profile", component: ProfileComponent },
   { path: "users", component: UserComponent },
   { path: "catalogs", component: CatalogsComponent },
