@@ -21,6 +21,7 @@ export class DialogFormComponent implements OnInit {
   constructor(private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    console.log('%csrc/app/components/dialog/dialog-form/dialog-form.component.ts:24 this.model', 'color: #007acc;', this.model);
   }
 
   hideDialog() {

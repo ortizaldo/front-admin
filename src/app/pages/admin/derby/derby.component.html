@@ -37,3 +37,47 @@
     </div>
   </div>
 </div>
+
+<app-dialog-form
+  [openDialog]="derbyDialog"
+  [size]="{ width: '50vw' }"
+  [headerDetails]="title"
+  (closeDialog)="openNew($event)"
+  [model]="derbyModel"
+>
+</app-dialog-form>
+
+<ng-template #buttonsTemplate>
+  <button
+    pButton
+    pRipple
+    label="Cancel"
+    icon="pi pi-trash"
+    class="p-button-danger"
+    (click)="hideDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Save"
+    icon="pi pi-check"
+    class="p-button-success p-mr-2"
+    type="submit"
+    [disabled]="derbyForm.invalid"
+    (click)="!isEditing ? saveUser() : editUser()"
+  ></button>
+</ng-template>
+
+<ng-template #derbyTemplate>
+  <div class="row">
+    <div class="col-12" *ngIf="derbyDialog">
+      <app-derby-edit [data]="derby" [form]="derbyForm"></app-derby-edit>
+    </div>
+  </div>
+</ng-template>
+
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  acceptButtonStyleClass="p-button-success"
+  rejectButtonStyleClass="p-button-danger"
+></p-confirmDialog>

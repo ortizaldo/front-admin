@@ -13,6 +13,7 @@ import { SimpleCatalogComponent } from "./simple-catalog/simple-catalog.componen
 import { StateComponent } from "./state/state.component";
 import { MunicipalityComponent } from "./municipality/municipality.component";
 import { CompanyComponent } from "./company/company.component";
+import { DerbyEditComponent } from "./derby-edit/derby-edit.component";
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { CompanyComponent } from "./company/company.component";
     StateComponent,
     MunicipalityComponent,
     CompanyComponent,
+    DerbyEditComponent
   ],
   // declarations: [SimpleDatatable],
   exports: [
@@ -42,6 +44,7 @@ import { CompanyComponent } from "./company/company.component";
     StateComponent,
     MunicipalityComponent,
     CompanyComponent,
+    DerbyEditComponent
   ],
 })
 export class FormGralModule { }
