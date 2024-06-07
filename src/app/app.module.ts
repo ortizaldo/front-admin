@@ -25,7 +25,7 @@ import { ConfirmationService, MessageService } from "primeng/api";
     NgbModule,
     RouterModule,
     AppRoutingModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
   providers: [AuthInterceptor, MessageService, ConfirmationService],

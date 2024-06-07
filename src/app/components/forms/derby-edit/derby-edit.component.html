@@ -1,1 +1,40 @@
-<form [formGroup]="form" id="formDerby"></form>
+<form [formGroup]="form" id="formDerby">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input
+          class="form-control"
+          placeholder="Nombre"
+          type="text"
+          value="{{ data?.name }}"
+          formControlName="name"
+        />
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Entrada</label>
+        <input
+          class="form-control"
+          placeholder="Entrada"
+          type="number"
+          value="{{ data?.entrance }}"
+          formControlName="entrance"
+        />
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Fecha del Evento</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="date"
+          value="{{ data?.dateEvent }}"
+          formControlName="dateEvent"
+        />
+      </div>
+    </div>
+  </div>
+</form>
