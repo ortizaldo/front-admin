@@ -5,6 +5,8 @@ import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
+import * as moment from "moment";
+import * as _ from "underscore";
 
 @Component({
   selector: "app-derby",
@@ -12,11 +14,12 @@ import { CrudService } from "src/app/_services/crud.service";
 })
 export class DerbyComponent implements OnInit {
   derbyForm: FormGroup;
+  derbyConf: FormGroup;
   derbys!: any[];
   derby: any;
   body: any;
   title: string = "Crear derby";
-  selectedDerby: any[];
+  selectedDerby: any;
   columns: any[];
 
   itemsDerby: MenuItem[];
@@ -35,7 +38,6 @@ export class DerbyComponent implements OnInit {
   ngOnInit() {
     this.itemsDerby = [
       {label: 'Nuevo derby', icon: 'pi pi-plus', command: () => this.openNew({ openDialog: true })},
-      {label: 'Excepciones', icon: 'pi pi-plus', command: () => this.openNew({ openDialog: true }), disabled: true},
     ];
 
     this.getDerbys();
@@ -46,22 +48,55 @@ export class DerbyComponent implements OnInit {
     }
 
     this.derbyForm = this.fb.group({
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl(''),
+      arma: new FormControl('', [Validators.required]),
+      numGallos: new FormControl('', [Validators.required]),
       entrance: new FormControl('', [Validators.required]),
-      dateEvent: new FormControl('', [Validators.required]),
+      dateEvent: new FormControl(moment().format('YYYY-MM-DD')),
+    });
+
+    this.derbyConf = this.fb.group({
+      tolerance: new FormControl(''),
+      minWeight: new FormControl('', [Validators.required]),
+      maxWeight: new FormControl('', [Validators.required]),
     });
   }
 
   saveDerby() {
+    const name = "Derby " + this.derbyForm.value.arma.description + " " + this.derbyForm.value.numGallos + " Gallos";
+    this.derbyForm.patchValue({ name: name });
+    this.derbyForm.patchValue({ arma: this.derbyForm.value.arma.value });
     this.body = this.derbyForm.value;
+    const self = this;
     this.crudService.post(this.body, "derby")
       .pipe(
         tap((data: any) => {
-          this.getDerbys();
           this.loading = false;
           this.derbyDialog = false;
           this.derbyForm.reset();
-          this.derby = null;
+          this.derby = data.data;
+          this.saveConf();
+        }),
+        catchError(err => {
+          const _err = err.error ? err.error.err : err;
+          this.showNotification('top', 'right', "Error al registrar", _err.code == 11000 ? "Registro duplicado" : _err.message, "alert-warning")
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  saveConf() {
+    const body = {derby: this.derby._id, roosterConf: {
+              tolerance: .080,
+              minWeight: 1.400,
+              maxWeight: 2.900,
+            } };
+    this.crudService.post(body, 'derby-conf')
+      .pipe(
+        tap((data: any) => {
+          this.getDerbys();
+          this.showNotification('top', 'right', "Registro del derby","Se registro correctamente","alert-success");
         }),
         catchError(err => {
           const _err = err.error ? err.error.err : err;
@@ -82,7 +117,9 @@ export class DerbyComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.derbys = data.data;
-          console.log("🚀 ~ DerbyComponent ~ tap ~ this.derbys:", this.derbys)
+          if (this.derby) {
+            this.selectedDerby = _.findWhere(this.derbys, { _id: this.derby._id });
+          }
           this.loading = false;
         }),
         catchError(err => {
@@ -129,5 +166,9 @@ export class DerbyComponent implements OnInit {
       toastClass: `alert ${color} alert-with-icon`,
       positionClass: 'toast-' + from + '-' + align
     });
+  }
+
+  onChange(evt: any, endpoint: string) {
+    console.log('%csrc/app/pages/admin/derby/derby.component.ts:135 this.selectedDerby', 'color: #007acc;', this.selectedDerby);
   }
 }

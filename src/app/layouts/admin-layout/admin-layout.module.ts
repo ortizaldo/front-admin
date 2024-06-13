@@ -29,6 +29,9 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { SplitterModule } from "primeng/splitter";
 import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
+import { DropdownModule } from "primeng/dropdown";
+import { ScrollPanelModule } from "primeng/scrollpanel";
+import { SplitButtonModule } from "primeng/splitbutton";
 @NgModule({
   imports: [
     CommonModule,
@@ -49,6 +52,9 @@ import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
     ReactiveFormsModule,
     SplitterModule,
     ConfirmDialogModule,
+    DropdownModule,
+    ScrollPanelModule,
+    SplitButtonModule
   ],
   declarations: [
     DashboardComponent,

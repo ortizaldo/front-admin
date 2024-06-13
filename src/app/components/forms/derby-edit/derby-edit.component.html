@@ -2,17 +2,35 @@
   <div class="row">
     <div class="col-md-4">
       <div class="form-group">
-        <label>Nombre</label>
-        <input
-          class="form-control"
-          placeholder="Nombre"
-          type="text"
-          value="{{ data?.name }}"
-          formControlName="name"
-        />
+        <label>Arma</label>
+        <p-dropdown
+          styleClass="form-control"
+          [options]="armas"
+          [(ngModel)]="selectedArma"
+          optionLabel="description"
+          [appendTo]="'body'"
+          (onChange)="onChange($event, 'state')"
+          editable="false"
+          formControlName="arma"
+        >
+        </p-dropdown>
       </div>
     </div>
     <div class="col-md-4">
+      <div class="form-group">
+        <label>Num. de Gallos</label>
+        <input
+          class="form-control"
+          placeholder="Num. de Gallos"
+          type="number"
+          value="{{ data?.numGallos }}"
+          formControlName="numGallos"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
       <div class="form-group">
         <label>Entrada</label>
         <input
@@ -24,7 +42,7 @@
         />
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="form-group">
         <label>Fecha del Evento</label>
         <input
