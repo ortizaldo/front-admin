@@ -17,11 +17,23 @@ export class DerbyComponent implements OnInit {
   derbyConf: FormGroup;
   derbys!: any[];
   derby: any;
+  confDerby: any;
   body: any;
   title: string = "Crear derby";
   selectedDerby: any;
   columns: any[];
 
+  //variables para el datatable
+  public itemsDT: MenuItem[];
+  titleDT: string;
+  emptyMessage: string;
+  endpoint: string;
+  data: any[];
+  columnsDT: any[];
+  selectedAny: any;
+  teamForm: FormGroup;
+  headerDetails: string = "Agregar partido";
+  dataRound : any ;
   itemsDerby: MenuItem[];
 
   derbyModel = {
@@ -60,6 +72,22 @@ export class DerbyComponent implements OnInit {
       minWeight: new FormControl('', [Validators.required]),
       maxWeight: new FormControl('', [Validators.required]),
     });
+
+    this.initDTL();
+  }
+
+  initDTL() {
+    this.emptyMessage = "No se encontraron partidos";
+    this.endpoint = 'team';
+    this.teamForm = new FormGroup({
+      teamName: new FormControl('', [Validators.required]),
+    });
+    this.title = 'Registro de partidos';
+
+    this.columns = [
+      { field: 'description', header: 'Pais' },
+    ]
+    // this.getRounds('country', select, []);
   }
 
   saveDerby() {
@@ -169,6 +197,57 @@ export class DerbyComponent implements OnInit {
   }
 
   onChange(evt: any, endpoint: string) {
-    console.log('%csrc/app/pages/admin/derby/derby.component.ts:135 this.selectedDerby', 'color: #007acc;', this.selectedDerby);
+    const params = {
+        filtersId: {
+          derby: {
+            value: this.selectedDerby._id,
+          }
+        }
+      }
+    this.getCatalogDependent("derby-conf", params);
+  }
+
+  getCatalogDependent(type: string, params: any) {
+    this.crudService.getMany(type, null, params)
+      .pipe(
+        tap((data: any) => {
+          this.confDerby = data.data[0]?.roosterConf;
+
+          this.columnsDT = [
+            { header: "Partido", field: "partido" },
+          ]
+
+          this.getRounds();
+          const self = this;
+
+          let _data;
+          for (let index = 0; index < this.selectedDerby.numGallos; index++) {
+            _data = {..._data, ["anillo"+(index + 1)]:""};
+            _data = {..._data, ["peso"+(index + 1)]:""};
+          }
+          let dataRound = [];
+          for (let index = 0; index < 10; index++) {
+            // let dataRound;
+            // dataRound.partido = "Partido "+(index + 1);
+            dataRound.push({partido:"Partido "+(index + 1), ..._data});
+          }
+
+          this.data = dataRound
+
+          console.log('%csrc/app/pages/admin/derby/derby.component.ts:225 this.data', 'color: #007acc;', dataRound);
+        }),
+        catchError(err => {
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  getRounds() {
+    let self = this;
+    for (let index = 0; index < this.selectedDerby.numGallos; index++) {
+      self.columnsDT.push({ header: "Anillo" + (index + 1), field: "anillo" + (index + 1) });
+      self.columnsDT.push({ header: "Peso" + (index + 1), field: "peso" + (index + 1) });
+    }
   }
 }

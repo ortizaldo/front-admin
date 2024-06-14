@@ -1,0 +1,186 @@
+<p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
+
+<!-- <p-toolbar styleClass="p-1">
+  <ng-template class="p-1" pTemplate="left">
+    <div class="col p-1">
+      <button
+        pButton
+        pRipple
+        label="Agregar partido"
+        icon="pi pi-plus"
+        class="p-button-success p-mr-2"
+        (click)="openDialog()"
+      ></button>
+    </div>
+    <div class="col p-1">
+      <button
+        pButton
+        pRipple
+        [label]="Delete"
+        icon="pi pi-trash"
+        class="p-button-danger"
+        (click)="deleteSelected()"
+        [disabled]="!selectedData || !selectedData.length"
+      ></button>
+    </div>
+  </ng-template>
+</p-toolbar> -->
+<div class="row">
+  <p-toolbar styleClass="p-1">
+    <ng-template class="p-d-flex p-p-3 card" pTemplate="left">
+      <div class="col-12 p-1">
+        <button
+          pButton
+          pRipple
+          label="Agregar partido"
+          icon="pi pi-plus"
+          class="p-button-success p-mr-2"
+          (click)="openDialog()"
+        ></button>
+      </div>
+      <div class="col p-1">
+        <button
+          pButton
+          pRipple
+          [label]="Delete"
+          icon="pi pi-trash"
+          class="p-button-danger"
+          (click)="deleteSelected()"
+          [disabled]="!selectedData || !selectedData.length"
+        ></button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+</div>
+<div class="row">
+  <div class="col-sm-2">
+    <div class="form-group">
+      <label>Tolerancia</label>
+      <input
+        class="form-control"
+        placeholder="Tolerancia"
+        type="text"
+        value="{{ confDerby?.tolerance }}"
+      />
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div class="form-group">
+      <label>Peso minimó</label>
+      <input
+        class="form-control"
+        placeholder="Peso minimó"
+        type="text"
+        value="{{ confDerby?.minWeight }}"
+      />
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div class="form-group">
+      <label>Peso maximó</label>
+      <input
+        class="form-control"
+        placeholder="Peso maximó"
+        type="text"
+        value="{{ confDerby?.maxWeight }}"
+      />
+    </div>
+  </div>
+</div>
+<div class="row">
+  <p-table
+    #dt
+    [value]="data"
+    [(selection)]="selectedData"
+    dataKey="_id"
+    styleClass="p-datatable-customers"
+    [rowHover]="true"
+    [scrollable]="false"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    [loading]="loading"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    [filterDelay]="0"
+    [paginatorDropdownAppendTo]="'body'"
+    [globalFilterFields]="['partido']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="card-header table-header row">
+        <div class="col m-auto">
+          <h3>{{ title }}</h3>
+        </div>
+        <div class="col-6">&nbsp;</div>
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="pi pi-search"></i></span>
+            </div>
+            <input
+              pInputText
+              class="form-control"
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Global Search"
+            />
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of columns">
+          <span class="p-column-title">{{ col.header }}</span>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <td pEditableColumn *ngFor="let col of columns">
+          <p-cellEditor>
+            <ng-template *ngIf="col.field.includes('peso')" pTemplate="input">
+              <p-inputMask
+                mask="9.999"
+                [maxlength]="confDerby?.maxWeight"
+                [min]="confDerby?.minWeight"
+                [max]="confDerby?.maxWeight"
+                value="{{ data[col.field] }}"
+                (onInput)="data[col.field] = $event.target.value"
+              ></p-inputMask>
+            </ng-template>
+
+            <ng-template *ngIf="col.field.includes('anillo')" pTemplate="input">
+              <input
+                pInputText
+                type="number"
+                value="{{ data[col.field] }}"
+                (input)="data[col.field] = $event.target.value"
+              />
+            </ng-template>
+
+            <ng-template
+              *ngIf="col.field.includes('partido')"
+              pTemplate="input"
+            >
+              <input
+                pInputText
+                type="text"
+                value="{{ data[col.field] }}"
+                (input)="data[col.field] = $event.target.value"
+              />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ data[col.field] }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">{{ emptyMessage }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

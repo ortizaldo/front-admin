@@ -12,7 +12,9 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { SpeedDialModule } from 'primeng/speeddial';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { InputMaskModule } from 'primeng/inputmask';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { TeamsDatatable } from "./teams-datatable/teams-datatable.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -26,10 +28,11 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     RippleModule,
     ButtonModule,
     ContextMenuModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    InputMaskModule
   ],
-  declarations: [SimpleDatatable],
-  exports: [SimpleDatatable],
+  declarations: [SimpleDatatable, TeamsDatatable],
+  exports: [SimpleDatatable, TeamsDatatable],
   providers: [MessageService, ConfirmationService]
 })
 export class DatatableCustomModule { }
