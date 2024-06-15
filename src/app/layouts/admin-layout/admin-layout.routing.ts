@@ -14,7 +14,6 @@ import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
 
 export const AdminLayoutRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
-  { path: "derby", component: DerbyComponent },
   { path: "profile", component: ProfileComponent },
   { path: "users", component: UserComponent },
   { path: "catalogs", component: CatalogsComponent },

@@ -15,6 +15,9 @@ import { ComponentsModule } from "./components/components.module";
 import { AuthInterceptor } from "./_helpers/auth.interceptor";
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
 import { ConfirmationService, MessageService } from "primeng/api";
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { DerbyLayoutComponent } from "./layouts/derby-layout/derby-layout.component";
+export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   imports: [
@@ -26,8 +29,9 @@ import { ConfirmationService, MessageService } from "primeng/api";
     RouterModule,
     AppRoutingModule,
     ToastrModule.forRoot(),
+    NgxMaskModule.forRoot(),
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, DerbyLayoutComponent],
   providers: [AuthInterceptor, MessageService, ConfirmationService],
   bootstrap: [AppComponent]
 })

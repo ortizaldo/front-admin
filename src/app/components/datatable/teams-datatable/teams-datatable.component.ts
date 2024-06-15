@@ -55,8 +55,8 @@ export class TeamsDatatable implements OnInit {
     this.deleteRecords.emit({ data: [data] });
   }
 
-  editSelected(data) {
-    console.log("🚀 ~ file: simple-datatable.component.ts:56 ~ SimpleDatatable ~ editSelected ~ data:", data)
-    this.editRecords.emit({ data });
+  updData(idx, field, value) {
+    this.editRecords.emit({idx, field, value});
+    // this.data[idx][field]= value;
   }
 }

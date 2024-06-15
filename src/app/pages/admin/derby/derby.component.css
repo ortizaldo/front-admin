@@ -1,0 +1,4 @@
+.main-panel app-derby .content {
+  padding: 58px 17px 23px 27px;
+  min-height: calc(100vh - 70px);
+}

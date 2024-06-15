@@ -7,12 +7,24 @@ import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from "./pages/auth/login/login.component";
 import { AuthGuard } from "./middleware/auth.guard";
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
+import { DerbyLayoutComponent } from "./layouts/derby-layout/derby-layout.component";
 
 const routes: Routes = [
   {
     path: "",
     redirectTo: "dashboard",
     pathMatch: "full",
+  },
+  {
+    path: "derby-admin",
+    component: DerbyLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: "",
+        loadChildren: () => import("./layouts/derby-layout/derby-layout.module").then(m => m.DerbyLayoutModule)
+      }
+    ]
   },
   {
     path: "",

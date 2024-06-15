@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import Chart from 'chart.js';
 import { ToastrService } from "ngx-toastr";
@@ -10,7 +10,9 @@ import * as _ from "underscore";
 
 @Component({
   selector: "app-derby",
-  templateUrl: "derby.component.html"
+  templateUrl: "derby.component.html",
+  styleUrls: ["derby.component.css"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class DerbyComponent implements OnInit {
   derbyForm: FormGroup;
@@ -40,11 +42,14 @@ export class DerbyComponent implements OnInit {
   };
 
   derbyDialog: boolean = false;
+  teamDialog: boolean = false;
   isEditing: boolean = false;
   loading: boolean = true;
 
   @ViewChild('derbyTemplate', { static: true }) derbyTemplate: TemplateRef<any>;
+  @ViewChild('teamTemplate', { static: true }) teamTemplate: TemplateRef<any>;
   @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
+  @ViewChild('buttonsTemplateTeam', { static: true }) buttonsTemplateTeam: TemplateRef<any>;
   constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -82,7 +87,6 @@ export class DerbyComponent implements OnInit {
     this.teamForm = new FormGroup({
       teamName: new FormControl('', [Validators.required]),
     });
-    this.title = 'Registro de partidos';
 
     this.columns = [
       { field: 'description', header: 'Pais' },
@@ -147,6 +151,8 @@ export class DerbyComponent implements OnInit {
           this.derbys = data.data;
           if (this.derby) {
             this.selectedDerby = _.findWhere(this.derbys, { _id: this.derby._id });
+
+            this.onChange(null, null);
           }
           this.loading = false;
         }),
@@ -157,6 +163,49 @@ export class DerbyComponent implements OnInit {
       )
       .subscribe();
 
+  }
+
+  editSelected(data) {
+    this.data[data.idx][data.field]= data.value;
+    console.log("🚀 ~ DerbyComponent ~ editSelected ~ data:", data)
+    // this.catalog = data.data;
+    // this.isEditing = true;
+    // switch (this.endpoint) {
+    //   case 'state': {
+    //     this.headerDetails = "Editar registro de Estado";
+    //     break;
+    //   }
+    //   case 'municipality': {
+    //     this.headerDetails = "Editar registro de Municipio";
+    //     break;
+    //   }
+    //   case 'country': {
+    //     this.headerDetails = "Editar registro de País";
+    //     break;
+    //   }
+    // }
+    // this.catalogForm.patchValue(data.data);
+    // this.catalogDialog = true;
+  }
+
+  deleteSelected(event) {
+    console.log("🚀 ~ DerbyComponent ~ deleteSelected ~ event:", event)
+    this.confirmationService.confirm({
+      message: 'Estas seguro de eliminar este partido?',
+      header: 'Eliminar partido',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // if (event.data.length > 1) {
+        //   let items = [];
+        //   event.data.forEach((item: any) => {
+        //     items.push(item._id);
+        //   });
+        //   this.deleteMany(items);
+        // } else {
+        //   this.deleteOne(event.data[0]);
+        // }
+      }
+    });
   }
 
   /**
@@ -227,14 +276,10 @@ export class DerbyComponent implements OnInit {
           }
           let dataRound = [];
           for (let index = 0; index < 10; index++) {
-            // let dataRound;
-            // dataRound.partido = "Partido "+(index + 1);
             dataRound.push({partido:"Partido "+(index + 1), ..._data});
           }
 
-          this.data = dataRound
-
-          console.log('%csrc/app/pages/admin/derby/derby.component.ts:225 this.data', 'color: #007acc;', dataRound);
+          this.data = dataRound;
         }),
         catchError(err => {
           return err

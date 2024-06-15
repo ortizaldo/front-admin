@@ -5,7 +5,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TableModule } from 'primeng/table';
 
-import { AdminLayoutRoutes } from "./admin-layout.routing";
+import { DerbyLayoutRoutes } from "./derby-layout.routing";
 import { DashboardComponent } from "../../pages/admin/dashboard/dashboard.component";
 import { IconsComponent } from "../../pages/admin/icons/icons.component";
 import { MapComponent } from "../../pages/admin/map/map.component";
@@ -23,18 +23,17 @@ import { ComponentsModule } from "src/app/components/components.module";
 import { DatatableCustomModule } from "src/app/components/datatable/datatable-custom.module";
 import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.module";
 import { FormGralModule } from "src/app/components/forms/form-general.module";
-import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
-import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { SplitterModule } from "primeng/splitter";
+import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
 import { DropdownModule } from "primeng/dropdown";
 import { ScrollPanelModule } from "primeng/scrollpanel";
 import { SplitButtonModule } from "primeng/splitbutton";
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(AdminLayoutRoutes),
+    RouterModule.forChild(DerbyLayoutRoutes),
     FormsModule,
     HttpClientModule,
     NgbModule,
@@ -56,15 +55,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
     SplitButtonModule
   ],
   declarations: [
-    DashboardComponent,
-    CatalogsComponent,
-    UserComponent,
-    TablesComponent,
-    IconsComponent,
-    TypographyComponent,
-    NotificationsComponent,
-    MapComponent,
-    ProfileComponent,
+    DerbyComponent
   ]
 })
-export class AdminLayoutModule { }
+export class DerbyLayoutModule { }

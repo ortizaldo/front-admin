@@ -133,27 +133,24 @@
         <th *ngFor="let col of columns">
           <span class="p-column-title">{{ col.header }}</span>
         </th>
+        <th class="th-custom" style="width: 8rem"></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-data>
+    <ng-template pTemplate="body" let-data let-idx="rowIndex">
       <tr>
         <td pEditableColumn *ngFor="let col of columns">
           <p-cellEditor>
             <ng-template *ngIf="col.field.includes('peso')" pTemplate="input">
-              <p-inputMask
-                mask="9.999"
-                [maxlength]="confDerby?.maxWeight"
-                [min]="confDerby?.minWeight"
-                [max]="confDerby?.maxWeight"
+              <input
+                type="text"
                 value="{{ data[col.field] }}"
-                (onInput)="data[col.field] = $event.target.value"
-              ></p-inputMask>
+                (input)="updData(idx, col.field, $event.target.value)"
+              />
             </ng-template>
 
             <ng-template *ngIf="col.field.includes('anillo')" pTemplate="input">
               <input
-                pInputText
-                type="number"
+                type="text"
                 value="{{ data[col.field] }}"
                 (input)="data[col.field] = $event.target.value"
               />
@@ -174,6 +171,15 @@
               {{ data[col.field] }}
             </ng-template>
           </p-cellEditor>
+        </td>
+        <td ngbDropdown>
+          <button
+            type="button"
+            class="btn btn-danger btn-fab btn-icon btn-round"
+            (click)="delete(data)"
+          >
+            <i class="pi pi-trash"></i>
+          </button>
         </td>
       </tr>
     </ng-template>

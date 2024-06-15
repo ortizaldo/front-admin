@@ -17,7 +17,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label>Derbys almacenados</label>
                 <p-dropdown
@@ -36,9 +36,12 @@
               <div class="form-group">
                 <label>Entrada</label>
                 <div class="form-group mt-2">
-                  <span class="badge text-bg-info">{{
-                    selectedDerby?.entrance
-                  }}</span>
+                  <span
+                    *ngIf="selectedDerby"
+                    class="badge text-bg-info"
+                    style="font-size: initial"
+                    >${{ selectedDerby?.entrance }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -46,21 +49,12 @@
               <div class="form-group">
                 <label>Fecha del Evento</label>
                 <div class="form-group mt-2">
-                  <span class="badge text-bg-info">{{
+                  <span class="badge text-bg-info" style="font-size: initial">{{
                     selectedDerby?.dateEvent
                   }}</span>
                 </div>
               </div>
             </div>
-            <!-- <div class="col-sm-3 mt-3" *ngIf="selectedDerby">
-              <p-splitButton
-                label="Agregar partidos"
-                icon="pi pi-plus"
-                (onClick)="(false)"
-                [model]="[{ label: 'Excepciones', icon: 'pi pi-save' }]"
-                styleClass="p-button-secondary p-mb-2"
-              ></p-splitButton>
-            </div> -->
           </div>
         </div>
         <div class="card-body">
@@ -80,6 +74,9 @@
                   [columns]="columnsDT"
                   [selectedData]="selectedAny"
                   [items]="itemsDT"
+                  (dialogChange)="openNew($event)"
+                  (deleteRecords)="deleteSelected($event)"
+                  (editRecords)="editSelected($event)"
                 ></app-teams-datatable>
               </div>
             </div>
@@ -120,9 +117,38 @@
   ></button>
 </ng-template>
 
+<ng-template #buttonsTemplateTeam>
+  <button
+    pButton
+    pRipple
+    label="Cancel"
+    icon="pi pi-trash"
+    class="p-button-danger"
+    (click)="hideTeamDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Save"
+    icon="pi pi-check"
+    class="p-button-success p-mr-2"
+    type="submit"
+    [disabled]="derbyForm.invalid"
+    (click)="saveTeam()"
+  ></button>
+</ng-template>
+
 <ng-template #derbyTemplate>
   <div class="row">
     <div class="col-12" *ngIf="derbyDialog">
+      <app-derby-edit [data]="derby" [form]="derbyForm"></app-derby-edit>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #teamTemplate>
+  <div class="row">
+    <div class="col-12" *ngIf="teamDialog">
       <app-derby-edit [data]="derby" [form]="derbyForm"></app-derby-edit>
     </div>
   </div>
