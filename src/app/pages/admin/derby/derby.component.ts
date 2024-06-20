@@ -17,6 +17,7 @@ import * as _ from "underscore";
 export class DerbyComponent implements OnInit {
   derbyForm: FormGroup;
   derbyConf: FormGroup;
+  teamForm: FormGroup;
   derbys!: any[];
   derby: any;
   confDerby: any;
@@ -33,12 +34,14 @@ export class DerbyComponent implements OnInit {
   data: any[];
   columnsDT: any[];
   selectedAny: any;
-  teamForm: FormGroup;
   headerDetails: string = "Agregar partido";
   dataRound : any ;
   itemsDerby: MenuItem[];
 
   derbyModel = {
+  };
+
+  teamModel = {
   };
 
   derbyDialog: boolean = false;
@@ -62,6 +65,11 @@ export class DerbyComponent implements OnInit {
     this.derbyModel = {
       template: this.derbyTemplate,
       templateButtons: this.buttonsTemplate
+    }
+
+    this.teamModel = {
+      teamTemplate: this.teamTemplate,
+      buttonsTemplateTeam: this.buttonsTemplateTeam
     }
 
     this.derbyForm = this.fb.group({
@@ -90,8 +98,11 @@ export class DerbyComponent implements OnInit {
 
     this.columns = [
       { field: 'description', header: 'Pais' },
-    ]
-    // this.getRounds('country', select, []);
+    ];
+
+    this.teamForm = new FormGroup({
+      description: new FormControl('', [Validators.required]),
+    });
   }
 
   saveDerby() {
@@ -216,6 +227,12 @@ export class DerbyComponent implements OnInit {
   openNew(cmd) {
     const { openDialog } = cmd;
     this.derbyDialog = openDialog;
+  }
+
+  openNewTeam(cmd) {
+    console.log("🚀 ~ DerbyComponent ~ openNewTeam ~ cmd:", cmd)
+    const { openDialog } = cmd;
+    this.teamDialog = openDialog;
   }
   /**
    * Resets the derby form and closes the derby dialog.

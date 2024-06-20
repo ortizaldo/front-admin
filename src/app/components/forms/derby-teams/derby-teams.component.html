@@ -1,0 +1,58 @@
+<form [formGroup]="form" id="formDerby">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Arma</label>
+        <p-dropdown
+          styleClass="form-control"
+          [options]="armas"
+          [(ngModel)]="selectedArma"
+          optionLabel="description"
+          [appendTo]="'body'"
+          (onChange)="onChange($event, 'state')"
+          editable="false"
+          formControlName="arma"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Num. de Gallos</label>
+        <input
+          class="form-control"
+          placeholder="Num. de Gallos"
+          type="number"
+          value="{{ data?.numGallos }}"
+          formControlName="numGallos"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Entrada</label>
+        <input
+          class="form-control"
+          placeholder="Entrada"
+          type="number"
+          value="{{ data?.entrance }}"
+          formControlName="entrance"
+        />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Fecha del Evento</label>
+        <input
+          class="form-control"
+          placeholder=""
+          type="date"
+          value="{{ data?.dateEvent }}"
+          formControlName="dateEvent"
+        />
+      </div>
+    </div>
+  </div>
+</form>

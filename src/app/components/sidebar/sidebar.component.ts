@@ -21,7 +21,7 @@ export const ROUTES: RouteInfo[] = [
     class: ""
   },
   {
-    path: "/derby",
+    path: "/derby-admin",
     title: "Derby",
     icon: "pi pi-briefcase",
     class: ""

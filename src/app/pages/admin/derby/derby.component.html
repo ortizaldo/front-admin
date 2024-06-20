@@ -74,7 +74,7 @@
                   [columns]="columnsDT"
                   [selectedData]="selectedAny"
                   [items]="itemsDT"
-                  (dialogChange)="openNew($event)"
+                  (dialogChange)="openNewTeam($event)"
                   (deleteRecords)="deleteSelected($event)"
                   (editRecords)="editSelected($event)"
                 ></app-teams-datatable>
@@ -88,11 +88,20 @@
 </div>
 
 <app-dialog-form
-  [openDialog]="derbyDialog"
+  [openDialog]="derbyDialog ? derbyDialog : teamDialog"
   [size]="{ width: '50vw' }"
   [headerDetails]="title"
   (closeDialog)="openNew($event)"
-  [model]="derbyModel"
+  [model]="derbyDialog ? derbyModel : teamModel"
+>
+</app-dialog-form>
+
+<app-dialog-form
+  [openDialog]="teamDialog"
+  [size]="{ width: '50vw' }"
+  [headerDetails]="headerDetails"
+  (closeDialog)="openNewTeam($event)"
+  [model]="teamModel"
 >
 </app-dialog-form>
 
@@ -148,8 +157,12 @@
 
 <ng-template #teamTemplate>
   <div class="row">
-    <div class="col-12" *ngIf="teamDialog">
-      <app-derby-edit [data]="derby" [form]="derbyForm"></app-derby-edit>
+    <div class="col-12">
+      <app-simple-catalog
+        [data]="{}"
+        [label]="'Partido'"
+        [form]="teamForm"
+      ></app-simple-catalog>
     </div>
   </div>
 </ng-template>
