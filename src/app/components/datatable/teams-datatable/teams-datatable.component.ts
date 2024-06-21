@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
 import { ContextMenu } from "primeng/contextmenu";
 import { Table } from "primeng/table";
@@ -14,8 +16,11 @@ import { CrudService } from "src/app/_services/crud.service";
 
 
 export class TeamsDatatable implements OnInit {
+  ringForm: FormGroup;
   @Input() data!: any[];
+  @Input() teams!: any[];
   @Input() confDerby!: any;
+  @Input() derby!: any;
   @Input() selectedData: any[];
   @Input() columns: any[];
   @Input() loading: boolean = true;
@@ -30,11 +35,9 @@ export class TeamsDatatable implements OnInit {
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private crudService: CrudService, private primengConfig: PrimeNGConfig) { }
+  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig) { }
 
   ngOnInit() {
-    console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:36 columns', 'color: #007acc;', this.columns);
-    console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:37 this.data', 'color: #007acc;', this.data);
     this.primengConfig.ripple = true;
   }
 

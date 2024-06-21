@@ -20,7 +20,18 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label>Derbys almacenados</label>
-                <p-dropdown
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  (change)="onChange()"
+                  [(ngModel)]="_id"
+                >
+                  <option selected>Seleccionar un derby</option>
+                  <option *ngFor="let option of derbys" [value]="option._id">
+                    {{ option.name }}
+                  </option>
+                </select>
+                <!-- <p-dropdown
                   styleClass="form-control"
                   [options]="derbys"
                   [(ngModel)]="selectedDerby"
@@ -29,7 +40,7 @@
                   editable="false"
                   (onChange)="onChange($event, 'state')"
                 >
-                </p-dropdown>
+                </p-dropdown> -->
               </div>
             </div>
             <div class="col-sm-2">
@@ -65,12 +76,14 @@
             <div class="row">
               <div class="col-sm">
                 <app-teams-datatable
-                  *ngIf="data"
+                  *ngIf="teams"
                   [loading]="false"
                   [confDerby]="confDerby"
                   [title]="titleDT"
                   [emptyMessage]="emptyMessage"
                   [data]="data"
+                  [teams]="teams"
+                  [derby]="selectedDerby"
                   [columns]="columnsDT"
                   [selectedData]="selectedAny"
                   [items]="itemsDT"
@@ -88,20 +101,11 @@
 </div>
 
 <app-dialog-form
-  [openDialog]="derbyDialog ? derbyDialog : teamDialog"
+  [openDialog]="derbyDialog"
   [size]="{ width: '50vw' }"
   [headerDetails]="title"
   (closeDialog)="openNew($event)"
-  [model]="derbyDialog ? derbyModel : teamModel"
->
-</app-dialog-form>
-
-<app-dialog-form
-  [openDialog]="teamDialog"
-  [size]="{ width: '50vw' }"
-  [headerDetails]="headerDetails"
-  (closeDialog)="openNewTeam($event)"
-  [model]="teamModel"
+  [model]="derbyModel"
 >
 </app-dialog-form>
 
@@ -142,7 +146,7 @@
     icon="pi pi-check"
     class="p-button-success p-mr-2"
     type="submit"
-    [disabled]="derbyForm.invalid"
+    [disabled]="teamForm.invalid"
     (click)="saveTeam()"
   ></button>
 </ng-template>

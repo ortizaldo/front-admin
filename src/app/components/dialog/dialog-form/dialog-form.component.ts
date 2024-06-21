@@ -29,8 +29,4 @@ export class DialogFormComponent implements OnInit {
     this.closeDialog.emit({ openDialog: false });
     // this.submitted = false;
   }
-
-  save() {
-    console.log('%cdialog-form.component.ts line:33 this.model', 'color: #007acc;', this.model);
-  }
 }

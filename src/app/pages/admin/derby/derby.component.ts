@@ -19,11 +19,13 @@ export class DerbyComponent implements OnInit {
   derbyConf: FormGroup;
   teamForm: FormGroup;
   derbys!: any[];
+  teams!: any[];
   derby: any;
   confDerby: any;
   body: any;
   title: string = "Crear derby";
   selectedDerby: any;
+  _id: any;
   columns: any[];
 
   //variables para el datatable
@@ -61,16 +63,6 @@ export class DerbyComponent implements OnInit {
     ];
 
     this.getDerbys();
-
-    this.derbyModel = {
-      template: this.derbyTemplate,
-      templateButtons: this.buttonsTemplate
-    }
-
-    this.teamModel = {
-      teamTemplate: this.teamTemplate,
-      buttonsTemplateTeam: this.buttonsTemplateTeam
-    }
 
     this.derbyForm = this.fb.group({
       name: new FormControl(''),
@@ -129,6 +121,33 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
+  saveTeam() {
+    let body = this.teamForm.value;
+    body.derby = this.selectedDerby._id;
+    body.teamName = body.description;
+    delete body.description;
+    let _data = [];
+    for (let index = 0; index < this.selectedDerby.numGallos; index++) {
+      _data.push({["anillo"+(index + 1)]:"", ["peso"+(index + 1)]:""});
+    }
+
+    body.pesosAnillos = _data;
+
+    const self = this;
+    this.crudService.post(body, "team")
+      .pipe(
+        tap((data: any) => {
+          console.log("🚀 ~ DerbyComponent ~ tap ~ data:", data);
+        }),
+        catchError(err => {
+          const _err = err.error ? err.error.err : err;
+          this.showNotification('top', 'right', "Error al registrar", _err.code == 11000 ? "Registro duplicado" : _err.message, "alert-warning")
+          return err
+        })
+      )
+      .subscribe();
+  }
+
   saveConf() {
     const body = {derby: this.derby._id, roosterConf: {
               tolerance: .080,
@@ -163,7 +182,7 @@ export class DerbyComponent implements OnInit {
           if (this.derby) {
             this.selectedDerby = _.findWhere(this.derbys, { _id: this.derby._id });
 
-            this.onChange(null, null);
+            this.onChange();
           }
           this.loading = false;
         }),
@@ -226,13 +245,29 @@ export class DerbyComponent implements OnInit {
    */
   openNew(cmd) {
     const { openDialog } = cmd;
+    if (openDialog) {
+        this.derbyModel = {
+        template: this.derbyTemplate,
+        templateButtons: this.buttonsTemplate
+      }
+      this.title = "Agregar derby";
+    }
     this.derbyDialog = openDialog;
   }
 
   openNewTeam(cmd) {
-    console.log("🚀 ~ DerbyComponent ~ openNewTeam ~ cmd:", cmd)
+    console.log("🚀 ~ openNewTeam ~ cmd:", this.selectedDerby)
+    console.log("🚀 ~ openNewTeam ~ derby:", this.derby)
     const { openDialog } = cmd;
-    this.teamDialog = openDialog;
+    if (openDialog) {
+        this.derbyModel = {
+        template: this.teamTemplate,
+        templateButtons: this.buttonsTemplateTeam
+      }
+      this.title = "Agregar partido";
+    }
+
+    this.derbyDialog = openDialog;
   }
   /**
    * Resets the derby form and closes the derby dialog.
@@ -241,6 +276,11 @@ export class DerbyComponent implements OnInit {
    */
   hideDialog(cmd) {
     this.derbyForm.reset();
+    this.derbyDialog = false;
+  }
+
+  hideTeamDialog(cmd) {
+    this.teamForm.reset();
     this.derbyDialog = false;
   }
   /**
@@ -262,7 +302,8 @@ export class DerbyComponent implements OnInit {
     });
   }
 
-  onChange(evt: any, endpoint: string) {
+  onChange() {
+    this.selectedDerby = this.derbys.find(obj => obj._id === this._id);
     const params = {
         filtersId: {
           derby: {
@@ -270,33 +311,15 @@ export class DerbyComponent implements OnInit {
           }
         }
       }
-    this.getCatalogDependent("derby-conf", params);
+    this.getDerbyConf("derby-conf", params);
+    this.getDerbyTeams("team", params);
   }
 
-  getCatalogDependent(type: string, params: any) {
+  getDerbyConf(type: string, params: any) {
     this.crudService.getMany(type, null, params)
       .pipe(
         tap((data: any) => {
           this.confDerby = data.data[0]?.roosterConf;
-
-          this.columnsDT = [
-            { header: "Partido", field: "partido" },
-          ]
-
-          this.getRounds();
-          const self = this;
-
-          let _data;
-          for (let index = 0; index < this.selectedDerby.numGallos; index++) {
-            _data = {..._data, ["anillo"+(index + 1)]:""};
-            _data = {..._data, ["peso"+(index + 1)]:""};
-          }
-          let dataRound = [];
-          for (let index = 0; index < 10; index++) {
-            dataRound.push({partido:"Partido "+(index + 1), ..._data});
-          }
-
-          this.data = dataRound;
         }),
         catchError(err => {
           return err
@@ -305,11 +328,41 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
-  getRounds() {
-    let self = this;
+  getDerbyTeams(type: string, params: any) {
+    this.crudService.getMany(type, null, params)
+      .pipe(
+        tap((data: any) => {
+          this.teams = data.data;
+          console.log("🚀 ~ DerbyComponent ~ tap ~ this.teams:", this.teams)
+          // this.getRounds();
+          let _data = [];
+          for (let index = 0; index < this.selectedDerby.numGallos; index++) {
+            _data.push({ header: "Ronda " + (index + 1) });
+          }
+          this.columnsDT = _data;
+        }),
+        catchError(err => {
+          return err
+        })
+      )
+      .subscribe();
+  }
+  setDerby(partido: any) {
+    this.columnsDT = [
+      { header: "Partido", field: "partido" },
+    ]
+    const self = this;
+
+    let _data;
     for (let index = 0; index < this.selectedDerby.numGallos; index++) {
-      self.columnsDT.push({ header: "Anillo" + (index + 1), field: "anillo" + (index + 1) });
-      self.columnsDT.push({ header: "Peso" + (index + 1), field: "peso" + (index + 1) });
+      _data = {..._data, ["anillo"+(index + 1)]:""};
+      _data = {..._data, ["peso"+(index + 1)]:""};
     }
+    let dataRound = [];
+    for (let index = 0; index < 1; index++) {
+      dataRound.push({partido:"Partido "+(index + 1), ..._data});
+    }
+
+    this.data = dataRound;
   }
 }
