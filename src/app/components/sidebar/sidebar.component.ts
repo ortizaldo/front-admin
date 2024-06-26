@@ -15,8 +15,8 @@ export const ROUTES: RouteInfo[] = [
     class: ""
   },
   {
-    path: "/users",
-    title: "Usuarios",
+    path: "/betting-brokerage",
+    title: "Corretaje",
     icon: "pi pi-users",
     class: ""
   },

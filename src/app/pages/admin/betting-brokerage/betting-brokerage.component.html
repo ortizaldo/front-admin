@@ -1,0 +1,122 @@
+<div class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-chart">
+        <div class="card-header">
+          <div class="row d-flex flex-row">
+            <div class="col-sm-6 text-left">
+              <h5 class="card-category">Captura de catalogos</h5>
+            </div>
+            <div class="col-sm-6"></div>
+          </div>
+          <div class="row d-flex flex-row">
+            <div class="p-2">
+              <h2 class="card-title">Catalogos</h2>
+            </div>
+            <div class="p-2">
+              <button
+                #btn
+                class="btn btn-info btn-fab btn-icon btn-round"
+                type="button"
+                (click)="menu3.toggle($event)"
+              >
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <p-slideMenu
+                #menu3
+                [model]="items"
+                [popup]="true"
+                [viewportHeight]="250"
+                appendTo="body"
+              ></p-slideMenu>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="row">
+            <div class="col-4">
+              <!-- <p-tabMenu [model]="items"></p-tabMenu> -->
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm">
+              <app-simple-datatable
+                *ngIf="data"
+                [loading]="false"
+                [title]="title"
+                [emptyMessage]="emptyMessage"
+                [data]="data"
+                [columns]="columns"
+                [selectedData]="selectedAny"
+                [items]="itemsDT"
+                (dialogChange)="openNew($event)"
+                (deleteRecords)="deleteSelected($event)"
+                (editRecords)="editSelected($event)"
+              ></app-simple-datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-dialog-form
+  [openDialog]="catalogDialog"
+  [size]="{ width: '50vw' }"
+  [headerDetails]="headerDetails"
+  (closeDialog)="openNew($event)"
+  [model]="myModel"
+>
+</app-dialog-form>
+
+<ng-template #catalogTemplate>
+  <div class="row">
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'country'">
+      <app-simple-catalog
+        [data]="catalog"
+        [label]="'País'"
+        [form]="catalogForm"
+      ></app-simple-catalog>
+    </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'state'">
+      <app-state [data]="catalog" [form]="catalogForm"></app-state>
+    </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'municipality'">
+      <app-municipality
+        [data]="catalog"
+        [form]="catalogForm"
+      ></app-municipality>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #buttonsTemplate>
+  <button
+    pButton
+    pRipple
+    label="Cancel"
+    icon="pi pi-trash"
+    class="p-button-danger"
+    (click)="hideDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Save"
+    icon="pi pi-check"
+    class="p-button-success p-mr-2"
+    type="submit"
+    [disabled]="catalogForm.invalid"
+    (click)="!isEditing ? saveCatalog() : editCatalog()"
+  ></button>
+</ng-template>
+
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  acceptButtonStyleClass="p-button-success"
+  rejectButtonStyleClass="p-button-danger"
+></p-confirmDialog>

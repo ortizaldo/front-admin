@@ -31,6 +31,7 @@ import { SplitterModule } from "primeng/splitter";
 import { DropdownModule } from "primeng/dropdown";
 import { ScrollPanelModule } from "primeng/scrollpanel";
 import { SplitButtonModule } from "primeng/splitbutton";
+import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage/betting-brokerage.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -65,6 +66,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
     NotificationsComponent,
     MapComponent,
     ProfileComponent,
+    BettingBrokerageComponent
   ]
 })
 export class AdminLayoutModule { }

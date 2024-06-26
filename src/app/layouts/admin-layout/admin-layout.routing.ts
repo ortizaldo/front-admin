@@ -10,6 +10,7 @@ import { TypographyComponent } from "../../pages/admin/typography/typography.com
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
 import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
+import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage/betting-brokerage.component";
 // import { RtlComponent } from "../../pages/admin/rtl/rtl.component";
 
 export const AdminLayoutRoutes: Routes = [
@@ -17,6 +18,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: "profile", component: ProfileComponent },
   { path: "users", component: UserComponent },
   { path: "catalogs", component: CatalogsComponent },
+  { path: "betting-brokerage", component: BettingBrokerageComponent },
   // { path: "maps", component: MapComponent },
   // { path: "notifications", component: NotificationsComponent },
   // { path: "tables", component: TablesComponent },
