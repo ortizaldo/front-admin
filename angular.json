@@ -36,26 +36,6 @@
             "scripts": []
           },
           "configurations": {
-            "development": {
-              "optimization": false,
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "6mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            },
             "production": {
               "fileReplacements": [
                 {
@@ -77,12 +57,25 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
+              "buildOptimizer": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
               "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "6mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -94,11 +87,11 @@
             "browserTarget": "black-dashboard-angular:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "black-dashboard-angular:build:production"
+            "development": {
+              "browserTarget": "black-dashboard-angular:build:development"
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
