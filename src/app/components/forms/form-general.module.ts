@@ -15,6 +15,7 @@ import { MunicipalityComponent } from "./municipality/municipality.component";
 import { CompanyComponent } from "./company/company.component";
 import { DerbyEditComponent } from "./derby-edit/derby-edit.component";
 import { DerbyTeamsComponent } from "./derby-teams/derby-teams.component";
+import { BrookerComponent } from "./brooker/brooker.component";
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { DerbyTeamsComponent } from "./derby-teams/derby-teams.component";
     MunicipalityComponent,
     CompanyComponent,
     DerbyEditComponent,
-    DerbyTeamsComponent
+    DerbyTeamsComponent,
+    BrookerComponent,
   ],
   // declarations: [SimpleDatatable],
   exports: [
