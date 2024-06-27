@@ -11,12 +11,12 @@ import { State } from 'src/app/interfaces/state';
 import { Municipality } from 'src/app/interfaces/municipality';
 import { ControlValueAccessor } from '@angular/forms';
 @Component({
-  selector: 'app-brooker',
-  templateUrl: './brooker.component.html',
-  styleUrls: ['./brooker.component.scss'],
+  selector: 'app-bet-stub',
+  templateUrl: './bet-stub.component.html',
+  styleUrls: ['./bet-stub.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class BrookerComponent implements OnInit  {
+export class BetStubComponent implements OnInit{
   @Input() data: any | undefined;
   @Input() label: string;
   @Input() form: FormGroup;

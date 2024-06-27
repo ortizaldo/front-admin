@@ -67,7 +67,7 @@ export class BettingBrokerageComponent implements OnInit {
     this.columns = [
       { field: 'description', header: 'Pais' },
     ]
-    this.getCatalog('country', select, []);
+    this.get('country', select, []);
   }
 
   enableState() {
@@ -98,7 +98,7 @@ export class BettingBrokerageComponent implements OnInit {
       { field: 'countryDesc', header: 'Pais' },
       { field: 'description', header: 'Estado' },
     ]
-    this.getCatalog('state', select, populate);
+    this.get('state', select, populate);
   }
 
   enableMunicipality() {
@@ -136,7 +136,7 @@ export class BettingBrokerageComponent implements OnInit {
       { field: 'stateDesc', header: 'Estado' },
       { field: 'description', header: 'Municipio' },
     ]
-    this.getCatalog('municipality', select, populate);
+    this.get('municipality', select, populate);
   }
 
   enableCompany() {
@@ -156,7 +156,7 @@ export class BettingBrokerageComponent implements OnInit {
       { field: 'name', header: 'Compañia' },
       { field: 'logo', header: 'Logo' },
     ]
-    this.getCatalog('companies', select, []);
+    this.get('companies', select, []);
   }
 
   openNew(cmd) {
@@ -169,25 +169,12 @@ export class BettingBrokerageComponent implements OnInit {
   editSelected(data) {
     this.catalog = data.data;
     this.isEditing = true;
-    switch (this.endpoint) {
-      case 'state': {
-        this.headerDetails = "Editar registro de Estado";
-        break;
-      }
-      case 'municipality': {
-        this.headerDetails = "Editar registro de Municipio";
-        break;
-      }
-      case 'country': {
-        this.headerDetails = "Editar registro de País";
-        break;
-      }
-    }
+    this.headerDetails = "Editar folio";
     this.catalogForm.patchValue(data.data);
     this.catalogDialog = true;
   }
 
-  getCatalog(endpoint, select, populate) {
+  get(endpoint, select, populate) {
     let params = {
       select,
       populate,
@@ -227,9 +214,9 @@ export class BettingBrokerageComponent implements OnInit {
 
   initDTL() {
     // this.catalogDialog = true;
-    this.emptyMessage = "No se encontraron paises";
-    this.headerDetails = "Crear registro de País";
-    this.endpoint = 'country';
+    this.emptyMessage = "No se folios de corretaje";
+    this.headerDetails = "Crear folio de corretaje";
+    this.endpoint = 'bet-stubs';
     this.catalogForm = new FormGroup({
       brooker: new FormControl('', [Validators.required]),
       betStub: new FormControl('', [Validators.required]),
@@ -248,7 +235,7 @@ export class BettingBrokerageComponent implements OnInit {
       { field: 'corredor1', header: 'Corredor' },
       { field: 'description', header: 'Cantidad' },
     ]
-    this.getCatalog('country', {}, []);
+    this.get('bet-stubs', {}, []);
   }
 
   /**
@@ -257,7 +244,7 @@ export class BettingBrokerageComponent implements OnInit {
  * @param {type} paramName - description of parameter
  * @return {type} description of return value
  */
-  saveCatalog() {
+  save() {
     this.crudService.post(this.catalogForm.value, this.endpoint)
       .pipe(
         tap((data: any) => {
@@ -284,8 +271,7 @@ export class BettingBrokerageComponent implements OnInit {
       .subscribe();
   }
 
-  editCatalog() {
-    console.log('%ccatalogs.component.ts line:343 this.catalog._id', 'color: #007acc;', this.catalog._id);
+  edit() {
     this.crudService.put(this.catalogForm.value, this.catalog._id, this.endpoint)
       .pipe(
         tap((data: any) => {

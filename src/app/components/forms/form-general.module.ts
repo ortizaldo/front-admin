@@ -17,6 +17,7 @@ import { DerbyEditComponent } from "./derby-edit/derby-edit.component";
 import { DerbyTeamsComponent } from "./derby-teams/derby-teams.component";
 import { BrookerComponent } from "./brooker/brooker.component";
 import { InputMaskModule } from "primeng/inputmask";
+import { BetStubComponent } from "./bet-stub/bet-stub.component";
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import { InputMaskModule } from "primeng/inputmask";
     DerbyEditComponent,
     DerbyTeamsComponent,
     BrookerComponent,
-
+    BetStubComponent,
   ],
   // declarations: [SimpleDatatable],
   exports: [
@@ -54,6 +55,7 @@ import { InputMaskModule } from "primeng/inputmask";
     CompanyComponent,
     DerbyEditComponent,
     BrookerComponent,
+    BetStubComponent
   ],
 })
 export class FormGralModule { }

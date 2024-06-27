@@ -50,23 +50,8 @@
 
 <ng-template #catalogTemplate>
   <div class="row">
-    <div class="col-12" *ngIf="catalogDialog && endpoint === 'country'">
-      <app-simple-catalog
-        [data]="catalog"
-        [label]="'País'"
-        [form]="catalogForm"
-      ></app-simple-catalog>
-    </div>
-
-    <div class="col-12" *ngIf="catalogDialog && endpoint === 'state'">
-      <app-state [data]="catalog" [form]="catalogForm"></app-state>
-    </div>
-
-    <div class="col-12" *ngIf="catalogDialog && endpoint === 'municipality'">
-      <app-municipality
-        [data]="catalog"
-        [form]="catalogForm"
-      ></app-municipality>
+    <div class="col-12">
+      <app-bet-stub [data]="catalog" [form]="catalogForm"></app-bet-stub>
     </div>
   </div>
 </ng-template>
@@ -88,7 +73,7 @@
     class="p-button-success p-mr-2"
     type="submit"
     [disabled]="catalogForm.invalid"
-    (click)="!isEditing ? saveCatalog() : editCatalog()"
+    (click)="!isEditing ? save() : edit()"
   ></button>
 </ng-template>
 
