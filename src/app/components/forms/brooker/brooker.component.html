@@ -7,16 +7,36 @@
           class="form-control"
           placeholder="Nombre"
           type="text"
-          value="{{ data?.description }}"
-          formControlName="description"
+          value="{{ data?.brookerName }}"
+          formControlName="brookerName"
         />
         <div
           *ngIf="
-            form.get('description').invalid &&
-            (form.get('description').dirty || form.get('description').touched)
+            form.get('brookerName').invalid &&
+            (form.get('brookerName').dirty || form.get('brookerName').touched)
           "
         >
-          Por favor capturar el nombre del registro
+          Por favor capturar el nombre del corredor
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 pr-md-1">
+      <div class="form-group">
+        <label>{{ label }}</label>
+        <input
+          class="form-control"
+          placeholder="Porcentaje"
+          type="text"
+          value="{{ data?.percent }}"
+          formControlName="percent"
+        />
+        <div
+          *ngIf="
+            form.get('percent').invalid &&
+            (form.get('percent').dirty || form.get('percent').touched)
+          "
+        >
+          Por favor capturar el porcentaje del corredor
         </div>
       </div>
     </div>
