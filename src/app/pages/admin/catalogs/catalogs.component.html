@@ -10,10 +10,10 @@
             <div class="col-sm-6"></div>
           </div>
           <div class="row d-flex flex-row">
-            <div class="p-2">
+            <div class="col-2 m-2">
               <h2 class="card-title">Catalogos</h2>
             </div>
-            <div class="p-2">
+            <div class="col-2">
               <button
                 #btn
                 class="btn btn-info btn-fab btn-icon btn-round"
@@ -83,6 +83,10 @@
 
     <div class="col-12" *ngIf="catalogDialog && endpoint === 'state'">
       <app-state [data]="catalog" [form]="catalogForm"></app-state>
+    </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'brooker'">
+      <app-brooker [data]="catalog" [form]="catalogForm"></app-brooker>
     </div>
 
     <div class="col-12" *ngIf="catalogDialog && endpoint === 'municipality'">

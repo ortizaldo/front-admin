@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-6 pr-md-1">
       <div class="form-group">
-        <label>{{ label }}</label>
+        <label>Nombre del corredor</label>
         <input
           class="form-control"
           placeholder="Nombre"
@@ -22,14 +22,22 @@
     </div>
     <div class="col-md-6 pr-md-1">
       <div class="form-group">
-        <label>{{ label }}</label>
-        <input
+        <label>Porcentaje</label>
+        <!-- <input
           class="form-control"
           placeholder="Porcentaje"
-          type="text"
+          type="number"
           value="{{ data?.percent }}"
+          mask="separator.2"
+          thousandSeparator=""
+          separatorLimit="99999999999999"
           formControlName="percent"
-        />
+        /> -->
+        <p-inputMask
+          formControlName="percent"
+          mask="9.9"
+          placeholder="e.g. 75.00"
+        ></p-inputMask>
         <div
           *ngIf="
             form.get('percent').invalid &&

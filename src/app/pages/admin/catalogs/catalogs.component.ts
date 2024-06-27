@@ -66,21 +66,10 @@ export class CatalogsComponent implements OnInit {
         ]
       },
       {
-        label: 'Compañia',
-        icon: 'fa fa-briefcase',
-        command: (event: any) => {
-          this.enableCompany();
-        }
-      },
-      {
         label: 'Corredores',
         icon: 'fa fa-briefcase',
         command: (event: any) => {
-          const formCorredor = new FormGroup({
-            brookerName: new FormControl('', [Validators.required]),
-            percent: new FormControl('', [Validators.required]),
-          });
-          this.enableBrookerage(formCorredor);
+          this.enableBrookerage();
         }
       },
     ];
@@ -203,8 +192,11 @@ export class CatalogsComponent implements OnInit {
     this.getCatalog('companies', select, []);
   }
 
-  enableBrookerage(formCorredor) {
-    this.catalogForm = formCorredor;
+  enableBrookerage() {
+    this.catalogForm = new FormGroup({
+      brookerName: new FormControl('', [Validators.required]),
+      percent: new FormControl(['', [Validators.required]]),
+    });
     this.title = 'Corredores';
     this.headerDetails = "Crear corredor de apuestas";
     this.endpoint = 'brooker';
@@ -244,12 +236,17 @@ export class CatalogsComponent implements OnInit {
         this.headerDetails = "Editar registro de País";
         break;
       }
+      case 'brooker': {
+        this.headerDetails = "Editar registro de Corredor de apuestas";
+        break;
+      }
     }
     this.catalogForm.patchValue(data.data);
     this.catalogDialog = true;
   }
 
   getCatalog(endpoint, select, populate) {
+    this.data = [];
     let params = {
       select,
       populate,
@@ -343,7 +340,6 @@ export class CatalogsComponent implements OnInit {
   }
 
   editCatalog() {
-    console.log('%ccatalogs.component.ts line:343 this.catalog._id', 'color: #007acc;', this.catalog._id);
     this.crudService.put(this.catalogForm.value, this.catalog._id, this.endpoint)
       .pipe(
         tap((data: any) => {
@@ -360,6 +356,9 @@ export class CatalogsComponent implements OnInit {
           }
           if (this.endpoint === 'municipality') {
             this.enableMunicipality();
+          }
+          if (this.endpoint === 'brooker') {
+            this.enableBrookerage();
           }
           this.catalogForm.reset();
         }),
@@ -390,6 +389,9 @@ export class CatalogsComponent implements OnInit {
           if (this.endpoint === 'municipality') {
             this.enableMunicipality();
           }
+          if (this.endpoint === 'brooker') {
+            this.enableBrookerage();
+          }
         }),
         catchError(err => {
           this.loading = false;
@@ -418,6 +420,9 @@ export class CatalogsComponent implements OnInit {
           }
           if (this.endpoint === 'municipality') {
             this.enableMunicipality();
+          }
+          if (this.endpoint === 'brooker') {
+            this.enableBrookerage();
           }
         }),
         catchError(err => {

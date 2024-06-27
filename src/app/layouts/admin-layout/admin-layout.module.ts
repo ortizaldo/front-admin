@@ -32,10 +32,14 @@ import { DropdownModule } from "primeng/dropdown";
 import { ScrollPanelModule } from "primeng/scrollpanel";
 import { SplitButtonModule } from "primeng/splitbutton";
 import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage/betting-brokerage.component";
+import { InputMaskModule } from "primeng/inputmask";
+import { IConfig, NgxMaskModule } from "ngx-mask";
+export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
+    NgxMaskModule.forRoot(),
     FormsModule,
     HttpClientModule,
     NgbModule,
@@ -54,7 +58,8 @@ import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage
     ConfirmDialogModule,
     DropdownModule,
     ScrollPanelModule,
-    SplitButtonModule
+    SplitButtonModule,
+    InputMaskModule
   ],
   declarations: [
     DashboardComponent,
