@@ -25,7 +25,7 @@ export class BettingBrokerageComponent implements OnInit {
   selectedAny: any;
 
   catalogDialog: boolean = false;
-  headerDetails: string = "Crear registro";
+  headerDetails: string = "Agregar folio";
 
   myModel = {
   };
@@ -40,39 +40,6 @@ export class BettingBrokerageComponent implements OnInit {
     });
 
     const self = this;
-    this.items = [
-      {
-        label: 'Dirección',
-        icon: 'fa fa-address-card',
-        items: [
-          {
-            label: 'Pais',
-            command: (event: any) => {
-              self.enableCountry();
-            }
-          },
-          {
-            label: 'Estado',
-            command: (event: any) => {
-              this.enableState();
-            }
-          },
-          {
-            label: 'Municipio',
-            command: (event: any) => {
-              this.enableMunicipality();
-            }
-          },
-        ]
-      },
-      {
-        label: 'Compañia',
-        icon: 'fa fa-briefcase',
-        command: (event: any) => {
-          this.enableCompany();
-        }
-      },
-    ];
 
     this.myModel = {
       template: this.catalogTemplate,
@@ -264,20 +231,24 @@ export class BettingBrokerageComponent implements OnInit {
     this.headerDetails = "Crear registro de País";
     this.endpoint = 'country';
     this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
+      brooker: new FormControl('', [Validators.required]),
+      betStub: new FormControl('', [Validators.required]),
+      folio: new FormControl('', [Validators.required]),
+      amount: new FormControl('', [Validators.required]),
     });
-    this.title = 'Catalogo país';
-    const select = [
-      "_id",
-      "description",
-      "createdAt",
-      "deleted",
-    ];
+    this.title = 'Folios de corretaje';
 
     this.columns = [
-      { field: 'description', header: 'Pais' },
+      { field: 'corredor1', header: 'Corredor' },
+      { field: 'description', header: 'Cantidad' },
+      { field: 'corredor1', header: 'Corredor' },
+      { field: 'description', header: 'Cantidad' },
+      { field: 'corredor1', header: 'Corredor' },
+      { field: 'description', header: 'Cantidad' },
+      { field: 'corredor1', header: 'Corredor' },
+      { field: 'description', header: 'Cantidad' },
     ]
-    this.getCatalog('country', select, []);
+    this.getCatalog('country', {}, []);
   }
 
   /**

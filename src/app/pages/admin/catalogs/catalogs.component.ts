@@ -72,6 +72,17 @@ export class CatalogsComponent implements OnInit {
           this.enableCompany();
         }
       },
+      {
+        label: 'Corredores',
+        icon: 'fa fa-briefcase',
+        command: (event: any) => {
+          const formCorredor = new FormGroup({
+            brookerName: new FormControl('', [Validators.required]),
+            percent: new FormControl('', [Validators.required]),
+          });
+          this.enableBrookerage(formCorredor);
+        }
+      },
     ];
 
     this.myModel = {
@@ -192,6 +203,24 @@ export class CatalogsComponent implements OnInit {
     this.getCatalog('companies', select, []);
   }
 
+  enableBrookerage(formCorredor) {
+    this.catalogForm = formCorredor;
+    this.title = 'Corredores';
+    this.headerDetails = "Crear corredor de apuestas";
+    this.endpoint = 'brooker';
+    const select = [
+      "_id",
+      "brookerName",
+      "percent",
+    ];
+
+    this.columns = [
+      { field: 'brookerName', header: 'Nombre' },
+      { field: 'percent', header: 'Porcentaje' },
+    ]
+    this.getCatalog('brooker', select, []);
+  }
+
   openNew(cmd) {
     this.isEditing = false;
     this.catalog = null;
@@ -260,7 +289,7 @@ export class CatalogsComponent implements OnInit {
 
   initDTL() {
     // this.catalogDialog = true;
-    this.emptyMessage = "No se encontraron paises";
+    this.emptyMessage = "No se encontraron registros";
     this.headerDetails = "Crear registro de País";
     this.endpoint = 'country';
     this.catalogForm = new FormGroup({

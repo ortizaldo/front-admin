@@ -5,40 +5,17 @@
         <div class="card-header">
           <div class="row d-flex flex-row">
             <div class="col-sm-6 text-left">
-              <h5 class="card-category">Captura de catalogos</h5>
+              <h5 class="card-category">Corretaje</h5>
             </div>
             <div class="col-sm-6"></div>
           </div>
           <div class="row d-flex flex-row">
             <div class="p-2">
-              <h2 class="card-title">Catalogos</h2>
-            </div>
-            <div class="p-2">
-              <button
-                #btn
-                class="btn btn-info btn-fab btn-icon btn-round"
-                type="button"
-                (click)="menu3.toggle($event)"
-              >
-                <i class="fas fa-ellipsis-v"></i>
-              </button>
-              <p-slideMenu
-                #menu3
-                [model]="items"
-                [popup]="true"
-                [viewportHeight]="250"
-                appendTo="body"
-              ></p-slideMenu>
+              <h2 class="card-title">Captura de corretaje</h2>
             </div>
           </div>
         </div>
         <div class="card-body p-4">
-          <div class="row">
-            <div class="col-4">
-              <!-- <p-tabMenu [model]="items"></p-tabMenu> -->
-            </div>
-          </div>
-
           <div class="row">
             <div class="col-sm">
               <app-simple-datatable
