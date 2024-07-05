@@ -15,6 +15,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputMaskModule } from 'primeng/inputmask';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TeamsDatatable } from "./teams-datatable/teams-datatable.component";
+import { CorretajeDatatable } from "./corretaje-datatable/corretaje-datatable.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -31,8 +32,8 @@ import { TeamsDatatable } from "./teams-datatable/teams-datatable.component";
     NgbDropdownModule,
     InputMaskModule
   ],
-  declarations: [SimpleDatatable, TeamsDatatable],
-  exports: [SimpleDatatable, TeamsDatatable],
+  declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
+  exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
   providers: [MessageService, ConfirmationService]
 })
 export class DatatableCustomModule { }

@@ -21,8 +21,12 @@ export class BettingBrokerageComponent implements OnInit {
   endpoint: string;
   loading: boolean = true;
   data: any[];
+  groupedData: any;
   columns: any[];
   selectedAny: any;
+
+  derbys: any[];
+  derby: any;
 
   catalogDialog: boolean = false;
   headerDetails: string = "Agregar folio";
@@ -45,119 +49,10 @@ export class BettingBrokerageComponent implements OnInit {
       template: this.catalogTemplate,
       templateButtons: this.buttonsTemplate
     }
-
-    this.initDTL();
+    this.getDerby('derby',  {}, []);
   }
 
-  enableCountry() {
-    this.title = 'Catalogo país';
-    this.headerDetails = "Crear registro de País";
-    this.emptyMessage = "No se encontraron paises";
-    this.endpoint = 'country';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
-    });
-    const select = [
-      "_id",
-      "description",
-      "createdAt",
-      "deleted",
-    ];
 
-    this.columns = [
-      { field: 'description', header: 'Pais' },
-    ]
-    this.get('country', select, []);
-  }
-
-  enableState() {
-    this.title = 'Catalogo estado';
-    this.headerDetails = "Crear registro de Estado";
-    this.emptyMessage = "No se encontraron estados";
-    this.endpoint = 'state';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
-    });
-    const select = [
-      "_id",
-      "description",
-      "country",
-      "createdAt",
-      "deleted",
-    ];
-
-    const populate = [
-      {
-        path: 'country',
-        select: 'description'
-      }
-    ];
-
-    this.columns = [
-      { field: 'countryDesc', header: 'Pais' },
-      { field: 'description', header: 'Estado' },
-    ]
-    this.get('state', select, populate);
-  }
-
-  enableMunicipality() {
-    this.title = 'Catalogo municipio';
-    this.headerDetails = "Crear registro de Municipio";
-    this.emptyMessage = "No se encontraron municipios";
-    this.endpoint = 'municipality';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
-      state: new FormControl('', [Validators.required]),
-    });
-    const select = [
-      "_id",
-      "description",
-      "country",
-      "state",
-      "createdAt",
-      "deleted",
-    ];
-
-    const populate = [
-      {
-        path: 'country',
-        select: 'description'
-      },
-      {
-        path: 'state',
-        select: 'description'
-      }
-    ];
-
-    this.columns = [
-      { field: 'countryDesc', header: 'Pais' },
-      { field: 'stateDesc', header: 'Estado' },
-      { field: 'description', header: 'Municipio' },
-    ]
-    this.get('municipality', select, populate);
-  }
-
-  enableCompany() {
-    this.title = 'Catalogo compania';
-    this.headerDetails = "Crear registro de Compañia";
-    this.endpoint = 'companies';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
-    });
-    const select = [
-      "_id",
-      "name",
-      "logo",
-    ];
-
-    this.columns = [
-      { field: 'name', header: 'Compañia' },
-      { field: 'logo', header: 'Logo' },
-    ]
-    this.get('companies', select, []);
-  }
 
   openNew(cmd) {
     this.isEditing = false;
@@ -174,7 +69,7 @@ export class BettingBrokerageComponent implements OnInit {
     this.catalogDialog = true;
   }
 
-  get(endpoint, select, populate) {
+  getDerby(endpoint, select, populate) {
     let params = {
       select,
       populate,
@@ -185,22 +80,46 @@ export class BettingBrokerageComponent implements OnInit {
     this.crudService.getMany(endpoint, null, params)
       .pipe(
         tap((data: any) => {
-          if (endpoint === 'state') {
-            data.data.forEach((item: any) => {
-              item.countryDesc = item.country ? item.country.description : null;
-              item.countryId = item.country ? item.country._id : null;
-            });
-          }
+          this.derbys = data.data;
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
 
-          if (endpoint === 'municipality') {
-            data.data.forEach((item: any) => {
-              item.countryDesc = item.country ? item.country.description : null;
-              item.countryId = item.country ? item.country._id : null;
-              item.stateId = item.state ? item.state._id : null;
-              item.stateDesc = item.state ? item.state.description : null;
-            });
-          }
+  }
+
+  getBrooker(endpoint, select, populate) {
+    let params = {
+      select,
+      populate,
+      filters: {
+        deleted: false
+      },
+      filtersId: {
+        derby: {
+          value: this.derby._id,
+        }
+      },
+    };
+    this.crudService.getMany(endpoint, null, params)
+      .pipe(
+        tap((data: any) => {
           this.data = data.data;
+          const groupedData = this.data.reduce((acc, current) => {
+            const { folio, amount } = current;
+            if (!acc[current.brooker.brookerName]) {
+              acc[current.brooker.brookerName] = {data: [], total: 0, percent: 0};
+            }
+            acc[current.brooker.brookerName].data.push({folio, amount});
+            acc[current.brooker.brookerName].total += amount;
+            acc[current.brooker.brookerName].percent = current.brooker.percent;
+            return acc;
+          }, {});
+
+          this.groupedData = groupedData;
           this.loading = false;
         }),
         catchError(err => {
@@ -212,16 +131,22 @@ export class BettingBrokerageComponent implements OnInit {
 
   }
 
+  onChange(event, type) {
+    console.log('%csrc/app/pages/admin/betting-brokerage/betting-brokerage.component.ts:130 this.derby', 'color: #007acc;', this.derby);
+    this.initDTL();
+  }
+
   initDTL() {
     // this.catalogDialog = true;
     this.emptyMessage = "No se folios de corretaje";
     this.headerDetails = "Crear folio de corretaje";
-    this.endpoint = 'bet-stubs';
+    this.endpoint = 'brooker-bet';
     this.catalogForm = new FormGroup({
+      derby: new FormControl(this.derby, [Validators.required]),
       brooker: new FormControl('', [Validators.required]),
-      betStub: new FormControl('', [Validators.required]),
       folio: new FormControl('', [Validators.required]),
       amount: new FormControl('', [Validators.required]),
+      active: new FormControl('', [Validators.required]),
     });
     this.title = 'Folios de corretaje';
 
@@ -235,7 +160,18 @@ export class BettingBrokerageComponent implements OnInit {
       { field: 'corredor1', header: 'Corredor' },
       { field: 'description', header: 'Cantidad' },
     ]
-    this.get('bet-stubs', {}, []);
+
+    const populate = [
+      {
+        path: 'derby',
+        select: 'name'
+      },
+      {
+        path: 'brooker',
+        select: 'brookerName'
+      },
+    ];
+    this.getBrooker('brooker-bet', {}, populate);
   }
 
   /**
@@ -250,18 +186,22 @@ export class BettingBrokerageComponent implements OnInit {
         tap((data: any) => {
           this.data.unshift(data.data);
           this.loading = false;
-          this.catalogDialog = false;
+          if (!this.catalogForm.value.active) {
+            this.catalogDialog = false;
+            this.catalogForm.reset();
+          }
 
-          if (this.endpoint === 'country') {
-            this.enableCountry();
-          }
-          if (this.endpoint === 'state') {
-            this.enableState();
-          }
-          if (this.endpoint === 'municipality') {
-            this.enableMunicipality();
-          }
-          this.catalogForm.reset();
+          const populate = [
+            {
+              path: 'derby',
+              select: 'name'
+            },
+            {
+              path: 'brooker',
+              select: 'brookerName'
+            },
+          ];
+          this.getBrooker('brooker-bet', {}, populate);
         }),
         catchError(err => {
           this.loading = false;
@@ -279,16 +219,6 @@ export class BettingBrokerageComponent implements OnInit {
           this.loading = false;
           this.catalogDialog = false;
           this.isEditing = false;
-
-          if (this.endpoint === 'country') {
-            this.enableCountry();
-          }
-          if (this.endpoint === 'state') {
-            this.enableState();
-          }
-          if (this.endpoint === 'municipality') {
-            this.enableMunicipality();
-          }
           this.catalogForm.reset();
         }),
         catchError(err => {
@@ -309,15 +239,6 @@ export class BettingBrokerageComponent implements OnInit {
         tap((data: any) => {
           this.loading = false;
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
-          if (this.endpoint === 'country') {
-            this.enableCountry();
-          }
-          if (this.endpoint === 'state') {
-            this.enableState();
-          }
-          if (this.endpoint === 'municipality') {
-            this.enableMunicipality();
-          }
         }),
         catchError(err => {
           this.loading = false;
@@ -338,15 +259,6 @@ export class BettingBrokerageComponent implements OnInit {
           this.loading = false;
 
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
-          if (this.endpoint === 'country') {
-            this.enableCountry();
-          }
-          if (this.endpoint === 'state') {
-            this.enableState();
-          }
-          if (this.endpoint === 'municipality') {
-            this.enableMunicipality();
-          }
         }),
         catchError(err => {
           this.loading = false;

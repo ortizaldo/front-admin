@@ -6,9 +6,6 @@ import { SelectItem } from 'primeng/api';
 import { SelectItemGroup } from 'primeng/api';
 import { CrudService } from 'src/app/_services/crud.service';
 import { catchError, tap } from 'rxjs';
-import { Country } from 'src/app/interfaces/country';
-import { State } from 'src/app/interfaces/state';
-import { Municipality } from 'src/app/interfaces/municipality';
 import { ControlValueAccessor } from '@angular/forms';
 @Component({
   selector: 'app-bet-stub',
@@ -18,17 +15,51 @@ import { ControlValueAccessor } from '@angular/forms';
 })
 export class BetStubComponent implements OnInit{
   @Input() data: any | undefined;
+  @Input() selectedDerby: any;
   @Input() label: string;
   @Input() form: FormGroup;
   onChange: any = () => {};
   onTouched: any = () => {};
   percentage: string;
-
+  brookers: any[] = [];
+  derby: any[] = [];
+  selectedBrooker: any;
   @ViewChild('form') formElement: ElementRef;
   constructor(private fb: FormBuilder, private crudService: CrudService) {
   }
 
   ngOnInit(): void {
-    console.log('%csrc/app/components/forms/brooker/brooker.component.ts:29 this.form', 'color: #007acc;', this.form);
+    console.log('%csrc/app/components/forms/bet-stub/bet-stub.component.ts:33 this._derby', 'color: #007acc;', this.selectedDerby);
+    this.getBrokers();
+    this.getDerbies();
+  }
+
+  getBrokers() {
+    this.crudService.getMany("brooker", null, null)
+      .pipe(
+        tap((data: any) => {
+          this.brookers = data.data;
+        }),
+        catchError(err => {
+          return err
+        })
+      )
+      .subscribe();
+
+  }
+
+  getDerbies() {
+    this.crudService.getMany("derby", null, null)
+      .pipe(
+        tap((data: any) => {
+          this.derby = data.data;
+        }),
+        catchError(err => {
+          // this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+
   }
 }

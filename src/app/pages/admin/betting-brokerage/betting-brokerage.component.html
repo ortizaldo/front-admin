@@ -17,20 +17,38 @@
         </div>
         <div class="card-body p-4">
           <div class="row">
+            <div class="col-sm-6 text-left">
+              <div class="form-group">
+                <label>Seleccionar el derby</label>
+                <p-dropdown
+                  styleClass="form-control"
+                  [options]="derbys"
+                  [(ngModel)]="derby"
+                  optionLabel="name"
+                  [appendTo]="'body'"
+                  editable="false"
+                  (onChange)="onChange($event, 'brooker-bet')"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-sm">
-              <app-simple-datatable
+              <app-corretaje-datatable
                 *ngIf="data"
                 [loading]="false"
                 [title]="title"
                 [emptyMessage]="emptyMessage"
                 [data]="data"
+                [groupedData]="groupedData"
                 [columns]="columns"
                 [selectedData]="selectedAny"
                 [items]="itemsDT"
                 (dialogChange)="openNew($event)"
                 (deleteRecords)="deleteSelected($event)"
                 (editRecords)="editSelected($event)"
-              ></app-simple-datatable>
+              ></app-corretaje-datatable>
             </div>
           </div>
         </div>
@@ -50,8 +68,12 @@
 
 <ng-template #catalogTemplate>
   <div class="row">
-    <div class="col-12">
-      <app-bet-stub [data]="catalog" [form]="catalogForm"></app-bet-stub>
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'brooker-bet'">
+      <app-bet-stub
+        [data]="catalog"
+        [selectedDerby]="derby"
+        [form]="catalogForm"
+      ></app-bet-stub>
     </div>
   </div>
 </ng-template>

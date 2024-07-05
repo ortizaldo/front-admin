@@ -1,10 +1,10 @@
-.form-control:focus {
+app-bet-stub .form-control:focus {
   border-color: #1d253b;
   background-color: transparent;
   box-shadow: none;
 }
 
-.form-control {
+app-bet-stub .form-control {
   display: block;
   width: 100%;
   height: calc(2.249999625rem + 2px);
@@ -20,7 +20,7 @@
   transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.form-control:focus {
+app-bet-stub .form-control:focus {
   border-color: #1d253b;
   background-color: transparent;
   box-shadow: none;
