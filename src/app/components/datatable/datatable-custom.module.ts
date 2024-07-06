@@ -13,6 +13,7 @@ import { ConfirmationService, MessageService } from "primeng/api";
 import { SpeedDialModule } from 'primeng/speeddial';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputMaskModule } from 'primeng/inputmask';
+import { TabViewModule } from "primeng/tabview";
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TeamsDatatable } from "./teams-datatable/teams-datatable.component";
 import { CorretajeDatatable } from "./corretaje-datatable/corretaje-datatable.component";
@@ -30,7 +31,8 @@ import { CorretajeDatatable } from "./corretaje-datatable/corretaje-datatable.co
     ButtonModule,
     ContextMenuModule,
     NgbDropdownModule,
-    InputMaskModule
+    InputMaskModule,
+    TabViewModule
   ],
   declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
   exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],

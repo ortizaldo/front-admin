@@ -113,7 +113,7 @@ export class BettingBrokerageComponent implements OnInit {
             if (!acc[current.brooker.brookerName]) {
               acc[current.brooker.brookerName] = {data: [], total: 0, percent: 0};
             }
-            acc[current.brooker.brookerName].data.push({folio, amount});
+            acc[current.brooker.brookerName].data.push({_id: current._id, folio, amount});
             acc[current.brooker.brookerName].total += amount;
             acc[current.brooker.brookerName].percent = current.brooker.percent;
             return acc;
@@ -132,7 +132,6 @@ export class BettingBrokerageComponent implements OnInit {
   }
 
   onChange(event, type) {
-    console.log('%csrc/app/pages/admin/betting-brokerage/betting-brokerage.component.ts:130 this.derby', 'color: #007acc;', this.derby);
     this.initDTL();
   }
 
@@ -142,7 +141,7 @@ export class BettingBrokerageComponent implements OnInit {
     this.headerDetails = "Crear folio de corretaje";
     this.endpoint = 'brooker-bet';
     this.catalogForm = new FormGroup({
-      derby: new FormControl(this.derby, [Validators.required]),
+      derby: new FormControl(this.derby._id, [Validators.required]),
       brooker: new FormControl('', [Validators.required]),
       folio: new FormControl('', [Validators.required]),
       amount: new FormControl('', [Validators.required]),

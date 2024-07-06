@@ -18,6 +18,7 @@ import { DerbyTeamsComponent } from "./derby-teams/derby-teams.component";
 import { BrookerComponent } from "./brooker/brooker.component";
 import { InputMaskModule } from "primeng/inputmask";
 import { InputSwitchModule } from "primeng/inputswitch";
+import { TabViewModule } from "primeng/tabview";
 import { BetStubComponent } from "./bet-stub/bet-stub.component";
 
 
@@ -33,7 +34,8 @@ import { BetStubComponent } from "./bet-stub/bet-stub.component";
     DropdownModule,
     ReactiveFormsModule,
     InputMaskModule,
-    InputSwitchModule
+    InputSwitchModule,
+    TabViewModule,
   ],
   declarations: [
     UserReadComponent,

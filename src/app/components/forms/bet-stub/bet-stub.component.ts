@@ -15,7 +15,7 @@ import { ControlValueAccessor } from '@angular/forms';
 })
 export class BetStubComponent implements OnInit{
   @Input() data: any | undefined;
-  @Input() selectedDerby: any;
+  @Input() _selectedDerby: any;
   @Input() label: string;
   @Input() form: FormGroup;
   onChange: any = () => {};
@@ -24,12 +24,12 @@ export class BetStubComponent implements OnInit{
   brookers: any[] = [];
   derby: any[] = [];
   selectedBrooker: any;
+  selectedDerby: any;
   @ViewChild('form') formElement: ElementRef;
   constructor(private fb: FormBuilder, private crudService: CrudService) {
   }
 
   ngOnInit(): void {
-    console.log('%csrc/app/components/forms/bet-stub/bet-stub.component.ts:33 this._derby', 'color: #007acc;', this.selectedDerby);
     this.getBrokers();
     this.getDerbies();
   }
@@ -53,6 +53,8 @@ export class BetStubComponent implements OnInit{
       .pipe(
         tap((data: any) => {
           this.derby = data.data;
+          this.selectedDerby = this._selectedDerby;
+          console.log("🚀 ~ BetStubComponent ~ tap ~ this.selectedDerby:", this.selectedDerby)
         }),
         catchError(err => {
           // this.loading = false;

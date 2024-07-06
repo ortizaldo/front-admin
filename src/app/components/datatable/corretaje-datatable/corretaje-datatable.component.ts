@@ -27,6 +27,7 @@ export class CorretajeDatatable implements OnInit {
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
 
+  activeIndex: number = 0;
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;

@@ -27,7 +27,7 @@
 </p-toolbar>
 <br />
 <div class="row">
-  <div *ngFor="let item of groupedData | keyvalue" class="col">
+  <!-- <div *ngFor="let item of groupedData | keyvalue" class="col">
     Corredor: {{ item.key }}
     <div class="row">
       <div class="col">Total corretaje: ${{ item.value.total }}</div>
@@ -49,5 +49,112 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div> -->
+  <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
+    <p-tabPanel *ngFor="let tab of groupedData | keyvalue" [header]="tab.key">
+      <div class="row">
+        <div class="col-6">
+          <p-table
+            [value]="tab.value.data"
+            dataKey="_id"
+            editMode="row"
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            responsiveLayout="scroll"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10, 25, 50]"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Folio</th>
+                <th>Cantidad</th>
+                <th style="width: 8rem"></th>
+              </tr>
+            </ng-template>
+            <ng-template
+              pTemplate="body"
+              let-data
+              let-editing="editing"
+              let-ri="rowIndex"
+            >
+              <tr [pEditableRow]="data">
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input pInputText type="text" [(ngModel)]="data.folio" />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ data.folio }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td pEditableColumn>
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input
+                        pInputText
+                        type="text"
+                        [(ngModel)]="data.amount"
+                        required
+                      />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      {{ data.amount }}
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+                <td style="text-align: center">
+                  <button
+                    *ngIf="!editing"
+                    pButton
+                    pRipple
+                    type="button"
+                    pInitEditableRow
+                    icon="pi pi-pencil"
+                    (click)="onRowEditInit(product)"
+                    class="p-button-rounded p-button-text"
+                  ></button>
+                  <button
+                    *ngIf="editing"
+                    pButton
+                    pRipple
+                    type="button"
+                    pSaveEditableRow
+                    icon="pi pi-check"
+                    (click)="onRowEditSave(product)"
+                    class="p-button-rounded p-button-text p-button-success p-mr-2"
+                  ></button>
+                  <button
+                    *ngIf="editing"
+                    pButton
+                    pRipple
+                    type="button"
+                    pCancelEditableRow
+                    icon="pi pi-times"
+                    (click)="onRowEditCancel(product, ri)"
+                    class="p-button-rounded p-button-text p-button-danger"
+                  ></button>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorleft">
+              <p-button
+                type="button"
+                icon="pi pi-plus"
+                styleClass="p-button-text"
+              ></p-button>
+            </ng-template>
+            <ng-template pTemplate="paginatorright">
+              <p-button
+                type="button"
+                icon="pi pi-cloud"
+                styleClass="p-button-text"
+              ></p-button>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
 </div>
