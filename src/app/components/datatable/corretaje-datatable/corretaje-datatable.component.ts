@@ -34,7 +34,7 @@ export class CorretajeDatatable implements OnInit {
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private fb: FormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) { }
+  constructor(private fb: FormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.formEdit = new FormGroup({
@@ -63,7 +63,6 @@ export class CorretajeDatatable implements OnInit {
   }
 
   editSelected(data) {
-    console.log("🚀 ~ file: simple-datatable.component.ts:56 ~ SimpleDatatable ~ editSelected ~ data:", data)
     this.editRecords.emit({ data });
   }
 
@@ -71,8 +70,28 @@ export class CorretajeDatatable implements OnInit {
     console.log("🚀 ~ CorretajeDatatable ~ onRowEditInit ~ data:", data)
   }
 
-  onRowEditSave(data: any) {
-    console.log("🚀 ~ CorretajeDatatable ~ onRowEditSave ~ data:", data)
+  onRowEditSave(data: any, key?: string) {
+    this.edit(data);
+  }
+
+  edit(data, key?: string) {
+    this.crudService.put(data, data._id, "brooker-bet")
+      .pipe(
+        tap((data: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Folio editado', life: 3000 });
+          let total = 0;
+          this.groupedData[key].data.map(item => {
+            total += item.amount;
+          });
+
+          this.groupedData[key].total = total;
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
   }
 
   onRowEditCancel(data: any, index: number) {

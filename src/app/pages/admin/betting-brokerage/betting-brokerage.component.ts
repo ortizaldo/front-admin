@@ -190,7 +190,7 @@ export class BettingBrokerageComponent implements OnInit {
             this.catalogDialog = false;
             this.catalogForm.reset();
           }
-
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Folio registrado', life: 3000 });
           const populate = [
             {
               path: 'derby',

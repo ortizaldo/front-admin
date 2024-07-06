@@ -1,5 +1,5 @@
 <p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
-
+<p-toast appendTo="body"></p-toast>
 <p-toolbar styleClass="p-1">
   <ng-template class="row p-1" pTemplate="left">
     <div class="col p-1">
@@ -27,134 +27,169 @@
 </p-toolbar>
 <br />
 <div class="row">
-  <!-- <div *ngFor="let item of groupedData | keyvalue" class="col">
-    Corredor: {{ item.key }}
-    <div class="row">
-      <div class="col">Total corretaje: ${{ item.value.total }}</div>
-      <div class="col">
-        % corretaje a entregar: ${{ item.value.total * 0.1 * 0.6 }}
-      </div>
-    </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Folio</th>
-          <th scope="col">Cantidad</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let _item of item.value.data">
-          <td>{{ _item.folio }}</td>
-          <td>{{ _item.amount }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
   <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
     <p-tabPanel *ngFor="let tab of groupedData | keyvalue" [header]="tab.key">
-      <div class="row">
-        <div class="col-6">
-          <form [formGroup]="formEdit">
-            <p-table
-              [value]="tab.value.data"
-              dataKey="_id"
-              editMode="row"
-              [paginator]="true"
-              [rows]="10"
-              [showCurrentPageReport]="true"
-              responsiveLayout="scroll"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-              [rowsPerPageOptions]="[10, 25, 50]"
-            >
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>Folio</th>
-                  <th>Cantidad</th>
-                  <th style="width: 8rem"></th>
-                </tr>
-              </ng-template>
-              <ng-template
-                pTemplate="body"
-                let-data
-                let-editing="editing"
-                let-ri="rowIndex"
+      <div class="card">
+        <div class="row">
+          <div class="col-5 flex align-items-center justify-content-center">
+            <form [formGroup]="formEdit">
+              <p-table
+                #dt
+                [value]="tab.value.data"
+                dataKey="_id"
+                editMode="row"
+                [paginator]="true"
+                [rows]="10"
+                [showCurrentPageReport]="true"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [globalFilterFields]="['folio']"
               >
-                <tr [pEditableRow]="data">
-                  <td pEditableColumn>
-                    <p-cellEditor>
-                      <ng-template pTemplate="input">
-                        <p-inputNumber
-                          inputId="folio-{{ data._id }}"
-                          [(ngModel)]="data.folio"
-                          [value]="data.folio"
-                          formControlName="folio"
-                          mode="decimal"
-                        >
-                        </p-inputNumber>
-                      </ng-template>
-                      <ng-template pTemplate="output">
-                        {{ data.folio }}
-                      </ng-template>
-                    </p-cellEditor>
-                  </td>
-                  <td pEditableColumn>
-                    <p-cellEditor>
-                      <ng-template pTemplate="input">
-                        <p-inputNumber
-                          inputId="folio-{{ data._id }}"
-                          [(ngModel)]="data.amount"
-                          [value]="data.amount"
-                          formControlName="amount"
-                          mode="currency"
-                          currency="MXN"
-                          locale="es-MX"
-                        >
-                        </p-inputNumber>
-                      </ng-template>
-                      <ng-template pTemplate="output">
-                        {{
-                          data.amount
-                            | currency : "MXN" : "symbol" : "1.2-2" : "es-MX"
-                        }}
-                      </ng-template>
-                    </p-cellEditor>
-                  </td>
-                  <td style="text-align: center">
-                    <button
-                      *ngIf="!editing"
-                      pButton
-                      pRipple
-                      type="button"
-                      pInitEditableRow
-                      icon="pi pi-pencil"
-                      (click)="onRowEditInit(data)"
-                      class="p-button-rounded p-button-text"
-                    ></button>
-                    <button
-                      *ngIf="editing"
-                      pButton
-                      pRipple
-                      type="button"
-                      pSaveEditableRow
-                      icon="pi pi-check"
-                      (click)="onRowEditSave(data)"
-                      class="p-button-rounded p-button-text p-button-success p-mr-2"
-                    ></button>
-                    <button
-                      *ngIf="editing"
-                      pButton
-                      pRipple
-                      type="button"
-                      pCancelEditableRow
-                      icon="pi pi-times"
-                      (click)="onRowEditCancel(data, ri)"
-                      class="p-button-rounded p-button-text p-button-danger"
-                    ></button>
+                <ng-template pTemplate="caption">
+                  <div class="p-d-flex p-ai-center p-jc-between">
+                    <div class="col-md-3 pr-md-1">
+                      <div class="form-group">
+                        <label>Filtro de busqueda</label>
+                        <input
+                          pInputText
+                          class="form-control"
+                          type="text"
+                          (input)="
+                            dt.filterGlobal($event.target.value, 'contains')
+                          "
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Folio</th>
+                    <th>Cantidad</th>
+                    <th style="width: 8rem"></th>
+                  </tr>
+                </ng-template>
+                <ng-template
+                  pTemplate="body"
+                  let-data
+                  let-editing="editing"
+                  let-ri="rowIndex"
+                >
+                  <tr [pEditableRow]="data">
+                    <td pEditableColumn style="width: 8rem">
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <p-inputNumber
+                            inputId="folio-{{ data._id }}"
+                            [(ngModel)]="data.folio"
+                            [value]="data.folio"
+                            formControlName="folio"
+                            mode="decimal"
+                            (onBlur)="edit(data, tab.key)"
+                          >
+                          </p-inputNumber>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{ data.folio }}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <p-inputNumber
+                            inputId="folio-{{ data._id }}"
+                            [(ngModel)]="data.amount"
+                            [value]="data.amount"
+                            formControlName="amount"
+                            mode="currency"
+                            currency="MXN"
+                            locale="es-MX"
+                            (onBlur)="edit(data, tab.key)"
+                          >
+                          </p-inputNumber>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{
+                            data.amount
+                              | currency : "MXN" : "symbol" : "1.2-2" : "es-MX"
+                          }}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td style="text-align: center">
+                      <button
+                        *ngIf="!editing"
+                        pButton
+                        pRipple
+                        type="button"
+                        pInitEditableRow
+                        icon="pi pi-pencil"
+                        (click)="onRowEditInit(data)"
+                        class="p-button-rounded p-button-text"
+                      ></button>
+                      <button
+                        *ngIf="editing"
+                        pButton
+                        pRipple
+                        type="button"
+                        pSaveEditableRow
+                        icon="pi pi-check"
+                        (click)="onRowEditSave(data, tab.key)"
+                        class="p-button-rounded p-button-text p-button-success p-mr-2"
+                      ></button>
+                      <button
+                        *ngIf="editing"
+                        pButton
+                        pRipple
+                        type="button"
+                        pCancelEditableRow
+                        icon="pi pi-times"
+                        (click)="onRowEditCancel(data, ri)"
+                        class="p-button-rounded p-button-text p-button-danger"
+                      ></button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </form>
+          </div>
+          <div class="col-1">
+            <p-divider layout="vertical">
+              <b>Totales</b>
+            </p-divider>
+          </div>
+          <div class="col-3 flex align-items-center justify-content-center">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Concepto</th>
+                  <th scope="col">Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Total corretaje</td>
+                  <td>
+                    {{
+                      tab.value.total
+                        | currency : "MXN" : "symbol" : "1.2-2" : "es-MX"
+                    }}
                   </td>
                 </tr>
-              </ng-template>
-            </p-table>
-          </form>
+                <tr>
+                  <td>% Corretaje a entregar:</td>
+                  <td>
+                    {{
+                      tab.value.total * 0.1 * 0.6
+                        | currency : "MXN" : "symbol" : "1.2-2" : "es-MX"
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </p-tabPanel>

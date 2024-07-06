@@ -35,6 +35,7 @@ import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage
 import { InputMaskModule } from "primeng/inputmask";
 import { IConfig, NgxMaskModule } from "ngx-mask";
 import { TabViewModule } from "primeng/tabview";
+import { ToastModule } from 'primeng/toast';
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     ScrollPanelModule,
     SplitButtonModule,
     InputMaskModule,
-    TabViewModule
+    TabViewModule,
+    ToastModule
   ],
   declarations: [
     DashboardComponent,

@@ -54,7 +54,6 @@ export class BetStubComponent implements OnInit{
         tap((data: any) => {
           this.derby = data.data;
           this.selectedDerby = this._selectedDerby;
-          console.log("🚀 ~ BetStubComponent ~ tap ~ this.selectedDerby:", this.selectedDerby)
         }),
         catchError(err => {
           // this.loading = false;

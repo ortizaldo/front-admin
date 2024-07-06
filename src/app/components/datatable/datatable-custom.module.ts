@@ -14,11 +14,13 @@ import { SpeedDialModule } from 'primeng/speeddial';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { ToastModule } from 'primeng/toast';
 import { TabViewModule } from "primeng/tabview";
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TeamsDatatable } from "./teams-datatable/teams-datatable.component";
 import { CorretajeDatatable } from "./corretaje-datatable/corretaje-datatable.component";
 import { ReactiveFormsModule } from "@angular/forms";
+import { DividerModule } from "primeng/divider";
 @NgModule({
   imports: [
     CommonModule,
@@ -36,7 +38,9 @@ import { ReactiveFormsModule } from "@angular/forms";
     InputMaskModule,
     TabViewModule,
     InputNumberModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule,
+    DividerModule
   ],
   declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
   exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
