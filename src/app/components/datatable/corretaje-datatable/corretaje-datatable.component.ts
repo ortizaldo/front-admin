@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
 import { ContextMenu } from "primeng/contextmenu";
 import { Table } from "primeng/table";
@@ -27,14 +28,21 @@ export class CorretajeDatatable implements OnInit {
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
 
+  formEdit: FormGroup;
+
   activeIndex: number = 0;
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private crudService: CrudService, private primengConfig: PrimeNGConfig) { }
+  constructor(private fb: FormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.formEdit = new FormGroup({
+      folio: new FormControl(0, [Validators.required]),
+      amount: new FormControl(0, [Validators.required]),
+    });
     this.primengConfig.ripple = true;
+    this.cd.detectChanges();
   }
 
   openDialog() {
@@ -57,5 +65,18 @@ export class CorretajeDatatable implements OnInit {
   editSelected(data) {
     console.log("🚀 ~ file: simple-datatable.component.ts:56 ~ SimpleDatatable ~ editSelected ~ data:", data)
     this.editRecords.emit({ data });
+  }
+
+  onRowEditInit(data: any) {
+    console.log("🚀 ~ CorretajeDatatable ~ onRowEditInit ~ data:", data)
+  }
+
+  onRowEditSave(data: any) {
+    console.log("🚀 ~ CorretajeDatatable ~ onRowEditSave ~ data:", data)
+  }
+
+  onRowEditCancel(data: any, index: number) {
+    console.log("🚀 ~ CorretajeDatatable ~ onRowEditCancel ~ index:", index)
+    console.log("🚀 ~ CorretajeDatatable ~ onRowEditCancel ~ data:", data)
   }
 }

@@ -120,6 +120,7 @@ export class BettingBrokerageComponent implements OnInit {
           }, {});
 
           this.groupedData = groupedData;
+          console.log("🚀 ~ BettingBrokerageComponent ~ tap ~ this.groupedData:", this.groupedData)
           this.loading = false;
         }),
         catchError(err => {
