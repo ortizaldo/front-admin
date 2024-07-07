@@ -66,9 +66,7 @@ export class CorretajeDatatable implements OnInit {
     this.editRecords.emit({ data });
   }
 
-  onRowEditInit(data: any) {
-    console.log("🚀 ~ CorretajeDatatable ~ onRowEditInit ~ data:", data)
-  }
+  onRowEditInit(data: any) {}
 
   onRowEditSave(data: any, key?: string) {
     this.edit(data);
@@ -94,8 +92,5 @@ export class CorretajeDatatable implements OnInit {
       .subscribe();
   }
 
-  onRowEditCancel(data: any, index: number) {
-    console.log("🚀 ~ CorretajeDatatable ~ onRowEditCancel ~ index:", index)
-    console.log("🚀 ~ CorretajeDatatable ~ onRowEditCancel ~ data:", data)
-  }
+  onRowEditCancel(data: any, index: number) {}
 }
