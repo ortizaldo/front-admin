@@ -174,6 +174,11 @@ export class BettingBrokerageComponent implements OnInit {
     this.getBrooker('brooker-bet', {}, populate);
   }
 
+  getData(event){
+    console.log("🚀 ~ BettingBrokerageComponent ~ getData ~ event:", event)
+    this.getBrooker('brooker-bet', {}, event.populate);
+  }
+
   /**
  * Saves the catalog data by making a POST request to the specified endpoint.
  *

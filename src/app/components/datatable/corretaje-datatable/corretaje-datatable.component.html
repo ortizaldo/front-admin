@@ -16,6 +16,16 @@
       <button
         pButton
         pRipple
+        [label]="Actualizar"
+        icon="pi pi-refresh"
+        class="p-button-info p-mr-2"
+        (click)="getBrokerBet()"
+      ></button>
+    </div>
+    <div class="col p-1">
+      <button
+        pButton
+        pRipple
         [label]="Delete"
         icon="pi pi-trash"
         class="p-button-danger"
@@ -31,7 +41,7 @@
     <p-tabPanel *ngFor="let tab of groupedData | keyvalue" [header]="tab.key">
       <div class="card">
         <div class="row">
-          <div class="col-5 flex align-items-center justify-content-center">
+          <div class="col-7 flex align-items-center justify-content-center">
             <form [formGroup]="formEdit">
               <p-table
                 #dt
@@ -45,6 +55,7 @@
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [rowsPerPageOptions]="[10, 25, 50]"
                 [globalFilterFields]="['folio']"
+                appendTo="'body'"
               >
                 <ng-template pTemplate="caption">
                   <div class="p-d-flex p-ai-center p-jc-between">
@@ -65,9 +76,12 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                   <tr>
-                    <th>Folio</th>
-                    <th>Cantidad</th>
-                    <th style="width: 8rem"></th>
+                    <th pSortableColumn="folio">
+                      Folio<p-sortIcon field="folio"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="amount">
+                      Cantidad<p-sortIcon field="amount"></p-sortIcon>
+                    </th>
                   </tr>
                 </ng-template>
                 <ng-template
@@ -118,7 +132,7 @@
                         </ng-template>
                       </p-cellEditor>
                     </td>
-                    <td style="text-align: center">
+                    <!-- <td style="text-align: center">
                       <button
                         *ngIf="!editing"
                         pButton
@@ -149,7 +163,7 @@
                         (click)="onRowEditCancel(data, ri)"
                         class="p-button-rounded p-button-text p-button-danger"
                       ></button>
-                    </td>
+                    </td> -->
                   </tr>
                 </ng-template>
               </p-table>

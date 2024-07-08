@@ -27,6 +27,7 @@ export class CorretajeDatatable implements OnInit {
   @Output() dialogChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
+  @Output() getData: EventEmitter<any> = new EventEmitter<any>();
 
   formEdit: FormGroup;
 
@@ -57,6 +58,37 @@ export class CorretajeDatatable implements OnInit {
   deleteSelected() {
     this.deleteRecords.emit({ data: this.selectedData });
   }
+
+  getBrokerBet() {
+    const populate = [
+      {
+        path: 'derby',
+        select: 'name'
+      },
+      {
+        path: 'brooker',
+        select: 'brookerName'
+      },
+    ];
+    const filter = {
+      endpoint: 'brooker-bet',
+      params: {},
+      populate
+    }
+    this.getData.emit(filter);
+  }
+
+  // exportExcel() {
+  //   import("xlsx").then(xlsx => {
+  //     const worksheet = xlsx.utils.json_to_sheet(this.products);
+  //     const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+  //     const excelBuffer: any = xlsx.write(workbook, {
+  //       bookType: "xlsx",
+  //       type: "array"
+  //     });
+  //     this.saveAsExcelFile(excelBuffer, "products");
+  //   });
+  // }
 
   delete(data) {
     this.deleteRecords.emit({ data: [data] });
