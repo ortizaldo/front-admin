@@ -233,7 +233,6 @@ export class BettingBrokerageComponent implements OnInit {
 
   edit(event) {
     const {value} = event;
-    console.log("🚀 ~ BettingBrokerageComponent ~ edit ~ event:", event)
     this.crudService.put(value.data, value.data._id, "brooker-bet")
       .pipe(
         tap((data: any) => {
