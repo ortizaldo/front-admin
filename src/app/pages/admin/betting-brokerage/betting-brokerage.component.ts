@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { catchError, tap } from "rxjs";
@@ -7,7 +7,8 @@ import * as _ from "underscore";
 @Component({
   selector: "app-betting-brokerage",
   templateUrl: "betting-brokerage.component.html",
-  styleUrls: ["betting-brokerage.component.scss"],
+  styleUrls: ["betting-brokerage.component.css"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class BettingBrokerageComponent implements OnInit {
   catalogForm: FormGroup;
@@ -24,6 +25,8 @@ export class BettingBrokerageComponent implements OnInit {
   groupedData: any;
   columns: any[];
   selectedAny: any;
+
+  totalCorretaje: number = 0;
 
   derbys: any[];
   derby: any;
@@ -98,6 +101,9 @@ export class BettingBrokerageComponent implements OnInit {
       filters: {
         deleted: false
       },
+      sort:{
+        _id: -1
+      },
       filtersId: {
         derby: {
           value: this.derby._id,
@@ -120,7 +126,8 @@ export class BettingBrokerageComponent implements OnInit {
           }, {});
 
           this.groupedData = groupedData;
-          console.log("🚀 ~ BettingBrokerageComponent ~ tap ~ this.groupedData:", this.groupedData)
+
+          this.calcularTotalCorretaje();
           this.loading = false;
         }),
         catchError(err => {
@@ -130,6 +137,15 @@ export class BettingBrokerageComponent implements OnInit {
       )
       .subscribe();
 
+  }
+
+  calcularTotalCorretaje() {
+    const self = this;
+    const total = Object.keys(this.groupedData).reduce((acc, current) => {
+      acc += self.groupedData[current].total;
+      return acc;
+    }, 0);
+    this.totalCorretaje = total;
   }
 
   onChange(event, type) {
@@ -175,7 +191,6 @@ export class BettingBrokerageComponent implements OnInit {
   }
 
   getData(event){
-    console.log("🚀 ~ BettingBrokerageComponent ~ getData ~ event:", event)
     this.getBrooker('brooker-bet', {}, event.populate);
   }
 
@@ -216,15 +231,21 @@ export class BettingBrokerageComponent implements OnInit {
       .subscribe();
   }
 
-  edit() {
-    this.crudService.put(this.catalogForm.value, this.catalog._id, this.endpoint)
+  edit(event) {
+    const {value} = event;
+    console.log("🚀 ~ BettingBrokerageComponent ~ edit ~ event:", event)
+    this.crudService.put(value.data, value.data._id, "brooker-bet")
       .pipe(
         tap((data: any) => {
-          this.data.unshift(data.data);
-          this.loading = false;
-          this.catalogDialog = false;
-          this.isEditing = false;
-          this.catalogForm.reset();
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Folio editado', life: 3000 });
+          let total = 0;
+          this.groupedData[value.key].data.map(item => {
+            total += item.amount;
+          });
+
+          this.groupedData[value.key].total = total;
+
+          this.calcularTotalCorretaje();
         }),
         catchError(err => {
           this.loading = false;

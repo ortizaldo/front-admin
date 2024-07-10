@@ -1,0 +1,6 @@
+.p-dropdown:not(.p-disabled).p-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0rem #a6d5fa !important;
+  border-color: #2196F3;
+}

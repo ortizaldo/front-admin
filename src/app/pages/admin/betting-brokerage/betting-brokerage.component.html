@@ -33,15 +33,47 @@
                 </p-dropdown>
               </div>
             </div>
-            <div class="row">
+            <div *ngIf="derby" class="row">
               <div class="col-sm-2">
                 <div class="form-group">
                   <label>Fecha del Evento</label>
                   <div class="form-group mt-2">
                     <span
-                      class="badge text-bg-info"
+                      class="badge text-bg-secondary"
                       style="font-size: initial"
                       >{{ derby?.dateEvent }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Total corretaje</label>
+                  <div class="form-group mt-2">
+                    <span
+                      class="badge text-bg-success"
+                      style="font-size: initial"
+                      >{{
+                        totalCorretaje
+                          | currency : "MXN" : "symbol" : "1.2-2" : "es-MX"
+                      }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Porcentaje a entregar</label>
+                  <div class="form-group mt-2">
+                    <span
+                      class="badge text-bg-success"
+                      style="font-size: initial"
+                      >{{
+                        totalCorretaje * 0.1 * 0.6
+                          | currency : "MXN" : "symbol" : "1.2-2" : "es-MX"
+                      }}</span
                     >
                   </div>
                 </div>
@@ -62,7 +94,7 @@
                 [items]="itemsDT"
                 (dialogChange)="openNew($event)"
                 (deleteRecords)="deleteSelected($event)"
-                (editRecords)="editSelected($event)"
+                (editRecords)="edit($event)"
                 (getData)="getData($event)"
               ></app-corretaje-datatable>
             </div>

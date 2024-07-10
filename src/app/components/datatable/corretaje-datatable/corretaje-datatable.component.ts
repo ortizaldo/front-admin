@@ -5,7 +5,8 @@ import { ContextMenu } from "primeng/contextmenu";
 import { Table } from "primeng/table";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
-
+import { ExcelService } from "src/app/_services/excel.service";
+import * as _ from "underscore";
 @Component({
   selector: "app-corretaje-datatable",
   templateUrl: "corretaje-datatable.component.html",
@@ -35,7 +36,7 @@ export class CorretajeDatatable implements OnInit {
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private fb: FormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+  constructor(private excelService: ExcelService, private fb: FormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.formEdit = new FormGroup({
@@ -78,51 +79,26 @@ export class CorretajeDatatable implements OnInit {
     this.getData.emit(filter);
   }
 
-  // exportExcel() {
-  //   import("xlsx").then(xlsx => {
-  //     const worksheet = xlsx.utils.json_to_sheet(this.products);
-  //     const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
-  //     const excelBuffer: any = xlsx.write(workbook, {
-  //       bookType: "xlsx",
-  //       type: "array"
-  //     });
-  //     this.saveAsExcelFile(excelBuffer, "products");
-  //   });
-  // }
+  exportToExcel(): void {
+    this.excelService.exportToExcel(this.groupedData, 'sample-file');
+  }
 
   delete(data) {
     this.deleteRecords.emit({ data: [data] });
   }
-
-  editSelected(data) {
-    this.editRecords.emit({ data });
-  }
-
   onRowEditInit(data: any) {}
 
   onRowEditSave(data: any, key?: string) {
-    this.edit(data);
+    const _data = {data, key}
+    this.editRecords.emit({ value: _data });
   }
 
-  edit(data, key?: string) {
-    this.crudService.put(data, data._id, "brooker-bet")
-      .pipe(
-        tap((data: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Folio editado', life: 3000 });
-          let total = 0;
-          this.groupedData[key].data.map(item => {
-            total += item.amount;
-          });
-
-          this.groupedData[key].total = total;
-        }),
-        catchError(err => {
-          this.loading = false;
-          return err
-        })
-      )
-      .subscribe();
+  edit(data: any, key?: string){
+    const _data = {data, key}
+    this.editRecords.emit({ value: _data });
   }
+
+
 
   onRowEditCancel(data: any, index: number) {}
 }

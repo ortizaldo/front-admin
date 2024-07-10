@@ -137,3 +137,23 @@
   padding: 0;
   font-weight: 600;
 }
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 0rem #a6d5fa;
+}
+
+app-corretaje-datatable .p-dropdown:not(.p-disabled).p-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0rem #a6d5fa !important;
+  border-color: #2196F3;
+}
+
+.p-inputtext:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0rem #a6d5fa;
+  border-color: #a5c1d7;
+}
