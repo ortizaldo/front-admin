@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { catchError, tap } from "rxjs";
@@ -12,7 +12,7 @@ import { CrudService } from "src/app/_services/crud.service";
   encapsulation: ViewEncapsulation.None,
 })
 export class UserComponent implements OnInit {
-  userForm: FormGroup;
+  userForm: UntypedFormGroup;
   users!: any[];
   user: any;
   body: any;
@@ -30,7 +30,7 @@ export class UserComponent implements OnInit {
   @ViewChild('userTemplate', { static: true }) userTemplate: TemplateRef<any>;
   @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
 
-  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.columns = [
@@ -48,15 +48,15 @@ export class UserComponent implements OnInit {
     }
 
     this.userForm = this.fb.group({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
-      phoneNumber: new FormControl('', [Validators.required]),
-      addressStreet: new FormControl('', [Validators.required]),
-      postalCode: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
-      state: new FormControl('', [Validators.required]),
-      municipality: new FormControl('', [Validators.required]),
+      firstName: new UntypedFormControl('', [Validators.required]),
+      lastName: new UntypedFormControl('', [Validators.required]),
+      email: new UntypedFormControl('', [Validators.required]),
+      phoneNumber: new UntypedFormControl('', [Validators.required]),
+      addressStreet: new UntypedFormControl('', [Validators.required]),
+      postalCode: new UntypedFormControl('', [Validators.required]),
+      country: new UntypedFormControl('', [Validators.required]),
+      state: new UntypedFormControl('', [Validators.required]),
+      municipality: new UntypedFormControl('', [Validators.required]),
     });
   }
 

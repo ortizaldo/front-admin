@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user';
 import * as _ from "underscore";
 import { SelectItem } from 'primeng/api';
@@ -18,7 +18,7 @@ import { Municipality } from 'src/app/interfaces/municipality';
 })
 export class UserEditComponent implements OnInit {
   @Input() data: any | undefined;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() companys: any[] | undefined;
   @Input() countrys: Country[] | undefined;
   @Input() states: State[] | undefined;
@@ -33,7 +33,7 @@ export class UserEditComponent implements OnInit {
   groupedCities: SelectItemGroup[];
 
   items: SelectItem[];
-  constructor(private fb: FormBuilder, private crudService: CrudService) {
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService) {
   }
 
   ngOnInit(): void {

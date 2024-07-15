@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user';
 
 import { SelectItem } from 'primeng/api';
@@ -18,7 +18,7 @@ import { Municipality } from 'src/app/interfaces/municipality';
 })
 export class StateComponent implements OnInit {
   @Input() data: any | undefined;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() countrys: Country[] | undefined;
 
   selectedCountry: Country;
@@ -26,7 +26,7 @@ export class StateComponent implements OnInit {
   items: SelectItem[];
 
   @ViewChild('form') formElement: ElementRef;
-  constructor(private fb: FormBuilder, private crudService: CrudService) {
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService) {
   }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import Chart from 'chart.js';
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
@@ -15,9 +15,9 @@ import * as _ from "underscore";
   encapsulation: ViewEncapsulation.None,
 })
 export class DerbyComponent implements OnInit {
-  derbyForm: FormGroup;
-  derbyConf: FormGroup;
-  teamForm: FormGroup;
+  derbyForm: UntypedFormGroup;
+  derbyConf: UntypedFormGroup;
+  teamForm: UntypedFormGroup;
   derbys!: any[];
   teams!: any[];
   derby: any;
@@ -55,7 +55,7 @@ export class DerbyComponent implements OnInit {
   @ViewChild('teamTemplate', { static: true }) teamTemplate: TemplateRef<any>;
   @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
   @ViewChild('buttonsTemplateTeam', { static: true }) buttonsTemplateTeam: TemplateRef<any>;
-  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.itemsDerby = [
@@ -65,17 +65,17 @@ export class DerbyComponent implements OnInit {
     this.getDerbys();
 
     this.derbyForm = this.fb.group({
-      name: new FormControl(''),
-      arma: new FormControl('', [Validators.required]),
-      numGallos: new FormControl('', [Validators.required]),
-      entrance: new FormControl('', [Validators.required]),
-      dateEvent: new FormControl(moment().format('YYYY-MM-DD')),
+      name: new UntypedFormControl(''),
+      arma: new UntypedFormControl('', [Validators.required]),
+      numGallos: new UntypedFormControl('', [Validators.required]),
+      entrance: new UntypedFormControl('', [Validators.required]),
+      dateEvent: new UntypedFormControl(moment().format('YYYY-MM-DD')),
     });
 
     this.derbyConf = this.fb.group({
-      tolerance: new FormControl(''),
-      minWeight: new FormControl('', [Validators.required]),
-      maxWeight: new FormControl('', [Validators.required]),
+      tolerance: new UntypedFormControl(''),
+      minWeight: new UntypedFormControl('', [Validators.required]),
+      maxWeight: new UntypedFormControl('', [Validators.required]),
     });
 
     this.initDTL();
@@ -84,16 +84,16 @@ export class DerbyComponent implements OnInit {
   initDTL() {
     this.emptyMessage = "No se encontraron partidos";
     this.endpoint = 'team';
-    this.teamForm = new FormGroup({
-      teamName: new FormControl('', [Validators.required]),
+    this.teamForm = new UntypedFormGroup({
+      teamName: new UntypedFormControl('', [Validators.required]),
     });
 
     this.columns = [
       { field: 'description', header: 'Pais' },
     ];
 
-    this.teamForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
+    this.teamForm = new UntypedFormGroup({
+      description: new UntypedFormControl('', [Validators.required]),
     });
   }
 

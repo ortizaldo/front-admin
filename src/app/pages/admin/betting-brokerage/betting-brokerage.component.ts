@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
@@ -11,7 +11,7 @@ import * as _ from "underscore";
   encapsulation: ViewEncapsulation.None,
 })
 export class BettingBrokerageComponent implements OnInit {
-  catalogForm: FormGroup;
+  catalogForm: UntypedFormGroup;
   public items: MenuItem[];
   public itemsDT: MenuItem[];
   collapsed = true;
@@ -39,11 +39,11 @@ export class BettingBrokerageComponent implements OnInit {
 
   @ViewChild('catalogTemplate', { static: true }) catalogTemplate: TemplateRef<any>;
   @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
-  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.catalogForm = this.fb.group({
-      description: new FormControl('', [Validators.required]),
+      description: new UntypedFormControl('', [Validators.required]),
     });
 
     const self = this;
@@ -159,12 +159,12 @@ export class BettingBrokerageComponent implements OnInit {
     this.emptyMessage = "No se folios de corretaje";
     this.headerDetails = "Crear folio de corretaje";
     this.endpoint = 'brooker-bet';
-    this.catalogForm = new FormGroup({
-      derby: new FormControl(this.derby._id, [Validators.required]),
-      brooker: new FormControl('', [Validators.required]),
-      folio: new FormControl('', [Validators.required]),
-      amount: new FormControl('', [Validators.required]),
-      active: new FormControl('', [Validators.required]),
+    this.catalogForm = new UntypedFormGroup({
+      derby: new UntypedFormControl(this.derby._id, [Validators.required]),
+      brooker: new UntypedFormControl('', [Validators.required]),
+      folio: new UntypedFormControl('', [Validators.required]),
+      amount: new UntypedFormControl('', [Validators.required]),
+      active: new UntypedFormControl('', [Validators.required]),
     });
     this.title = 'Folios de corretaje';
 

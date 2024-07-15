@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user';
 
 import { SelectItem } from 'primeng/api';
@@ -19,13 +19,13 @@ import { ControlValueAccessor } from '@angular/forms';
 export class BrookerComponent implements OnInit  {
   @Input() data: any | undefined;
   @Input() label: string;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   onChange: any = () => {};
   onTouched: any = () => {};
   percentage: string;
 
   @ViewChild('form') formElement: ElementRef;
-  constructor(private fb: FormBuilder, private crudService: CrudService) {
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService) {
   }
 
   ngOnInit(): void {

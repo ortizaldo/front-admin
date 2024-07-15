@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
 import { ContextMenu } from "primeng/contextmenu";
@@ -16,7 +16,7 @@ import { CrudService } from "src/app/_services/crud.service";
 
 
 export class TeamsDatatable implements OnInit {
-  ringForm: FormGroup;
+  ringForm: UntypedFormGroup;
   @Input() data!: any[];
   @Input() teams!: any[];
   @Input() confDerby!: any;
@@ -35,7 +35,7 @@ export class TeamsDatatable implements OnInit {
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig) { }
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig) { }
 
   ngOnInit() {
     this.primengConfig.ripple = true;

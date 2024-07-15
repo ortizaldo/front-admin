@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
@@ -10,7 +10,7 @@ import * as _ from "underscore";
   styleUrls: ["catalogs.component.scss"],
 })
 export class CatalogsComponent implements OnInit {
-  catalogForm: FormGroup;
+  catalogForm: UntypedFormGroup;
   public items: MenuItem[];
   public itemsDT: MenuItem[];
   collapsed = true;
@@ -32,11 +32,11 @@ export class CatalogsComponent implements OnInit {
 
   @ViewChild('catalogTemplate', { static: true }) catalogTemplate: TemplateRef<any>;
   @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
-  constructor(private fb: FormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.catalogForm = this.fb.group({
-      description: new FormControl('', [Validators.required]),
+      description: new UntypedFormControl('', [Validators.required]),
     });
 
     const self = this;
@@ -87,8 +87,8 @@ export class CatalogsComponent implements OnInit {
     this.headerDetails = "Crear registro de País";
     this.emptyMessage = "No se encontraron paises";
     this.endpoint = 'country';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
+    this.catalogForm = new UntypedFormGroup({
+      description: new UntypedFormControl('', [Validators.required]),
     });
     const select = [
       "_id",
@@ -108,9 +108,9 @@ export class CatalogsComponent implements OnInit {
     this.headerDetails = "Crear registro de Estado";
     this.emptyMessage = "No se encontraron estados";
     this.endpoint = 'state';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
+    this.catalogForm = new UntypedFormGroup({
+      description: new UntypedFormControl('', [Validators.required]),
+      country: new UntypedFormControl('', [Validators.required]),
     });
     const select = [
       "_id",
@@ -139,10 +139,10 @@ export class CatalogsComponent implements OnInit {
     this.headerDetails = "Crear registro de Municipio";
     this.emptyMessage = "No se encontraron municipios";
     this.endpoint = 'municipality';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
-      state: new FormControl('', [Validators.required]),
+    this.catalogForm = new UntypedFormGroup({
+      description: new UntypedFormControl('', [Validators.required]),
+      country: new UntypedFormControl('', [Validators.required]),
+      state: new UntypedFormControl('', [Validators.required]),
     });
     const select = [
       "_id",
@@ -176,8 +176,8 @@ export class CatalogsComponent implements OnInit {
     this.title = 'Catalogo compania';
     this.headerDetails = "Crear registro de Compañia";
     this.endpoint = 'companies';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
+    this.catalogForm = new UntypedFormGroup({
+      description: new UntypedFormControl('', [Validators.required]),
     });
     const select = [
       "_id",
@@ -193,9 +193,9 @@ export class CatalogsComponent implements OnInit {
   }
 
   enableBrookerage() {
-    this.catalogForm = new FormGroup({
-      brookerName: new FormControl('', [Validators.required]),
-      percent: new FormControl(['', [Validators.required]]),
+    this.catalogForm = new UntypedFormGroup({
+      brookerName: new UntypedFormControl('', [Validators.required]),
+      percent: new UntypedFormControl(['', [Validators.required]]),
     });
     this.title = 'Corredores';
     this.headerDetails = "Crear corredor de apuestas";
@@ -289,8 +289,8 @@ export class CatalogsComponent implements OnInit {
     this.emptyMessage = "No se encontraron registros";
     this.headerDetails = "Crear registro de País";
     this.endpoint = 'country';
-    this.catalogForm = new FormGroup({
-      description: new FormControl('', [Validators.required]),
+    this.catalogForm = new UntypedFormGroup({
+      description: new UntypedFormControl('', [Validators.required]),
     });
     this.title = 'Catalogo país';
     const select = [

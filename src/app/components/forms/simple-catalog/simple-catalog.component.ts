@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user';
 
 import { SelectItem } from 'primeng/api';
@@ -19,7 +19,7 @@ import { Municipality } from 'src/app/interfaces/municipality';
 export class SimpleCatalogComponent implements OnInit {
   @Input() data: any | undefined;
   @Input() label: string;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() companys: any[] | undefined;
   @Input() countrys: Country[] | undefined;
   @Input() states: State[] | undefined;
@@ -33,7 +33,7 @@ export class SimpleCatalogComponent implements OnInit {
   items: SelectItem[];
 
   @ViewChild('form') formElement: ElementRef;
-  constructor(private fb: FormBuilder, private crudService: CrudService) {
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService) {
   }
 
   ngOnInit(): void {

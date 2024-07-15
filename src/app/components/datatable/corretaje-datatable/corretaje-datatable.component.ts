@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
 import { ContextMenu } from "primeng/contextmenu";
 import { Table } from "primeng/table";
@@ -30,19 +30,19 @@ export class CorretajeDatatable implements OnInit {
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() getData: EventEmitter<any> = new EventEmitter<any>();
 
-  formEdit: FormGroup;
+  formEdit: UntypedFormGroup;
 
   activeIndex: number = 0;
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private excelService: ExcelService, private fb: FormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+  constructor(private excelService: ExcelService, private fb: UntypedFormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
-    this.formEdit = new FormGroup({
-      folio: new FormControl(0, [Validators.required]),
-      amount: new FormControl(0, [Validators.required]),
-      nulo: new FormControl(false),
+    this.formEdit = new UntypedFormGroup({
+      folio: new UntypedFormControl(0, [Validators.required]),
+      amount: new UntypedFormControl(0, [Validators.required]),
+      nulo: new UntypedFormControl(false),
     });
     this.primengConfig.ripple = true;
     this.cd.detectChanges();
