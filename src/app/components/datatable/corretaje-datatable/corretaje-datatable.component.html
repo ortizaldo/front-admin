@@ -79,6 +79,7 @@
                   <tr>
                     <th>Folio</th>
                     <th>Cantidad</th>
+                    <th>Nulo</th>
                   </tr>
                 </ng-template>
                 <ng-template
@@ -126,6 +127,22 @@
                             data.amount
                               | currency : "MXN" : "symbol" : "1.2-2" : "es-MX"
                           }}
+                        </ng-template>
+                      </p-cellEditor>
+                    </td>
+                    <td pEditableColumn>
+                      <p-cellEditor>
+                        <ng-template pTemplate="input">
+                          <p-checkbox
+                            [(ngModel)]="data.nulo"
+                            binary="true"
+                            inputId="nulo-{{ data._id }}"
+                            formControlName="nulo"
+                            (onChange)="edit(data, tab.key)"
+                          ></p-checkbox>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                          {{ data.nulo ? "Si" : "No" }}
                         </ng-template>
                       </p-cellEditor>
                     </td>

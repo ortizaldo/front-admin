@@ -21,6 +21,7 @@ import { TeamsDatatable } from "./teams-datatable/teams-datatable.component";
 import { CorretajeDatatable } from "./corretaje-datatable/corretaje-datatable.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { DividerModule } from "primeng/divider";
+import {CheckboxModule} from 'primeng/checkbox';
 @NgModule({
   imports: [
     CommonModule,
@@ -40,7 +41,8 @@ import { DividerModule } from "primeng/divider";
     InputNumberModule,
     ReactiveFormsModule,
     ToastModule,
-    DividerModule
+    DividerModule,
+    CheckboxModule,
   ],
   declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
   exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],

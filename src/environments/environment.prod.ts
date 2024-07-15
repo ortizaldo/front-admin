@@ -5,7 +5,7 @@
 export const environment = {
   production: true,
   authentication: false,
-  api: 'http://35.160.131.163:3000/api',
+  api: 'https://fight-score-back.onrender.com/api',
 };
 
 /*

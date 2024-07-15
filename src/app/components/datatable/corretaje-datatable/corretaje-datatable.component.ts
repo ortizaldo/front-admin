@@ -42,6 +42,7 @@ export class CorretajeDatatable implements OnInit {
     this.formEdit = new FormGroup({
       folio: new FormControl(0, [Validators.required]),
       amount: new FormControl(0, [Validators.required]),
+      nulo: new FormControl(false),
     });
     this.primengConfig.ripple = true;
     this.cd.detectChanges();

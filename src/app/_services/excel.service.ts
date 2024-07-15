@@ -26,11 +26,12 @@ export class ExcelService {
       XLSX.utils.sheet_add_aoa(ws, [[corredor]], { origin: { r: 0, c: col } });
 
       // Escribir las cabeceras
-      XLSX.utils.sheet_add_aoa(ws, [['Folio', 'Cantidad']], { origin: { r: 1, c: col } });
+      XLSX.utils.sheet_add_aoa(ws, [['Folio', 'Cantidad', 'Es nulo?']], { origin: { r: 1, c: col } });
 
       // Escribir los registros
       registros.data.forEach((registro, index) => {
-        XLSX.utils.sheet_add_aoa(ws, [[registro['folio'], registro['amount']]], { origin: { r: 2 + index, c: col } });
+        const nulo = registro['nulo'] ? 'Si' : 'No';
+        XLSX.utils.sheet_add_aoa(ws, [[registro['folio'], registro['amount'], nulo]], { origin: { r: 2 + index, c: col } });
       });
 
       // Moverse a la siguiente columna

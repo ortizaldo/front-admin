@@ -115,17 +115,19 @@ export class BettingBrokerageComponent implements OnInit {
         tap((data: any) => {
           this.data = data.data;
           const groupedData = this.data.reduce((acc, current) => {
-            const { folio, amount } = current;
+            let { folio, amount, nulo } = current;
+            nulo = _.isUndefined(nulo) ? false : nulo;
             if (!acc[current.brooker.brookerName]) {
               acc[current.brooker.brookerName] = {data: [], total: 0, percent: 0};
             }
-            acc[current.brooker.brookerName].data.push({_id: current._id, folio, amount});
+            acc[current.brooker.brookerName].data.push({_id: current._id, folio, amount, nulo});
             acc[current.brooker.brookerName].total += amount;
             acc[current.brooker.brookerName].percent = current.brooker.percent;
             return acc;
           }, {});
 
           this.groupedData = groupedData;
+          console.log("🚀 ~ BettingBrokerageComponent ~ tap ~ this.groupedData:", this.groupedData)
 
           this.calcularTotalCorretaje();
           this.loading = false;
