@@ -45,10 +45,10 @@ export class TeamsDatatable implements OnInit {
     this.dialogChange.emit({ openDialog: true });
   }
 
-  showContextMenu(cm: ContextMenu, event: MouseEvent) {
-    cm.onShow.emit(event);
-    event.stopPropagation();
-  }
+  // showContextMenu(cm: ContextMenu, event: MouseEvent) {
+  //   cm.onShow.emit(event);
+  //   event.stopPropagation();
+  // }
 
   deleteSelected() {
     this.deleteRecords.emit({ data: this.selectedData });
