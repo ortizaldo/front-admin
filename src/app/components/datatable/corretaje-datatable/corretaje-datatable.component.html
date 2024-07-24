@@ -57,6 +57,10 @@
                 [rowsPerPageOptions]="[10, 25, 50]"
                 [globalFilterFields]="['folio']"
                 appendTo="'body'"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [styleClass]="
+                  'p-datatable-sm p-datatable-gridlines p-datatable-striped'
+                "
               >
                 <ng-template pTemplate="caption">
                   <div class="p-d-flex p-ai-center p-jc-between">

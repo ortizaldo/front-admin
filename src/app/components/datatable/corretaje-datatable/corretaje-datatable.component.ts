@@ -30,6 +30,8 @@ export class CorretajeDatatable implements OnInit {
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() getData: EventEmitter<any> = new EventEmitter<any>();
 
+  selectedSize: any = '';
+  sizes!: any[];
   formEdit: UntypedFormGroup;
 
   activeIndex: number = 0;
@@ -46,6 +48,12 @@ export class CorretajeDatatable implements OnInit {
     });
     this.primengConfig.ripple = true;
     this.cd.detectChanges();
+
+    this.sizes = [
+        { name: 'Small', class: 'p-datatable-sm' },
+        { name: 'Normal', class: '' },
+        { name: 'Large',  class: 'p-datatable-lg' }
+    ];
   }
 
   openDialog() {

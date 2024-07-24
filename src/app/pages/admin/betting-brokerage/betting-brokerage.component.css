@@ -1,6 +1,28 @@
-.p-dropdown:not(.p-disabled).p-focus {
+/* .p-dropdown:not(.p-disabled).p-focus {
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 0rem #a6d5fa !important;
   border-color: #2196F3;
+} */
+
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 0rem !important;
+  ;
 }
+
+ol,
+ul {
+  padding-left: 0rem !important;
+}
+
+/* app-betting-brokerage .p-dropdown .p-dropdown-trigger {
+  background: transparent;
+  color: #6c757d;
+  width: 2.357rem;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  display: none;
+} */
