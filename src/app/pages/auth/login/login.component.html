@@ -4,20 +4,20 @@
       <div class="left">
         <div class="contact">
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <h3>SIGN IN</h3>
-            <input formControlName="email" type="text" placeholder="USERNAME" />
+            <h3>Inicio de sesión</h3>
+            <input formControlName="email" type="text" placeholder="Email" />
             <div
               *ngIf="
                 loginForm.get('email').invalid &&
                 (loginForm.get('email').dirty || loginForm.get('email').touched)
               "
             >
-              Please provide an email.
+              Por favor proporcione un email.
             </div>
             <input
               formControlName="password"
               type="password"
-              placeholder="PASSWORD"
+              placeholder="Contraseña"
             />
             <div
               *ngIf="
@@ -26,10 +26,10 @@
                   loginForm.get('password').touched)
               "
             >
-              Please provide a password.
+            Por favor proporcione una contraseña.
             </div>
             <button class="submit" type="submit" [disabled]="loginForm.invalid">
-              LET'S GO
+              Iniciar sesion
             </button>
           </form>
         </div>
