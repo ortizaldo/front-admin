@@ -81,11 +81,11 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this.http.post<any>(API_URL + 'oauth/signup', data)
-      .pipe(
-        tap(_ => AuthService.log('register')),
-        catchError(AuthService.handleError)
-      );
+    return this.http.post(
+      environment.api + '/users',
+      data,
+      httpOptions
+    );
   }
 
   secured(): Observable<any> {

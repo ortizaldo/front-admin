@@ -26,26 +26,23 @@ export class RegisterComponent implements OnInit {
       firstName: new UntypedFormControl("", [Validators.required]),
       lastName: new UntypedFormControl("", [Validators.required]),
       email: new UntypedFormControl("", [Validators.required]),
-      password: new UntypedFormControl("", [Validators.required])
+      password: new UntypedFormControl("", [Validators.required]),
+      passwordConfirm: new UntypedFormControl("", [Validators.required]),
     });
   }
 
   onSubmit(): void {
+    delete this.registerForm.value.passwordConfirm;
     if (this.registerForm.invalid) return;
-    this.authService.login(this.registerForm.value.email, this.registerForm.value.password).subscribe(
+    this.authService.register(this.registerForm.value).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data.user);
-
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        // this.roles = this.tokenStorage.getUser().roles;
-        this.redirectDashboard();
+        console.log(data);
+        this.showNotification('top', 'right', "Registro de cuenta", "Se registro correctamente", "alert-success");
       },
       err => {
         const _err = err.error.err;
         this.errorMessage = _err.message;
-        this.showNotification('top', 'right', _err.title, _err.message, "alert-warning")
+        this.showNotification('top', 'right', _err.title, _err.message, "alert-warning");
         this.isLoginFailed = true;
       }
     );
