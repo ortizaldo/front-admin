@@ -32,12 +32,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.registerForm.value.hashPassword = true;
     delete this.registerForm.value.passwordConfirm;
     if (this.registerForm.invalid) return;
     this.authService.register(this.registerForm.value).subscribe(
       data => {
         this.showNotification('top', 'right', "Registro de cuenta", "Se registro correctamente", "alert-success");
-        this.redirectDashboard();
+        //this.redirectDashboard();
       },
       err => {
         const _err = err.error.err;

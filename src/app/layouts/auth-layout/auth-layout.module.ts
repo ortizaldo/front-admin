@@ -9,6 +9,7 @@ import { ComponentsModule } from "src/app/components/components.module";
 import { AuthLayoutRoutes } from "./auth-layout.routing";
 import { LoginComponent } from "src/app/pages/auth/login/login.component";
 import { RegisterComponent } from "src/app/pages/auth/register/register.component";
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { RegisterComponent } from "src/app/pages/auth/register/register.componen
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
-    ComponentsModule
+    ComponentsModule,
+    PasswordModule,
   ],
   declarations: [
     LoginComponent,

@@ -60,11 +60,16 @@
 
             <div class="row">
               <div class="col-6">
-                <input
+                <!--<input
                   formControlName="password"
                   type="password"
                   placeholder="Contraseña"
-                />
+                />-->
+                <p-password
+                  formControlName="password"
+                  [feedback]="true"
+                  [toggleMask]="true"
+                ></p-password>
                 <div
                   *ngIf="
                     registerForm.get('password').invalid &&
