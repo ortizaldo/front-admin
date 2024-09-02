@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_services/auth.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ["./register.component.css"],
 })
 export class RegisterComponent implements OnInit {
-  registerForm: UntypedFormGroup;
+  registerForm: FormGroup;
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -28,7 +28,18 @@ export class RegisterComponent implements OnInit {
       email: new UntypedFormControl("", [Validators.required]),
       password: new UntypedFormControl("", [Validators.required]),
       passwordConfirm: new UntypedFormControl("", [Validators.required]),
+    }, {
+      validators: this.passwordMatchValidator
     });
+  }
+
+  passwordMatchValidator(formGroup: UntypedFormGroup) {
+    const password = formGroup.get('password').value;
+    const passwordConfirm = formGroup.get('passwordConfirm').value;
+    if (password !== passwordConfirm) {
+      return { mismatch: true };
+    }
+    return null;
   }
 
   onSubmit(): void {

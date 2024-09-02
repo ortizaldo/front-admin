@@ -58,43 +58,42 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row pt-4">
               <div class="col-6">
-                <!--<input
-                  formControlName="password"
-                  type="password"
-                  placeholder="Contraseña"
-                />-->
-                <p-password
-                  formControlName="password"
-                  [feedback]="true"
-                  [toggleMask]="true"
-                ></p-password>
-                <div
-                  *ngIf="
-                    registerForm.get('password').invalid &&
-                    (registerForm.get('password').dirty ||
-                      registerForm.get('password').touched)
-                  "
-                >
-                  Por favor proporcione una contraseña.
-                </div>
+                <span class="p-float-label">
+                  <p-password
+                    formControlName="password"
+                    [feedback]="true"
+                    [toggleMask]="true"
+                  ></p-password>
+                  <label for="password">Contraseña</label>
+                  <div
+                    *ngIf="
+                      registerForm.get('password').invalid &&
+                      (registerForm.get('password').dirty ||
+                        registerForm.get('password').touched)
+                    "
+                  >
+                    Por favor proporcione una contraseña.
+                  </div>
+                </span>
               </div>
               <div class="col-6">
-                <input
-                  formControlName="passwordConfirm"
-                  type="password"
-                  placeholder="Confirme la contraseña"
-                />
-                <div
-                  *ngIf="
-                    registerForm.get('password').invalid &&
-                    (registerForm.get('password').dirty ||
-                      registerForm.get('password').touched)
-                  "
-                >
-                  Por favor proporcione una contraseña.
-                </div>
+                <span class="p-float-label">
+                  <p-password
+                    formControlName="passwordConfirm"
+                    [feedback]="false"
+                  ></p-password>
+                  <label for="password">Confirmar contraseña</label>
+                  <div
+                    *ngIf="
+                      registerForm.get('password').touched &&
+                      registerForm.hasError('mismatch')
+                    "
+                  >
+                    Las contraseñas no coinciden
+                  </div>
+                </span>
               </div>
             </div>
 
