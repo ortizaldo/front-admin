@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
     this.authService.register(this.registerForm.value).subscribe(
       data => {
         this.showNotification('top', 'right', "Registro de cuenta", "Se registro correctamente", "alert-success");
-        //this.redirectDashboard();
+        this.redirectDashboard();
       },
       err => {
         const _err = err.error.err;

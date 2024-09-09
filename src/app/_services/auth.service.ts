@@ -82,7 +82,7 @@ export class AuthService {
 
   register(data: any): Observable<any> {
     return this.http.post(
-      environment.api + '/users',
+      environment.api + '/users/new',
       data,
       httpOptions
     );
