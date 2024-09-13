@@ -3,17 +3,17 @@
     <div class="col-md-4">
       <div class="form-group">
         <label>Arma</label>
-        <p-dropdown
-          styleClass="form-control"
-          [options]="armas"
-          [(ngModel)]="selectedArma"
-          optionLabel="description"
-          [appendTo]="'body'"
-          (onChange)="onChange($event, 'state')"
-          editable="false"
+        <select
+          class="form-select"
+          aria-label="Arma"
           formControlName="arma"
+          [(ngModel)]="arma"
         >
-        </p-dropdown>
+          <option selected>Seleccionar un arma</option>
+          <option *ngFor="let option of armas" [value]="option.value">
+            {{ option.description }}
+          </option>
+        </select>
       </div>
     </div>
     <div class="col-md-4">

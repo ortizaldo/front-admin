@@ -17,6 +17,8 @@ export class DerbyEditComponent implements OnInit {
   @Input() selectedArma: any | undefined;
   @Input() armas: any[] | undefined;
   @Input() form: UntypedFormGroup;
+
+  arma: any;
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService) {
     this.armas = [{ description: "1/4 Filo", value: "1/4" }, { description: "1/2 Filo", value: "1/2" }, { description: "Pulgada Filo", value: "pulgada" }];
   }
