@@ -23,10 +23,16 @@ export class DerbyEditComponent implements OnInit {
     this.armas = [{ description: "1/4 Filo", value: "1/4" }, { description: "1/2 Filo", value: "1/2" }, { description: "Pulgada Filo", value: "pulgada" }];
   }
 
-  ngOnInit(): void {
-    console.log(this.form)
+  onChange() {
+    this.selectedArma = this.armas.find(obj => obj.value === this.arma);
+    this.form.patchValue({
+      arma: this.selectedArma
+    });
+
+    console.log('%csrc/app/components/forms/derby-edit/derby-edit.component.ts:32 this.form.value', 'color: #007acc;', this.form.value);
   }
 
-  onChange(evt: any, endpoint: string) {
+  ngOnInit(): void {
+    console.log(this.form)
   }
 }

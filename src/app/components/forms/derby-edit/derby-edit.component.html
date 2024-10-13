@@ -6,6 +6,7 @@
         <select
           class="form-select"
           aria-label="Arma"
+          (change)="onChange()"
           formControlName="arma"
           [(ngModel)]="arma"
         >

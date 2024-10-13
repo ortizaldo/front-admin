@@ -197,25 +197,6 @@ export class DerbyComponent implements OnInit {
 
   editSelected(data) {
     this.data[data.idx][data.field]= data.value;
-    console.log("🚀 ~ DerbyComponent ~ editSelected ~ data:", data)
-    // this.catalog = data.data;
-    // this.isEditing = true;
-    // switch (this.endpoint) {
-    //   case 'state': {
-    //     this.headerDetails = "Editar registro de Estado";
-    //     break;
-    //   }
-    //   case 'municipality': {
-    //     this.headerDetails = "Editar registro de Municipio";
-    //     break;
-    //   }
-    //   case 'country': {
-    //     this.headerDetails = "Editar registro de País";
-    //     break;
-    //   }
-    // }
-    // this.catalogForm.patchValue(data.data);
-    // this.catalogDialog = true;
   }
 
   deleteSelected(event) {
