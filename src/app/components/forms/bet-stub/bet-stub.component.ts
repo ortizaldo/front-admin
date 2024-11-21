@@ -30,6 +30,7 @@ export class BetStubComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    console.log('%csrc/app/components/forms/bet-stub/bet-stub.component.ts:33 form', 'color: #007acc;', this.form);
     this.getBrokers();
     this.getDerbies();
   }

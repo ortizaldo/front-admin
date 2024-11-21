@@ -21,16 +21,17 @@
             <div class="col-4 text-left">
               <div class="form-group">
                 <label>Seleccionar el derby</label>
-                <p-dropdown
-                  styleClass="form-control"
-                  [options]="derbys"
-                  [(ngModel)]="derby"
-                  optionLabel="name"
-                  [appendTo]="'body'"
-                  editable="false"
-                  (onChange)="onChange($event, 'brooker-bet')"
+                <select
+                  class="form-select"
+                  aria-label="Derbys"
+                  (change)="onChange($event, 'brooker-bet')"
+                  [(ngModel)]="_idDerby"
                 >
-                </p-dropdown>
+                  <option selected>Seleccionar un derby</option>
+                  <option *ngFor="let option of derbys" [value]="option._id">
+                    {{ option.name }}
+                  </option>
+                </select>
               </div>
             </div>
             <div *ngIf="derby" class="row">

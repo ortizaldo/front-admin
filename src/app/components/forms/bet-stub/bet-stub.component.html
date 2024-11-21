@@ -3,31 +3,35 @@
     <div class="col-md-6 pr-md-1">
       <div class="form-group">
         <label>Derby</label>
-        <p-dropdown
-          styleClass="form-control"
-          [options]="derby"
-          [(ngModel)]="selectedDerby"
-          optionLabel="name"
-          [appendTo]="'body'"
-          editable="false"
+        <select
+          class="form-select"
+          aria-label="Derbys"
+          (change)="onChange($event, 'derby')"
           formControlName="derby"
+          [(ngModel)]="selectedDerby"
         >
-        </p-dropdown>
+          <option selected>Seleccionar un derby</option>
+          <option *ngFor="let option of derby" [value]="option._id">
+            {{ option.name }}
+          </option>
+        </select>
       </div>
     </div>
     <div class="col-md-3 pr-md-1">
       <div class="form-group">
         <label>Nombre del corredor</label>
-        <p-dropdown
-          styleClass="form-control"
-          [options]="brookers"
-          [(ngModel)]="selectedBrooker"
-          optionLabel="brookerName"
-          [appendTo]="'body'"
-          editable="false"
+        <select
+          class="form-select"
+          aria-label="Corredores"
+          (change)="onChange($event, 'brooker')"
           formControlName="brooker"
+          [(ngModel)]="selectedBrooker"
         >
-        </p-dropdown>
+          <option selected>Seleccionar un derby</option>
+          <option *ngFor="let option of brookers" [value]="option._id">
+            {{ option.brookerName }}
+          </option>
+        </select>
       </div>
     </div>
   </div>
