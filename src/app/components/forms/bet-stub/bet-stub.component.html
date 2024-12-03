@@ -37,7 +37,7 @@
   </div>
   <div class="row">
     <div class="col-md-2 pr-md-1">
-      <div class="form-group">
+      <div class="form-group has-validation">
         <label>Folio</label>
         <input
           class="form-control"
@@ -47,6 +47,7 @@
           formControlName="folio"
         />
         <div
+          class="invalid-feedback"
           *ngIf="
             form.get('folio').invalid &&
             (form.get('folio').dirty || form.get('folio').touched)

@@ -37,7 +37,7 @@
   </ng-template>
 </p-toolbar>
 <br />
-<div class="row">
+<div class="row" *ngIf="groupedData">
   <p-tabView [(activeIndex)]="activeIndex" [scrollable]="true">
     <p-tabPanel *ngFor="let tab of groupedData | keyvalue" [header]="tab.key">
       <div class="card">

@@ -130,6 +130,11 @@ export class BettingBrokerageComponent implements OnInit {
 
           this.groupedData = groupedData;
 
+          _.each(this.groupedData, (value, key) => {
+            value.totalCorretaje = value.total *0.1*0.6  ;
+          });
+          console.log("🚀 ~ BettingBrokerageComponent ~ tap ~ this.groupedData:", this.groupedData);
+
           this.calcularTotalCorretaje();
           this.loading = false;
         }),
@@ -161,8 +166,6 @@ export class BettingBrokerageComponent implements OnInit {
     this.headerDetails = "Crear folio de corretaje";
     this.endpoint = 'brooker-bet';
     this.selectedDerby = this.derbys.find(obj => obj._id === this._idDerby);
-    console.log('%csrc/app/pages/admin/betting-brokerage/betting-brokerage.component.ts:163 this.derby', 'color: #007acc;', this.derby);
-    console.log('%csrc/app/pages/admin/betting-brokerage/betting-brokerage.component.ts:164 _idDerby', 'color: #007acc;', this._idDerby);
     this.catalogForm = new UntypedFormGroup({
       derby: new UntypedFormControl(this.selectedDerby._id, [Validators.required]),
       brooker: new UntypedFormControl('', [Validators.required]),

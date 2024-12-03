@@ -22,6 +22,7 @@ export class CorretajeDatatable implements OnInit {
   @Input() columns: any[];
   @Input() loading: boolean = true;
   @Input() export: boolean = false;
+  @Input() total: number = 0;
   @Input() title: string = "";
   @Input() items: MenuItem[];
   @Input() emptyMessage: string = "No se encontraron registros.";
@@ -35,12 +36,14 @@ export class CorretajeDatatable implements OnInit {
   formEdit: UntypedFormGroup;
 
   activeIndex: number = 0;
+  // total: number = 0;
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
   constructor(private excelService: ExcelService, private fb: UntypedFormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
+    console.log('%csrc/app/components/datatable/corretaje-datatable/corretaje-datatable.component.ts:46 this.groupedData', 'color: #007acc;', this.groupedData);
     this.formEdit = new UntypedFormGroup({
       folio: new UntypedFormControl(0, [Validators.required]),
       amount: new UntypedFormControl(0, [Validators.required]),
@@ -54,6 +57,25 @@ export class CorretajeDatatable implements OnInit {
         { name: 'Normal', class: '' },
         { name: 'Large',  class: 'p-datatable-lg' }
     ];
+    this.calcularTotalCorretaje();
+  }
+
+
+  calcularTotalCorretaje() {
+    const array = Object.entries(this.groupedData);
+    if (!_.isEmpty(this.groupedData)) {
+      let total = 0;
+      array.map(([clave, valor]: [string, { total: number }]) => {
+        if ('total' in valor) {
+          total += valor.total;
+        }
+      });
+      console.log('%csrc/app/components/datatable/corretaje-datatable/corretaje-datatable.component.ts:71 total', 'color: #007acc;', total);
+      this.total = total;
+    }else{
+      this.total = 0;
+    }
+    console.log('%csrc/app/components/datatable/corretaje-datatable/corretaje-datatable.component.ts:76 this.total', 'color: #007acc;', this.total);
   }
 
   openDialog() {
@@ -93,16 +115,19 @@ export class CorretajeDatatable implements OnInit {
   }
 
   delete(data) {
+    this.calcularTotalCorretaje();
     this.deleteRecords.emit({ data: [data] });
   }
   onRowEditInit(data: any) {}
 
   onRowEditSave(data: any, key?: string) {
+    this.calcularTotalCorretaje();
     const _data = {data, key}
     this.editRecords.emit({ value: _data });
   }
 
   edit(data: any, key?: string){
+    this.calcularTotalCorretaje();
     const _data = {data, key}
     this.editRecords.emit({ value: _data });
   }

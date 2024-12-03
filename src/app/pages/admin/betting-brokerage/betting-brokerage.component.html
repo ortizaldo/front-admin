@@ -34,7 +34,7 @@
                 </select>
               </div>
             </div>
-            <div *ngIf="derby" class="row">
+            <div *ngIf="selectedDerby" class="row">
               <div class="col-sm-2">
                 <div class="form-group">
                   <label>Fecha del Evento</label>
@@ -42,7 +42,7 @@
                     <span
                       class="badge text-bg-secondary"
                       style="font-size: initial"
-                      >{{ derby?.dateEvent }}</span
+                      >{{ selectedDerby?.dateEvent }}</span
                     >
                   </div>
                 </div>
