@@ -70,12 +70,10 @@ export class CorretajeDatatable implements OnInit {
           total += valor.total;
         }
       });
-      console.log('%csrc/app/components/datatable/corretaje-datatable/corretaje-datatable.component.ts:71 total', 'color: #007acc;', total);
       this.total = total;
     }else{
       this.total = 0;
     }
-    console.log('%csrc/app/components/datatable/corretaje-datatable/corretaje-datatable.component.ts:76 this.total', 'color: #007acc;', this.total);
   }
 
   openDialog() {
@@ -127,6 +125,9 @@ export class CorretajeDatatable implements OnInit {
   }
 
   edit(data: any, key?: string){
+    if (data.nulo) {
+      data.amount = 0;
+    }
     this.calcularTotalCorretaje();
     const _data = {data, key}
     this.editRecords.emit({ value: _data });

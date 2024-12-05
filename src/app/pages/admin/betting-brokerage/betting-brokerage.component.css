@@ -18,6 +18,11 @@ ul {
   padding-left: 0rem !important;
 }
 
+app-betting-brokerage .text-bg-success {
+  color: #000000 !important;
+  background-color: #00f2c3 !important;
+}
+
 /* app-betting-brokerage .p-dropdown .p-dropdown-trigger {
   background: transparent;
     color: #6c757d;
