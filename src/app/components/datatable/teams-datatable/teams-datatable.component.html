@@ -25,70 +25,10 @@
     </div>
   </ng-template>
 </p-toolbar> -->
-<div class="row">
-  <p-toolbar styleClass="p-1">
-    <ng-template class="p-d-flex p-p-3 card" pTemplate="left">
-      <div class="col-12 p-1">
-        <button
-          pButton
-          pRipple
-          label="Agregar partido"
-          icon="pi pi-plus"
-          class="p-button-success p-mr-2"
-          (click)="openDialog()"
-        ></button>
-      </div>
-      <div class="col p-1">
-        <button
-          pButton
-          pRipple
-          [label]="Delete"
-          icon="pi pi-trash"
-          class="p-button-danger"
-          (click)="deleteSelected()"
-          [disabled]="!selectedData || !selectedData.length"
-        ></button>
-      </div>
-    </ng-template>
-  </p-toolbar>
-</div>
-<div class="row">
-  <div class="col-sm-2">
-    <div class="form-group">
-      <label>Tolerancia</label>
-      <input
-        class="form-control"
-        placeholder="Tolerancia"
-        type="text"
-        value="{{ confDerby?.tolerance }}"
-      />
-    </div>
-  </div>
-  <div class="col-sm-2">
-    <div class="form-group">
-      <label>Peso minimó</label>
-      <input
-        class="form-control"
-        placeholder="Peso minimó"
-        type="text"
-        value="{{ confDerby?.minWeight }}"
-      />
-    </div>
-  </div>
-  <div class="col-sm-2">
-    <div class="form-group">
-      <label>Peso maximó</label>
-      <input
-        class="form-control"
-        placeholder="Peso maximó"
-        type="text"
-        value="{{ confDerby?.maxWeight }}"
-      />
-    </div>
-  </div>
-</div>
+<div class="row"></div>
+<div class="row"></div>
 <br />
-<!-- <div class="row" *ngIf="data">
+<div class="row">
   <p-table
     #dt
     [value]="data"
@@ -109,29 +49,79 @@
   >
     <ng-template pTemplate="caption">
       <div class="card-header table-header row">
-        <div class="col m-auto">
-          <h3>{{ title }}</h3>
-        </div>
-        <div class="col-6">&nbsp;</div>
-        <div class="col">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="pi pi-search"></i></span>
-            </div>
-            <input
-              pInputText
-              class="form-control"
-              type="text"
-              (input)="dt.filterGlobal($event.target.value, 'contains')"
-              placeholder="Global Search"
-            />
+        <p-toolbar styleClass="p-1">
+          <div class="toolbar-item">
+            <button
+              pButton
+              pRipple
+              label="Agregar partido"
+              icon="pi pi-plus"
+              class="p-button-success p-mr-2"
+              (click)="openDialog()"
+            ></button>
           </div>
-        </div>
+          <div class="toolbar-item">
+            <button
+              pButton
+              pRipple
+              [label]="Delete"
+              icon="pi pi-trash"
+              class="p-button-danger"
+              (click)="deleteSelected()"
+              [disabled]="!selectedData || !selectedData.length"
+            ></button>
+          </div>
+          <div class="toolbar-item">
+            <div class="form-group">
+              <label>Tolerancia</label>
+              <input
+                class="form-control"
+                placeholder="Tolerancia"
+                type="text"
+                value="{{ confDerby?.tolerance }}"
+              />
+            </div>
+          </div>
+          <div class="toolbar-item">
+            <div class="form-group">
+              <label>Peso minimó</label>
+              <input
+                class="form-control"
+                placeholder="Peso minimó"
+                type="text"
+                value="{{ confDerby?.minWeight }}"
+              />
+            </div>
+          </div>
+          <div class="toolbar-item">
+            <div class="form-group">
+              <label>Peso maximó</label>
+              <input
+                class="form-control"
+                placeholder="Peso maximó"
+                type="text"
+                value="{{ confDerby?.maxWeight }}"
+              />
+            </div>
+          </div>
+          <div class="toolbar-item buscar">
+            <div class="form-group">
+              <label>Busqueda</label>
+              <input
+                pInputText
+                class="form-control"
+                type="text"
+                (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder="Global Search"
+              />
+            </div>
+          </div>
+        </p-toolbar>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th *ngFor="let col of columns">
+        <th *ngFor="let col of columns" [ngStyle]="{ 'max-width': col.size }">
           <span class="p-column-title">{{ col.header }}</span>
         </th>
         <th class="th-custom" style="width: 8rem"></th>
@@ -190,14 +180,14 @@
       </tr>
     </ng-template>
   </p-table>
-</div> -->
-<div class="row" *ngIf="columns">
+</div>
+<!-- <div class="row" *ngIf="columns">
   <div class="col-2">Partido</div>
   <div class="col-md-auto"><br /></div>
   <div *ngFor="let col of columns" class="col col-lg-2">{{ col.header }}</div>
-</div>
+</div> -->
 <!-- TODO aqui se va crear el formulario para los inputs -->
-<div class="row" *ngFor="let team of teams">
+<!-- <div class="row" *ngFor="let team of teams">
   <div class="col-2">
     <div class="form-group">
       <label>&nbsp;</label>
@@ -239,4 +229,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

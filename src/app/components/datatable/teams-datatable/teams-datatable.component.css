@@ -146,3 +146,22 @@
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 } */
+
+p-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.toolbar-item {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.buscar {
+  flex-grow: 2; /* Ajusta el tamaño del elemento de búsqueda */
+  padding: 10px 20px; /* Ajusta el padding para que se vea más grande */
+  border-radius: 10px; /* Ajusta la esquina para que se vea más redondeada */
+}

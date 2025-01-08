@@ -29,6 +29,7 @@ export class TeamsDatatable implements OnInit {
   @Input() items: MenuItem[];
   @Input() emptyMessage: string = "No se encontraron registros.";
   @Output() dialogChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() dataChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
 
@@ -41,8 +42,14 @@ export class TeamsDatatable implements OnInit {
     this.primengConfig.ripple = true;
   }
 
+
   openDialog() {
-    this.dialogChange.emit({ openDialog: true });
+    let _data = [];
+    for (let index = 0; index < this.derby.numGallos; index++) {
+      _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px"}, { header: "Peso", size: "40px"});
+    }
+    let dataRound = [{ header: "Partido", size: "150px"}, ..._data];
+    // this.dataChange.emit({ openDialog: true });
   }
 
   // showContextMenu(cm: ContextMenu, event: MouseEvent) {

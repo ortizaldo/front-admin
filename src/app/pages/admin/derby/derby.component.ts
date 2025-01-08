@@ -200,7 +200,6 @@ export class DerbyComponent implements OnInit {
   }
 
   deleteSelected(event) {
-    console.log("🚀 ~ DerbyComponent ~ deleteSelected ~ event:", event)
     this.confirmationService.confirm({
       message: 'Estas seguro de eliminar este partido?',
       header: 'Eliminar partido',
@@ -237,8 +236,6 @@ export class DerbyComponent implements OnInit {
   }
 
   openNewTeam(cmd) {
-    console.log("🚀 ~ openNewTeam ~ cmd:", this.selectedDerby)
-    console.log("🚀 ~ openNewTeam ~ derby:", this.derby)
     const { openDialog } = cmd;
     if (openDialog) {
         this.derbyModel = {
@@ -318,9 +315,9 @@ export class DerbyComponent implements OnInit {
           // this.getRounds();
           let _data = [];
           for (let index = 0; index < this.selectedDerby.numGallos; index++) {
-            _data.push({ header: "Ronda " + (index + 1) });
+            _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px"}, { header: "Peso", size: "40px"});
           }
-          this.columnsDT = _data;
+          this.columnsDT = [{ header: "Partido", size: "150px"}, ..._data];
         }),
         catchError(err => {
           return err
@@ -345,5 +342,6 @@ export class DerbyComponent implements OnInit {
     }
 
     this.data = dataRound;
+    console.log("🚀 ~ DerbyComponent ~ setDerby ~ this.data:", this.data)
   }
 }
