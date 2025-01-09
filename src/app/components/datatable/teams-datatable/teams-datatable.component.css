@@ -122,6 +122,21 @@
   border-radius: 3px;
 }
 
+.p-inputnumber {
+  width: 100px;
+}
+
+.p-inputnumber input{
+  width: 100px;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+  text-align: left;
+  border: none;
+  border-width: 0 0 1px 0;
+  padding: 0.1rem 0.2rem;
+}
+
 /* .p-dialog .p-dialog-header {
   border-bottom: 1px solid #7d86c3;
   background: #eeeeee;

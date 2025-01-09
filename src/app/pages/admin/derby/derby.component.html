@@ -78,6 +78,7 @@
                   [selectedData]="selectedAny"
                   [items]="itemsDT"
                   (dialogChange)="openNewTeam($event)"
+                  (dataChange)="addNewTeam($event)"
                   (deleteRecords)="deleteSelected($event)"
                   (editRecords)="editSelected($event)"
                 ></app-teams-datatable>

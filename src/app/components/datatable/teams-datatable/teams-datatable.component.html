@@ -29,204 +29,189 @@
 <div class="row"></div>
 <br />
 <div class="row">
-  <p-table
-    #dt
-    [value]="data"
-    [(selection)]="selectedData"
-    dataKey="_id"
-    styleClass="p-datatable-customers"
-    [rowHover]="true"
-    [scrollable]="false"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [paginator]="true"
-    [loading]="loading"
-    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
-    [filterDelay]="0"
-    [paginatorDropdownAppendTo]="'body'"
-    [globalFilterFields]="['partido']"
-  >
-    <ng-template pTemplate="caption">
-      <div class="card-header table-header row">
-        <p-toolbar styleClass="p-1">
-          <div class="toolbar-item">
-            <button
-              pButton
-              pRipple
-              label="Agregar partido"
-              icon="pi pi-plus"
-              class="p-button-success p-mr-2"
-              (click)="openDialog()"
-            ></button>
-          </div>
-          <div class="toolbar-item">
-            <button
-              pButton
-              pRipple
-              [label]="Delete"
-              icon="pi pi-trash"
-              class="p-button-danger"
-              (click)="deleteSelected()"
-              [disabled]="!selectedData || !selectedData.length"
-            ></button>
-          </div>
-          <div class="toolbar-item">
-            <div class="form-group">
-              <label>Tolerancia</label>
-              <input
-                class="form-control"
-                placeholder="Tolerancia"
-                type="text"
-                value="{{ confDerby?.tolerance }}"
-              />
+  <form [formGroup]="formEdit">
+    <p-table
+      #dt
+      [value]="data"
+      [(selection)]="selectedData"
+      dataKey="_id"
+      styleClass="p-datatable-customers"
+      [rowHover]="true"
+      [scrollable]="false"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [paginator]="true"
+      [loading]="loading"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+      [filterDelay]="0"
+      [paginatorDropdownAppendTo]="'body'"
+      [globalFilterFields]="['partido']"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="caption">
+        <div class="card-header table-header row">
+          <p-toolbar styleClass="p-1">
+            <div class="toolbar-item">
+              <button
+                pButton
+                pRipple
+                label="Agregar partido"
+                icon="pi pi-plus"
+                class="p-button-success p-mr-2"
+                (click)="openDialog()"
+              ></button>
             </div>
-          </div>
-          <div class="toolbar-item">
-            <div class="form-group">
-              <label>Peso minimó</label>
-              <input
-                class="form-control"
-                placeholder="Peso minimó"
-                type="text"
-                value="{{ confDerby?.minWeight }}"
-              />
+            <div class="toolbar-item">
+              <button
+                pButton
+                pRipple
+                [label]="Delete"
+                icon="pi pi-trash"
+                class="p-button-danger"
+                (click)="deleteSelected()"
+                [disabled]="!selectedData || !selectedData.length"
+              ></button>
             </div>
-          </div>
-          <div class="toolbar-item">
-            <div class="form-group">
-              <label>Peso maximó</label>
-              <input
-                class="form-control"
-                placeholder="Peso maximó"
-                type="text"
-                value="{{ confDerby?.maxWeight }}"
-              />
+            <div class="toolbar-item">
+              <div class="form-group">
+                <label>Tolerancia</label>
+                <input
+                  class="form-control"
+                  placeholder="Tolerancia"
+                  type="text"
+                  value="{{ confDerby?.tolerance }}"
+                />
+              </div>
             </div>
-          </div>
-          <div class="toolbar-item buscar">
-            <div class="form-group">
-              <label>Busqueda</label>
-              <input
-                pInputText
-                class="form-control"
-                type="text"
-                (input)="dt.filterGlobal($event.target.value, 'contains')"
-                placeholder="Global Search"
-              />
+            <div class="toolbar-item">
+              <div class="form-group">
+                <label>Peso minimó</label>
+                <input
+                  class="form-control"
+                  placeholder="Peso minimó"
+                  type="text"
+                  value="{{ confDerby?.minWeight }}"
+                />
+              </div>
             </div>
-          </div>
-        </p-toolbar>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th *ngFor="let col of columns" [ngStyle]="{ 'max-width': col.size }">
-          <span class="p-column-title">{{ col.header }}</span>
-        </th>
-        <th class="th-custom" style="width: 8rem"></th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-data let-idx="rowIndex">
-      <tr>
-        <td pEditableColumn *ngFor="let col of columns">
-          <p-cellEditor>
-            <ng-template *ngIf="col.field.includes('peso')" pTemplate="input">
-              <input
-                type="text"
-                value="{{ data[col.field] }}"
-                (input)="updData(idx, col.field, $event.target.value)"
-              />
-            </ng-template>
-
-            <ng-template *ngIf="col.field.includes('anillo')" pTemplate="input">
-              <input
-                type="text"
-                value="{{ data[col.field] }}"
-                (input)="data[col.field] = $event.target.value"
-              />
-            </ng-template>
-
-            <ng-template
-              *ngIf="col.field.includes('partido')"
-              pTemplate="input"
+            <div class="toolbar-item">
+              <div class="form-group">
+                <label>Peso maximó</label>
+                <input
+                  class="form-control"
+                  placeholder="Peso maximó"
+                  type="text"
+                  value="{{ confDerby?.maxWeight }}"
+                />
+              </div>
+            </div>
+            <div class="toolbar-item buscar">
+              <div class="form-group">
+                <label>Busqueda</label>
+                <input
+                  pInputText
+                  class="form-control"
+                  type="text"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Global Search"
+                />
+              </div>
+            </div>
+          </p-toolbar>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <ng-container *ngFor="let col of columns">
+            <th *ngIf="!col.field.includes('_id')">
+              <span class="p-column-title">{{ col.header }}</span>
+            </th>
+          </ng-container>
+          <th class="th-custom" style="width: 8rem"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-data let-idx="rowIndex">
+        <tr>
+          <ng-container *ngFor="let col of columns">
+            <td
+              pEditableColumn
+              *ngIf="!col.field.includes('_id')"
+              [ngStyle]="{ 'max-width': col.size }"
             >
-              <input
-                pInputText
-                type="text"
-                value="{{ data[col.field] }}"
-                (input)="data[col.field] = $event.target.value"
-              />
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ data[col.field] }}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-danger btn-fab btn-icon btn-round"
-            (click)="delete(data)"
-          >
-            <i class="pi pi-trash"></i>
-          </button>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="8">{{ emptyMessage }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
+              <p-cellEditor>
+                <ng-template
+                  *ngIf="col.field.includes('weight')"
+                  pTemplate="input"
+                >
+                  <p-inputNumber
+                    [style]="{ 'max-width': col.size }"
+                    inputId="folio-{{ data._id }}"
+                    [(ngModel)]="data[col.field]"
+                    [value]="data[col.field]"
+                    formControlName="weight"
+                    mode="decimal"
+                    locale="es-MX"
+                    (onBlur)="edit(data, tab.key)"
+                  >
+                  </p-inputNumber>
+                </ng-template>
+
+                <ng-template
+                  *ngIf="col.field.includes('ring')"
+                  pTemplate="input"
+                >
+                  <p-inputNumber
+                    [style]="{ 'max-width': col.size }"
+                    inputId="folio-{{ data._id }}"
+                    [(ngModel)]="data[col.field]"
+                    [value]="data[col.field]"
+                    formControlName="ring"
+                    mode="decimal"
+                    locale="es-MX"
+                    (onBlur)="edit(data, tab.key)"
+                  >
+                  </p-inputNumber>
+                </ng-template>
+
+                <ng-template
+                  *ngIf="col.field.includes('teamName')"
+                  pTemplate="input"
+                >
+                  <input
+                    pInputText
+                    class="form-control p-inputtext-sm"
+                    type="text"
+                    value="{{ data[col.field] }}"
+                    formControlName="teamName"
+                    (input)="data[col.field] = $event.target.value"
+                  />
+                </ng-template>
+                <ng-template
+                  pTemplate="output"
+                  *ngIf="!col.field.includes('_id')"
+                >
+                  {{ data[col.field] }}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+          </ng-container>
+          <td ngbDropdown>
+            <button
+              type="button"
+              class="btn btn-danger btn-fab btn-icon btn-round"
+              (click)="delete(data)"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8">{{ emptyMessage }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </form>
 </div>
-<!-- <div class="row" *ngIf="columns">
-  <div class="col-2">Partido</div>
-  <div class="col-md-auto"><br /></div>
-  <div *ngFor="let col of columns" class="col col-lg-2">{{ col.header }}</div>
-</div> -->
-<!-- TODO aqui se va crear el formulario para los inputs -->
-<!-- <div class="row" *ngFor="let team of teams">
-  <div class="col-2">
-    <div class="form-group">
-      <label>&nbsp;</label>
-      <input
-        class="form-control"
-        placeholder="Teclea el anillo"
-        type="text"
-        value="{{ team.teamName }}"
-      />
-    </div>
-  </div>
-  <div class="col-md-auto"><br /></div>
-  <div
-    *ngFor="let pesosAnillos of team.pesosAnillos; let i = index"
-    class="col col-lg-2"
-  >
-    <div class="row">
-      <div class="col">
-        <div class="form-group">
-          <label>{{ "Anillo " + (i + 1) }}</label>
-          <input
-            class="form-control"
-            placeholder="Teclea el anillo"
-            type="text"
-            value=""
-          />
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label>{{ "Peso " + (i + 1) }}</label>
-          <input
-            class="form-control"
-            placeholder="Teclea el peso"
-            type="text"
-            value=""
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->

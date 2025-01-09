@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
 import { ContextMenu } from "primeng/contextmenu";
@@ -33,23 +33,40 @@ export class TeamsDatatable implements OnInit {
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
 
+  formEdit: UntypedFormGroup;
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig) { }
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.formEdit = new UntypedFormGroup({
+      ring: new UntypedFormControl(0, [Validators.required]),
+      weight: new UntypedFormControl(0, [Validators.required]),
+      teamName: new UntypedFormControl(0, [Validators.required]),
+    });
+    this.primengConfig.ripple = true;
+    this.cd.detectChanges();
     this.primengConfig.ripple = true;
   }
 
 
   openDialog() {
-    let _data = [];
+    const generateMongoId = () => {
+      const timestamp = Math.floor(Date.now() / 1000);
+      const random = crypto.getRandomValues(new Uint8Array(5));
+      const hex = Array.from(random).map(b => b.toString(16).padStart(2, '0')).join('');
+      return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
+    };
+    
+    const _id = generateMongoId();
+
+    let dataRound = {_id, teamName: "Nombre del partido"};
     for (let index = 0; index < this.derby.numGallos; index++) {
-      _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px"}, { header: "Peso", size: "40px"});
+      dataRound = { ...dataRound, ["R" + (index + 1) + "_ring"]: 0,["R" + (index + 1) + "_weight"]: 0,};
     }
-    let dataRound = [{ header: "Partido", size: "150px"}, ..._data];
-    // this.dataChange.emit({ openDialog: true });
+
+    this.dataChange.emit(dataRound);
   }
 
   // showContextMenu(cm: ContextMenu, event: MouseEvent) {

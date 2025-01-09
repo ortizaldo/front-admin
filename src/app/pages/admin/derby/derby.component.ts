@@ -33,7 +33,7 @@ export class DerbyComponent implements OnInit {
   titleDT: string;
   emptyMessage: string;
   endpoint: string;
-  data: any[];
+  data: any[] = [];
   columnsDT: any[];
   selectedAny: any;
   headerDetails: string = "Agregar partido";
@@ -247,6 +247,13 @@ export class DerbyComponent implements OnInit {
 
     this.derbyDialog = openDialog;
   }
+
+  addNewTeam(cmd) {
+    console.log("🚀 ~ DerbyComponent ~ addNewTeam ~ columnsDT:", this.columnsDT);
+    console.log("🚀 ~ DerbyComponent ~ addNewTeam ~ cmd:", cmd);
+    this.data.push(cmd);
+    console.log("🚀 ~ DerbyComponent ~ addNewTeam ~ this.data:", this.data)
+  }
   /**
    * Resets the derby form and closes the derby dialog.
    *
@@ -311,13 +318,12 @@ export class DerbyComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.teams = data.data;
-          console.log("🚀 ~ DerbyComponent ~ tap ~ this.teams:", this.teams)
-          // this.getRounds();
           let _data = [];
           for (let index = 0; index < this.selectedDerby.numGallos; index++) {
-            _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px"}, { header: "Peso", size: "40px"});
+            _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px", field: "R" + (index + 1) + "_ring"}, { header: "Peso", size: "40px", field: "R" + (index + 1) + "_weight"});
           }
-          this.columnsDT = [{ header: "Partido", size: "150px"}, ..._data];
+          this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName"}, { field: "_id"}, ..._data];
+          console.log("🚀 ~ DerbyComponent ~ tap ~ this.columnsDT:", this.columnsDT)
         }),
         catchError(err => {
           return err

@@ -43,7 +43,6 @@ export class CorretajeDatatable implements OnInit {
   constructor(private excelService: ExcelService, private fb: UntypedFormBuilder,private crudService: CrudService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   ngOnInit() {
-    console.log('%csrc/app/components/datatable/corretaje-datatable/corretaje-datatable.component.ts:46 this.groupedData', 'color: #007acc;', this.groupedData);
     this.formEdit = new UntypedFormGroup({
       folio: new UntypedFormControl(0, [Validators.required]),
       amount: new UntypedFormControl(0, [Validators.required]),
