@@ -1,33 +1,4 @@
 <p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
-
-<!-- <p-toolbar styleClass="p-1">
-  <ng-template class="p-1" pTemplate="left">
-    <div class="col p-1">
-      <button
-        pButton
-        pRipple
-        label="Agregar partido"
-        icon="pi pi-plus"
-        class="p-button-success p-mr-2"
-        (click)="openDialog()"
-      ></button>
-    </div>
-    <div class="col p-1">
-      <button
-        pButton
-        pRipple
-        [label]="Delete"
-        icon="pi pi-trash"
-        class="p-button-danger"
-        (click)="deleteSelected()"
-        [disabled]="!selectedData || !selectedData.length"
-      ></button>
-    </div>
-  </ng-template>
-</p-toolbar> -->
-<div class="row"></div>
-<div class="row"></div>
-<br />
 <div class="row">
   <form [formGroup]="formEdit">
     <p-table
@@ -48,6 +19,7 @@
       [paginatorDropdownAppendTo]="'body'"
       [globalFilterFields]="['partido']"
       [tableStyle]="{ 'min-width': '50rem' }"
+      [totalRecords]="data.length"
     >
       <ng-template pTemplate="caption">
         <div class="card-header table-header row">
@@ -137,7 +109,7 @@
             <td
               pEditableColumn
               *ngIf="!col.field.includes('_id')"
-              [ngStyle]="{ 'max-width': col.size }"
+              [ngStyle]="{ width: col.size }"
             >
               <p-cellEditor>
                 <ng-template
@@ -145,14 +117,16 @@
                   pTemplate="input"
                 >
                   <p-inputNumber
-                    [style]="{ 'max-width': col.size }"
+                    [style]="{ width: col.size }"
                     inputId="folio-{{ data._id }}"
                     [(ngModel)]="data[col.field]"
                     [value]="data[col.field]"
                     formControlName="weight"
                     mode="decimal"
+                    [min]="1400"
+                    [max]="2900"
                     locale="es-MX"
-                    (onBlur)="edit(data, tab.key)"
+                    (onBlur)="edit(data)"
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -162,14 +136,14 @@
                   pTemplate="input"
                 >
                   <p-inputNumber
-                    [style]="{ 'max-width': col.size }"
+                    [style]="{ width: col.size }"
                     inputId="folio-{{ data._id }}"
                     [(ngModel)]="data[col.field]"
                     [value]="data[col.field]"
                     formControlName="ring"
                     mode="decimal"
                     locale="es-MX"
-                    (onBlur)="edit(data, tab.key)"
+                    (onBlur)="edit(data)"
                   >
                   </p-inputNumber>
                 </ng-template>

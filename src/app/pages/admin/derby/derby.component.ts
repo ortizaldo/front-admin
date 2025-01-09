@@ -249,10 +249,7 @@ export class DerbyComponent implements OnInit {
   }
 
   addNewTeam(cmd) {
-    console.log("🚀 ~ DerbyComponent ~ addNewTeam ~ columnsDT:", this.columnsDT);
-    console.log("🚀 ~ DerbyComponent ~ addNewTeam ~ cmd:", cmd);
     this.data.push(cmd);
-    console.log("🚀 ~ DerbyComponent ~ addNewTeam ~ this.data:", this.data)
   }
   /**
    * Resets the derby form and closes the derby dialog.
@@ -348,6 +345,5 @@ export class DerbyComponent implements OnInit {
     }
 
     this.data = dataRound;
-    console.log("🚀 ~ DerbyComponent ~ setDerby ~ this.data:", this.data)
   }
 }

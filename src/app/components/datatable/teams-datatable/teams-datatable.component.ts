@@ -69,6 +69,16 @@ export class TeamsDatatable implements OnInit {
     this.dataChange.emit(dataRound);
   }
 
+  edit(data: any, key?: string){
+    console.log("🚀 ~ TeamsDatatable ~ edit ~ data:", data)
+    // if (data.nulo) {
+    //   data.amount = 0;
+    // }
+    // this.calcularTotalCorretaje();
+    // const _data = {data, key}
+    // this.editRecords.emit({ value: _data });
+  }
+
   // showContextMenu(cm: ContextMenu, event: MouseEvent) {
   //   cm.onShow.emit(event);
   //   event.stopPropagation();
