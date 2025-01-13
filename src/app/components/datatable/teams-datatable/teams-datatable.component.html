@@ -48,12 +48,12 @@
             <div class="toolbar-item">
               <div class="form-group">
                 <label>Tolerancia</label>
-                <input
-                  class="form-control"
-                  placeholder="Tolerancia"
-                  type="text"
-                  value="{{ confDerby?.tolerance }}"
-                />
+                <p-inputNumber
+                  inputId="folio-{{ derby._id }}"
+                  [value]="confDerby.tolerance"
+                  (input)="confDerby.tolerance = $event.target.value"
+                >
+                </p-inputNumber>
               </div>
             </div>
             <div class="toolbar-item">
@@ -63,7 +63,8 @@
                   class="form-control"
                   placeholder="Peso minimó"
                   type="text"
-                  value="{{ confDerby?.minWeight }}"
+                  value="{{ confDerby.minWeight }}"
+                  (input)="confDerby.minWeight = $event.target.value"
                 />
               </div>
             </div>
@@ -74,7 +75,8 @@
                   class="form-control"
                   placeholder="Peso maximó"
                   type="text"
-                  value="{{ confDerby?.maxWeight }}"
+                  value="{{ confDerby.maxWeight }}"
+                  (input)="confDerby.maxWeight = $event.target.value"
                 />
               </div>
             </div>

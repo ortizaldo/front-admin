@@ -40,6 +40,7 @@ export class TeamsDatatable implements OnInit {
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
+    console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:43 this.confDerby', 'color: #007acc;', this.confDerby);
     this.formEdit = new UntypedFormGroup({
       ring: new UntypedFormControl(0, [Validators.required]),
       weight: new UntypedFormControl(0, [Validators.required]),

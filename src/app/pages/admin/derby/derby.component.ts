@@ -150,9 +150,9 @@ export class DerbyComponent implements OnInit {
 
   saveConf() {
     const body = {derby: this.derby._id, roosterConf: {
-              tolerance: .080,
-              minWeight: 1.400,
-              maxWeight: 2.900,
+              tolerance: 80,
+              minWeight: 1400,
+              maxWeight: 1900,
             } };
     this.crudService.post(body, 'derby-conf')
       .pipe(
@@ -320,7 +320,6 @@ export class DerbyComponent implements OnInit {
             _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px", field: "R" + (index + 1) + "_ring"}, { header: "Peso", size: "40px", field: "R" + (index + 1) + "_weight"});
           }
           this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName"}, { field: "_id"}, ..._data];
-          console.log("🚀 ~ DerbyComponent ~ tap ~ this.columnsDT:", this.columnsDT)
         }),
         catchError(err => {
           return err
