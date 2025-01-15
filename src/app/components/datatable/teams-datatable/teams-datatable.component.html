@@ -22,78 +22,88 @@
       [totalRecords]="data.length"
     >
       <ng-template pTemplate="caption">
-        <div class="card-header table-header row">
-          <p-toolbar styleClass="p-1">
-            <div class="toolbar-item">
-              <button
-                pButton
-                pRipple
-                label="Agregar partido"
-                icon="pi pi-plus"
-                class="p-button-success p-mr-2"
-                (click)="addNewTeam()"
-              ></button>
-            </div>
-            <div class="toolbar-item">
-              <button
-                pButton
-                pRipple
-                [label]="Delete"
-                icon="pi pi-trash"
-                class="p-button-danger"
-                (click)="deleteSelected()"
-                [disabled]="!selectedData || !selectedData.length"
-              ></button>
-            </div>
-            <div class="toolbar-item">
-              <div class="form-group">
-                <label>Tolerancia</label>
-                <input
-                  class="form-control"
-                  placeholder="Tolerancia"
-                  type="text"
-                  value="{{ confDerby.tolerance }}"
-                  (input)="confDerby.tolerance = $event.target.value"
-                />
+        <div class="container col-12">
+          <div class="row">
+            <div class="col 8">
+              <div class="row">
+                <div class="col" style="margin-top: 1.3rem">
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label="Basic mixed styles example"
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      (click)="deleteSelected()"
+                      [disabled]="!selectedData || !selectedData.length"
+                    >
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                    <button
+                      icon="pi pi-plus"
+                      class="btn btn-success"
+                      (click)="addNewTeam()"
+                    >
+                      <i class="far fa-plus-square"></i> Añadir entradas
+                    </button>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Tolerancia</label>
+                    <input
+                      class="form-control"
+                      placeholder="Tolerancia"
+                      type="text"
+                      value="{{ confDerby.tolerance }}"
+                      (input)="confDerby.tolerance = $event.target.value"
+                    />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Peso minimó</label>
+                    <input
+                      class="form-control"
+                      placeholder="Peso minimó"
+                      type="text"
+                      value="{{ confDerby.minWeight }}"
+                      (input)="confDerby.minWeight = $event.target.value"
+                    />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label>Peso maximó</label>
+                    <input
+                      class="form-control"
+                      placeholder="Peso maximó"
+                      type="text"
+                      value="{{ confDerby.maxWeight }}"
+                      (input)="confDerby.maxWeight = $event.target.value"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="toolbar-item">
-              <div class="form-group">
-                <label>Peso minimó</label>
-                <input
-                  class="form-control"
-                  placeholder="Peso minimó"
-                  type="text"
-                  value="{{ confDerby.minWeight }}"
-                  (input)="confDerby.minWeight = $event.target.value"
-                />
+            <div class="col 4">
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label>Busqueda</label>
+                    <input
+                      pInputText
+                      class="form-control"
+                      type="text"
+                      (input)="dt.filterGlobal($event.target.value, 'contains')"
+                      placeholder="Global Search"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="toolbar-item">
-              <div class="form-group">
-                <label>Peso maximó</label>
-                <input
-                  class="form-control"
-                  placeholder="Peso maximó"
-                  type="text"
-                  value="{{ confDerby.maxWeight }}"
-                  (input)="confDerby.maxWeight = $event.target.value"
-                />
-              </div>
-            </div>
-            <div class="toolbar-item buscar">
-              <div class="form-group">
-                <label>Busqueda</label>
-                <input
-                  pInputText
-                  class="form-control"
-                  type="text"
-                  (input)="dt.filterGlobal($event.target.value, 'contains')"
-                  placeholder="Global Search"
-                />
-              </div>
-            </div>
-          </p-toolbar>
+          </div>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
