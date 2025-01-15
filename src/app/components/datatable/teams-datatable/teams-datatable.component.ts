@@ -40,7 +40,6 @@ export class TeamsDatatable implements OnInit {
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:43 this.confDerby', 'color: #007acc;', this.confDerby);
     this.formEdit = new UntypedFormGroup({
       ring: new UntypedFormControl(0, [Validators.required]),
       weight: new UntypedFormControl(0, [Validators.required]),
@@ -52,7 +51,7 @@ export class TeamsDatatable implements OnInit {
   }
 
 
-  openDialog() {
+  addNewTeam() {
     const generateMongoId = () => {
       const timestamp = Math.floor(Date.now() / 1000);
       const random = crypto.getRandomValues(new Uint8Array(5));
@@ -77,10 +76,10 @@ export class TeamsDatatable implements OnInit {
     // }
     // this.calcularTotalCorretaje();
     // const _data = {data, key}
-    // this.editRecords.emit({ value: _data });
+    this.editRecords.emit(data);
   }
 
-  // showContextMenu(cm: ContextMenu, event: MouseEvent) {
+  // showContextMenu(cm: ContextMenu, event: MouseEvent) { 
   //   cm.onShow.emit(event);
   //   event.stopPropagation();
   // }

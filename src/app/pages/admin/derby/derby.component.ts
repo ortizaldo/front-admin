@@ -121,33 +121,6 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
-  saveTeam() {
-    let body = this.teamForm.value;
-    body.derby = this.selectedDerby._id;
-    body.teamName = body.description;
-    delete body.description;
-    let _data = [];
-    for (let index = 0; index < this.selectedDerby.numGallos; index++) {
-      _data.push({["anillo"+(index + 1)]:"", ["peso"+(index + 1)]:""});
-    }
-
-    body.pesosAnillos = _data;
-
-    const self = this;
-    this.crudService.post(body, "team")
-      .pipe(
-        tap((data: any) => {
-          console.log("🚀 ~ DerbyComponent ~ tap ~ data:", data);
-        }),
-        catchError(err => {
-          const _err = err.error ? err.error.err : err;
-          this.showNotification('top', 'right', "Error al registrar", _err.code == 11000 ? "Registro duplicado" : _err.message, "alert-warning")
-          return err
-        })
-      )
-      .subscribe();
-  }
-
   saveConf() {
     const body = {derby: this.derby._id, roosterConf: {
               tolerance: 80,
@@ -195,29 +168,6 @@ export class DerbyComponent implements OnInit {
 
   }
 
-  editSelected(data) {
-    this.data[data.idx][data.field]= data.value;
-  }
-
-  deleteSelected(event) {
-    this.confirmationService.confirm({
-      message: 'Estas seguro de eliminar este partido?',
-      header: 'Eliminar partido',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        // if (event.data.length > 1) {
-        //   let items = [];
-        //   event.data.forEach((item: any) => {
-        //     items.push(item._id);
-        //   });
-        //   this.deleteMany(items);
-        // } else {
-        //   this.deleteOne(event.data[0]);
-        // }
-      }
-    });
-  }
-
   /**
    * A function to open a new dialog based on the provided command.
    *
@@ -248,8 +198,117 @@ export class DerbyComponent implements OnInit {
     this.derbyDialog = openDialog;
   }
 
+
   addNewTeam(cmd) {
-    this.data.push(cmd);
+    
+    const { teamName } = cmd;
+    delete cmd.teamName;
+    const teams = {
+      derby : this.selectedDerby._id,
+      teamName,
+      rings: cmd
+    };
+    this.crudService.post(teams, "team")
+      .pipe(
+        tap((data: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Registro partidos', detail: 'Partido agregado', life: 3000 });
+          cmd.teamName = teamName;
+          this.getTeams();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  deleteOne(item: any) {
+    console.log("🚀 ~ DerbyComponent ~ deleteOne ~ item:", item)
+    this.crudService.deleteOne(this.endpoint, item.teamId, {
+      filters: {
+        hardDelete: true,
+      },
+    })
+      .pipe(
+        tap((data: any) => {
+          this.loading = false;
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
+          this.getTeams();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  deleteMany(items: any[]) {
+    this.crudService.deleteMany(this.endpoint, items, {
+      filters: {
+        hardDelete: true,
+      },
+    })
+      .pipe(
+        tap((data: any) => {
+          this.loading = false;
+
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  deleteSelected(event) {
+    let title = "Estas seguro de eliminar los siguientes partidos?";
+    if (event.data.length === 1) {
+      title = `Estas seguro de eliminar el partido ${event.data[0].teamName} ?`;
+    }
+    this.confirmationService.confirm({
+      message: title,
+      header: 'Eliminar partido',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (event.data.length > 1) {
+          let items = [];
+          event.data.forEach((item: any) => {
+            items.push(item.teamId);
+          });
+          this.deleteMany(items);
+        } else {
+          this.deleteOne(event.data[0]);
+        }
+      }
+    });
+  }
+
+  editSelected(data) {
+    const { teamName } = data;
+    const { teamId } = data;
+    delete data.teamName;
+    delete data.teamId;
+    const teams = {
+      derby : this.selectedDerby._id,
+      teamName,
+      rings: data
+    };
+
+    this.crudService.put(teams, teamId, "team")
+      .pipe(
+        tap((data: any) => {
+          this.getTeams();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
   }
   /**
    * Resets the derby form and closes the derby dialog.
@@ -315,11 +374,40 @@ export class DerbyComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.teams = data.data;
+          console.log("🚀 ~ DerbyComponent ~ tap ~ this.teams:", this.teams)
           let _data = [];
           for (let index = 0; index < this.selectedDerby.numGallos; index++) {
             _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px", field: "R" + (index + 1) + "_ring"}, { header: "Peso", size: "40px", field: "R" + (index + 1) + "_weight"});
           }
           this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName"}, { field: "_id"}, ..._data];
+
+          this.getTeams();
+        }),
+        catchError(err => {
+          return err
+        })
+      )
+      .subscribe();
+  }
+
+  getTeams() {
+    const params = {
+      filtersId: {
+        derby: {
+          value: this.selectedDerby._id,
+        }
+      }
+    }
+    this.crudService.getMany("team", null, params)
+      .pipe(
+        tap((data: any) => {
+          const teams = data.data;
+          this.data = [];
+          teams.forEach((team: any) => {
+            team.rings.teamName = team.teamName.toUpperCase();
+            team.rings.teamId = team._id;
+            this.data.push(team.rings);
+          });
         }),
         catchError(err => {
           return err

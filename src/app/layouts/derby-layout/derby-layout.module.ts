@@ -6,13 +6,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TableModule } from 'primeng/table';
 
 import { DerbyLayoutRoutes } from "./derby-layout.routing";
-import { DashboardComponent } from "../../pages/admin/dashboard/dashboard.component";
-import { IconsComponent } from "../../pages/admin/icons/icons.component";
-import { MapComponent } from "../../pages/admin/map/map.component";
-import { NotificationsComponent } from "../../pages/admin/notifications/notifications.component";
-import { UserComponent } from "../../pages/admin/user/user.component";
-import { TablesComponent } from "../../pages/admin/tables/tables.component";
-import { TypographyComponent } from "../../pages/admin/typography/typography.component";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { PanelMenuModule } from 'primeng/panelmenu';
@@ -30,6 +23,8 @@ import { DerbyComponent } from "src/app/pages/admin/derby/derby.component";
 import { DropdownModule } from "primeng/dropdown";
 import { ScrollPanelModule } from "primeng/scrollpanel";
 import { SplitButtonModule } from "primeng/splitbutton";
+import { TabViewModule } from "primeng/tabview";
+import { ToastModule } from 'primeng/toast';
 @NgModule({
   imports: [
     CommonModule,
@@ -52,7 +47,10 @@ import { SplitButtonModule } from "primeng/splitbutton";
     ConfirmDialogModule,
     DropdownModule,
     ScrollPanelModule,
-    SplitButtonModule
+    SplitButtonModule,
+    TabViewModule,
+    TabMenuModule,
+    ToastModule
   ],
   declarations: [
     DerbyComponent

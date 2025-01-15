@@ -36,7 +36,6 @@ export class CorretajeDatatable implements OnInit {
   formEdit: UntypedFormGroup;
 
   activeIndex: number = 0;
-  // total: number = 0;
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;

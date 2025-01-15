@@ -31,7 +31,7 @@
                 label="Agregar partido"
                 icon="pi pi-plus"
                 class="p-button-success p-mr-2"
-                (click)="openDialog()"
+                (click)="addNewTeam()"
               ></button>
             </div>
             <div class="toolbar-item">
@@ -48,12 +48,13 @@
             <div class="toolbar-item">
               <div class="form-group">
                 <label>Tolerancia</label>
-                <p-inputNumber
-                  inputId="folio-{{ derby._id }}"
-                  [value]="confDerby.tolerance"
+                <input
+                  class="form-control"
+                  placeholder="Tolerancia"
+                  type="text"
+                  value="{{ confDerby.tolerance }}"
                   (input)="confDerby.tolerance = $event.target.value"
-                >
-                </p-inputNumber>
+                />
               </div>
             </div>
             <div class="toolbar-item">
@@ -159,8 +160,9 @@
                     class="form-control p-inputtext-sm"
                     type="text"
                     value="{{ data[col.field] }}"
+                    [(ngModel)]="data[col.field]"
                     formControlName="teamName"
-                    (input)="data[col.field] = $event.target.value"
+                    (change)="edit(data)"
                   />
                 </ng-template>
                 <ng-template
