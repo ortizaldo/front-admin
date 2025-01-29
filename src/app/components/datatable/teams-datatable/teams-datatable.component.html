@@ -20,6 +20,7 @@
       [globalFilterFields]="['partido']"
       [tableStyle]="{ 'min-width': '50rem' }"
       [totalRecords]="data.length"
+      editMode="row"
     >
       <ng-template pTemplate="caption">
         <div class="container col-12">
@@ -170,7 +171,6 @@
                     class="form-control p-inputtext-sm"
                     type="text"
                     value="{{ data[col.field] }}"
-                    [(ngModel)]="data[col.field]"
                     formControlName="teamName"
                     (change)="edit(data)"
                   />
@@ -185,13 +185,44 @@
             </td>
           </ng-container>
           <td ngbDropdown>
-            <button
+            <!-- <button
               type="button"
               class="btn btn-danger btn-fab btn-icon btn-round"
               (click)="delete(data)"
             >
               <i class="pi pi-trash"></i>
-            </button>
+            </button> -->
+            <div class="flex align-items-center justify-content-center gap-2">
+              <button
+                *ngIf="!editing"
+                pButton
+                pRipple
+                type="button"
+                (click)="table.editRow(rowData)"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text"
+              ></button>
+              <!-- <button
+                *ngIf="editing"
+                pButton
+                pRipple
+                type="button"
+                pSaveEditableRow
+                icon="pi pi-check"
+                (click)="onRowEditSave(product)"
+                class="p-button-rounded p-button-text p-button-success mr-2"
+              ></button>
+              <button
+                *ngIf="editing"
+                pButton
+                pRipple
+                type="button"
+                pCancelEditableRow
+                icon="pi pi-times"
+                (click)="onRowEditCancel(product, ri)"
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button> -->
+            </div>
           </td>
         </tr>
       </ng-template>

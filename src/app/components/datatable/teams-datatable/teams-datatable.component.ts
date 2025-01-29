@@ -1,3 +1,4 @@
+import { UpperCasePipe } from "@angular/common";
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
@@ -12,6 +13,7 @@ import { CrudService } from "src/app/_services/crud.service";
   templateUrl: "teams-datatable.component.html",
   styleUrls: ["teams-datatable.component.css"],
   encapsulation: ViewEncapsulation.None,
+  providers: [UpperCasePipe]
 })
 
 
@@ -43,11 +45,15 @@ export class TeamsDatatable implements OnInit {
     this.formEdit = new UntypedFormGroup({
       ring: new UntypedFormControl(0, [Validators.required]),
       weight: new UntypedFormControl(0, [Validators.required]),
-      teamName: new UntypedFormControl(0, [Validators.required]),
+      teamName: new UntypedFormControl('', [Validators.required]),
     });
-    this.primengConfig.ripple = true;
     this.cd.detectChanges();
     this.primengConfig.ripple = true;
+  }
+
+  selectText(event: FocusEvent): void {
+    const input = event.target as HTMLInputElement;
+    input.select();
   }
 
 
@@ -70,12 +76,6 @@ export class TeamsDatatable implements OnInit {
   }
 
   edit(data: any, key?: string){
-    console.log("🚀 ~ TeamsDatatable ~ edit ~ data:", data)
-    // if (data.nulo) {
-    //   data.amount = 0;
-    // }
-    // this.calcularTotalCorretaje();
-    // const _data = {data, key}
     this.editRecords.emit(data);
   }
 
@@ -94,6 +94,5 @@ export class TeamsDatatable implements OnInit {
 
   updData(idx, field, value) {
     this.editRecords.emit({idx, field, value});
-    // this.data[idx][field]= value;
   }
 }
