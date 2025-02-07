@@ -1,5 +1,5 @@
 import { UpperCasePipe } from "@angular/common";
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren, ViewEncapsulation} from "@angular/core";
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
@@ -39,16 +39,43 @@ export class TeamsDatatable implements OnInit {
 
   @ViewChild('dt') table: Table;
   @ViewChild('contextMenuDT') contextMenu: ContextMenu;
+
+  clonedData: { [s: string]: any } = {};
+  @ViewChildren('dynamicInput') inputs!: QueryList<ElementRef>;
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.formEdit = new UntypedFormGroup({
-      ring: new UntypedFormControl(0, [Validators.required]),
-      weight: new UntypedFormControl(0, [Validators.required]),
-      teamName: new UntypedFormControl('', [Validators.required]),
-    });
+    this.addFormDynamic();
+    console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:48 this.data', 'color: #007acc;', this.data);
     this.cd.detectChanges();
     this.primengConfig.ripple = true;
+  }
+
+  ngAfterViewInit() {
+    this.inputs.forEach((input, index) => {
+      console.log("🚀 ~ TeamsDatatable ~ this.inputs.forEach ~ input:", input)
+      input.nativeElement.tabIndex = index + 1;
+    });
+  }
+
+  addFormDynamic() {
+    const data = this.teams;
+    const dataRings = [];
+    data.forEach((team: any) => {
+      team.rings.teamName = team.teamName.toUpperCase();
+      team.rings.teamId = team._id;
+      dataRings.push(team.rings);
+    });
+
+    this.formEdit = new UntypedFormGroup({});
+    const self = this;
+    dataRings.map((data, index) => {
+      self.columns.forEach((column, idx) => {
+        if (column.field !== "_id") {
+          this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl(data[column.field], Validators.required));
+        }
+      });
+    });
   }
 
   selectText(event: FocusEvent): void {
@@ -75,8 +102,11 @@ export class TeamsDatatable implements OnInit {
     this.dataChange.emit(dataRound);
   }
 
-  edit(data: any, key?: string){
-    this.editRecords.emit(data);
+  edit(_data: any, control?: string, key?: string){
+    if (control && key) {
+      _data.teamName = this.formEdit.controls[control].value;
+    }
+    this.editRecords.emit(_data);
   }
 
   // showContextMenu(cm: ContextMenu, event: MouseEvent) { 
@@ -94,5 +124,12 @@ export class TeamsDatatable implements OnInit {
 
   updData(idx, field, value) {
     this.editRecords.emit({idx, field, value});
+  }
+
+  onRowEditInit(data: any, dt: any) {
+    console.log("🚀 ~ TeamsDatatable ~ onRowEditInit ~ data:", data)
+    // this.addFormDynamic();
+    dt.initRowEdit(data)
+    this.cd.detectChanges();
   }
 }

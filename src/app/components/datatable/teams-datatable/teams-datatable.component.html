@@ -117,8 +117,14 @@
           <th class="th-custom" style="width: 8rem"></th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-data let-idx="rowIndex">
-        <tr>
+      <ng-template
+        pTemplate="body"
+        let-data
+        let-idx="rowIndex"
+        let-editing="editing"
+        let-ri="rowIndex"
+      >
+        <tr [pEditableRow]="data">
           <ng-container *ngFor="let col of columns">
             <td
               pEditableColumn
@@ -135,12 +141,13 @@
                     inputId="folio-{{ data._id }}"
                     [(ngModel)]="data[col.field]"
                     [value]="data[col.field]"
-                    formControlName="weight"
+                    [formControlName]="col.field + '_' + data._id"
                     mode="decimal"
                     [min]="1400"
                     [max]="2900"
                     locale="es-MX"
                     (onBlur)="edit(data)"
+                    #dynamicInput
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -154,10 +161,11 @@
                     inputId="folio-{{ data._id }}"
                     [(ngModel)]="data[col.field]"
                     [value]="data[col.field]"
-                    formControlName="ring"
+                    [formControlName]="col.field + '_' + data._id"
                     mode="decimal"
                     locale="es-MX"
                     (onBlur)="edit(data)"
+                    #dynamicInput
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -168,11 +176,13 @@
                 >
                   <input
                     pInputText
+                    inputId="folio-{{ data._id }}"
                     class="form-control p-inputtext-sm"
                     type="text"
                     value="{{ data[col.field] }}"
-                    formControlName="teamName"
-                    (change)="edit(data)"
+                    [formControlName]="col.field + '_' + data._id"
+                    (change)="edit(data, col.field + '_' + data._id, col.field)"
+                    #dynamicInput
                   />
                 </ng-template>
                 <ng-template
@@ -198,9 +208,19 @@
                 pButton
                 pRipple
                 type="button"
-                (click)="table.editRow(rowData)"
+                pInitEditableRow
                 icon="pi pi-pencil"
+                (click)="onRowEditInit(data, dt)"
                 class="p-button-rounded p-button-text"
+              ></button>
+              <button
+                *ngIf="editing"
+                pButton
+                pRipple
+                type="button"
+                pCancelEditableRow
+                icon="pi pi-times"
+                class="p-button-rounded p-button-text p-button-danger"
               ></button>
               <!-- <button
                 *ngIf="editing"
