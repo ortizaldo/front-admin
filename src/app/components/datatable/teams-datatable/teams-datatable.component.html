@@ -114,7 +114,7 @@
               <span class="p-column-title">{{ col.header }}</span>
             </th>
           </ng-container>
-          <th class="th-custom" style="width: 8rem"></th>
+          <th class="th-custom" style="width: 3rem"></th>
         </tr>
       </ng-template>
       <ng-template
@@ -195,13 +195,6 @@
             </td>
           </ng-container>
           <td ngbDropdown>
-            <!-- <button
-              type="button"
-              class="btn btn-danger btn-fab btn-icon btn-round"
-              (click)="delete(data)"
-            >
-              <i class="pi pi-trash"></i>
-            </button> -->
             <div class="flex align-items-center justify-content-center gap-2">
               <button
                 *ngIf="!editing"
@@ -222,26 +215,13 @@
                 icon="pi pi-times"
                 class="p-button-rounded p-button-text p-button-danger"
               ></button>
-              <!-- <button
-                *ngIf="editing"
-                pButton
-                pRipple
-                type="button"
-                pSaveEditableRow
-                icon="pi pi-check"
-                (click)="onRowEditSave(product)"
-                class="p-button-rounded p-button-text p-button-success mr-2"
-              ></button>
               <button
-                *ngIf="editing"
-                pButton
-                pRipple
                 type="button"
-                pCancelEditableRow
-                icon="pi pi-times"
-                (click)="onRowEditCancel(product, ri)"
-                class="p-button-rounded p-button-text p-button-danger"
-              ></button> -->
+                class="btn btn-danger btn-fab btn-icon btn-round"
+                (click)="delete(data)"
+              >
+                <i class="pi pi-trash"></i>
+              </button>
             </div>
           </td>
         </tr>
