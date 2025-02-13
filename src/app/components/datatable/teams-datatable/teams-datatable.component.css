@@ -137,6 +137,17 @@
   padding: 0.1rem 0.2rem;
 }
 
+app-teams-datatable .p-button.p-button-danger, .p-buttonset.p-button-danger>.p-button, .p-splitbutton.p-button-danger>.p-button {
+  color: #ff0505;
+  background: transparent;
+  border: none;
+}
+
+app-teams-datatable .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+  background: transparent;
+  color: black;
+}
+
 /* .p-dialog .p-dialog-header {
   border-bottom: 1px solid #7d86c3;
   background: #eeeeee;
@@ -180,3 +191,4 @@ p-toolbar {
   padding: 10px 20px; /* Ajusta el padding para que se vea más grande */
   border-radius: 10px; /* Ajusta la esquina para que se vea más redondeada */
 }
+

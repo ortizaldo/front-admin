@@ -127,6 +127,7 @@
         <tr [pEditableRow]="data">
           <ng-container *ngFor="let col of columns">
             <td
+              [focusable]="true"
               pEditableColumn
               *ngIf="!col.field.includes('_id')"
               [ngStyle]="{ width: col.size }"
@@ -147,7 +148,6 @@
                     [max]="2900"
                     locale="es-MX"
                     (onBlur)="edit(data)"
-                    #dynamicInput
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -165,7 +165,6 @@
                     mode="decimal"
                     locale="es-MX"
                     (onBlur)="edit(data)"
-                    #dynamicInput
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -182,7 +181,6 @@
                     value="{{ data[col.field] }}"
                     [formControlName]="col.field + '_' + data._id"
                     (change)="edit(data, col.field + '_' + data._id, col.field)"
-                    #dynamicInput
                   />
                 </ng-template>
                 <ng-template

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import Chart from 'chart.js';
 import { ToastrService } from "ngx-toastr";
@@ -15,6 +15,8 @@ import * as _ from "underscore";
   encapsulation: ViewEncapsulation.None,
 })
 export class DerbyComponent implements OnInit {
+  @Output() dataUpdated = new EventEmitter();
+
   derbyForm: UntypedFormGroup;
   derbyConf: UntypedFormGroup;
   teamForm: UntypedFormGroup;
@@ -377,9 +379,23 @@ export class DerbyComponent implements OnInit {
           console.log("🚀 ~ DerbyComponent ~ tap ~ this.teams:", this.teams)
           let _data = [];
           for (let index = 0; index < this.selectedDerby.numGallos; index++) {
-            _data.push({ header: "R" + (index + 1) + " Anillo", size: "40px", field: "R" + (index + 1) + "_ring"}, { header: "Peso", size: "40px", field: "R" + (index + 1) + "_weight"});
+            _data.push({ 
+              header: "R" + (index + 1) + " Anillo", 
+              size: "40px", field: "R" + (index + 1) + "_ring"
+            }, 
+            { 
+              header: "Peso", 
+              size: "40px", 
+              field: "R" + (index + 1) + "_weight"
+            });
           }
-          this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName"}, { field: "_id"}, ..._data];
+          this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName", idx: 1}, { field: "_id"}, ..._data];
+
+          this.columnsDT.map((column, idx) => {
+            column.idx = idx + 1;
+          });
+
+          console.log('%csrc/app/pages/admin/derby/derby.component.ts:398 this.columnsDT', 'color: #007acc;', this.columnsDT);
 
           this.getTeams();
         }),
@@ -407,6 +423,7 @@ export class DerbyComponent implements OnInit {
             team.rings.teamName = team.teamName.toUpperCase();
             team.rings.teamId = team._id;
             this.data.push(team.rings);
+            this.dataUpdated.emit();
           });
         }),
         catchError(err => {

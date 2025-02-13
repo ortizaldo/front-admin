@@ -1,5 +1,5 @@
 import { UpperCasePipe } from "@angular/common";
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren, ViewEncapsulation} from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren, ViewEncapsulation} from "@angular/core";
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
@@ -17,7 +17,7 @@ import { CrudService } from "src/app/_services/crud.service";
 })
 
 
-export class TeamsDatatable implements OnInit {
+export class TeamsDatatable implements OnInit, OnChanges  {
   ringForm: UntypedFormGroup;
   @Input() data!: any[];
   @Input() teams!: any[];
@@ -45,15 +45,28 @@ export class TeamsDatatable implements OnInit {
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
+    console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:48 this.columns', 'color: #007acc;', this.columns);
     this.addFormDynamic();
-    console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:48 this.data', 'color: #007acc;', this.data);
     this.cd.detectChanges();
     this.primengConfig.ripple = true;
   }
 
+  ngOnChanges(changes: any): void {
+    if (changes.data) {
+      this.formEdit = new UntypedFormGroup({});
+      const self = this;
+      this.data.map((data, index) => {
+        self.columns.forEach((column, idx) => {
+          if (column.field !== "_id") {
+            this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl(data[column.field], Validators.required));
+          }
+        });
+      });
+    }
+  }
+
   ngAfterViewInit() {
     this.inputs.forEach((input, index) => {
-      console.log("🚀 ~ TeamsDatatable ~ this.inputs.forEach ~ input:", input)
       input.nativeElement.tabIndex = index + 1;
     });
   }
