@@ -148,6 +148,26 @@ app-teams-datatable .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>t
   color: black;
 }
 
+app-teams-datatable .btn {
+  display: inline-block;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: none;
+  font-size: 0.875rem;
+  line-height: 1.35em;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+app-teams-datatable .buttons {
+  padding-left: none; padding-right: none
+}
+
 /* .p-dialog .p-dialog-header {
   border-bottom: 1px solid #7d86c3;
   background: #eeeeee;

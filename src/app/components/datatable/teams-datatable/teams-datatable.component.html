@@ -25,32 +25,47 @@
       <ng-template pTemplate="caption">
         <div class="container col-12">
           <div class="row">
-            <div class="col 8">
-              <div class="row">
-                <div class="col" style="margin-top: 1.3rem">
+            <div class="col-8 buttons">
+              <div class="row buttons">
+                <div class="col-4 buttons form-group pr-3 pt-3">
                   <div
-                    class="btn-group"
+                    class="row buttons btn-group"
                     role="group"
                     aria-label="Basic mixed styles example"
                   >
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      (click)="deleteSelected()"
-                      [disabled]="!selectedData || !selectedData.length"
-                    >
-                      <i class="far fa-trash-alt"></i>
-                    </button>
-                    <button
-                      icon="pi pi-plus"
-                      class="btn btn-success"
-                      (click)="addNewTeam()"
-                    >
-                      <i class="far fa-plus-square"></i> Añadir entradas
-                    </button>
+                    <div class="col buttons">
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        (click)="deleteSelected()"
+                        [disabled]="!selectedData || !selectedData.length"
+                      >
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </div>
+                    <div class="col buttons pt-1">
+                      <p-fileUpload
+                        mode="basic"
+                        chooseIcon="pi pi-upload"
+                        name="csvFile"
+                        accept=".csv"
+                        [auto]="true"
+                        (uploadHandler)="onUpload($event)"
+                        [customUpload]="true"
+                      />
+                    </div>
+                    <div class="col buttons">
+                      <button
+                        icon="pi pi-plus"
+                        class="btn btn-success"
+                        (click)="addNewTeam()"
+                      >
+                        <i class="far fa-plus-square"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div class="col">
+                <div class="col buttons">
                   <div class="form-group">
                     <label>Tolerancia</label>
                     <input
@@ -62,7 +77,7 @@
                     />
                   </div>
                 </div>
-                <div class="col">
+                <div class="col buttons">
                   <div class="form-group">
                     <label>Peso minimó</label>
                     <input
@@ -74,7 +89,7 @@
                     />
                   </div>
                 </div>
-                <div class="col">
+                <div class="col buttons">
                   <div class="form-group">
                     <label>Peso maximó</label>
                     <input
@@ -88,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div class="col 4">
+            <div class="col-4">
               <div class="row">
                 <div class="col">
                   <div class="form-group">

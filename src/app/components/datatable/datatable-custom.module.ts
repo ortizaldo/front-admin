@@ -22,6 +22,7 @@ import { CorretajeDatatable } from "./corretaje-datatable/corretaje-datatable.co
 import { ReactiveFormsModule } from "@angular/forms";
 import { DividerModule } from "primeng/divider";
 import {CheckboxModule} from 'primeng/checkbox';
+import { FileUploadModule } from 'primeng/fileupload';
 @NgModule({
   imports: [
     CommonModule,
@@ -43,6 +44,7 @@ import {CheckboxModule} from 'primeng/checkbox';
     ToastModule,
     DividerModule,
     CheckboxModule,
+    FileUploadModule,
   ],
   declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
   exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
