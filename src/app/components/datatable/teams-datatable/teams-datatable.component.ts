@@ -141,16 +141,48 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   onUpload(event) {
-    console.log("🚀 ~ TeamsDatatable ~ onUpload ~ event:", event)
     const file = event.files[0];
     const reader = new FileReader();
-
+    const self = this;
     reader.onload = () => {
       const text = reader.result as string;
+      const [headerLine, ...lines] = text.trim().split('\n');
+      const headers = headerLine.split(',');
+
+      const csvRecords = lines.map(line => {
+        const values = line.split(',');
+        const obj: any = {};
+        headers.forEach((header, i) => {
+          const value = values[i];
+          obj[header] = isNaN(Number(value)) ? value : Number(value);
+        });
+        return obj;
+      });
+
+      console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:164 csvRecords', 'color: #007acc;', csvRecords);
+      const generateMongoId = () => {
+        const timestamp = Math.floor(Date.now() / 1000);
+        const random = crypto.getRandomValues(new Uint8Array(5));
+        const hex = Array.from(random).map(b => b.toString(16).padStart(2, '0')).join('');
+        return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
+      };
+      
+      const _id = generateMongoId();
+  
+      // let dataRound = {_id, teamName: csvRecordsArray[0]};
+      // for (let index = 0; index < this.derby.numGallos; index++) {
+      //   dataRound = { ...dataRound, ["R" + (index + 1) + "_ring"]: csvRecordsArray[index + 1], ["R" + (index + 1) + "_weight"]: csvRecordsArray[index + 2]};
+      // }
+      // self.addManyTeams(reader.result);
       console.log('Contenido CSV:', text);
     };
 
     reader.readAsText(file);
+  }
+
+  addManyTeams(data: any) {
+    console.log("🚀 ~ TeamsDatatabl 9  e ~ addManyTeams ~ data:", data)
+    // this.dataChange.emit(this.selectedData);
   }
 
   edit(_data: any, control?: string, key?: string){
