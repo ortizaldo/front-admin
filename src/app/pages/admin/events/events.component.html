@@ -6,7 +6,7 @@
         <div class="card-header">
           <div class="row d-flex flex-row">
             <div class="col-sm-6 text-left">
-              <h5 class="card-category">Eventos</h5>
+              <h5 class="card-category">Eventos de Sociedad Gallistica La Angostura</h5>
             </div>
             <div class="col-sm-6"></div>
           </div>
@@ -33,3 +33,12 @@
   acceptButtonStyleClass="p-button-success"
   rejectButtonStyleClass="p-button-danger"
 ></p-confirmDialog>
+
+<p-dialog *ngIf="eventoSeleccionado" header="Detalles del evento" [(visible)]="display">
+  <p>{{ eventoSeleccionado.title }}</p>
+  <p>Arma: {{ eventoSeleccionado.information.arma}}</p>
+  <p>Fecha: {{ eventoSeleccionado.start | date }}</p>
+  <p>Puntos: {{ eventoSeleccionado.information.puntos }}</p>
+  <p>Pesos: {{ eventoSeleccionado.information.pesos }}</p>
+  <p>Horario de bascula: {{ eventoSeleccionado.information.horarioBascula}}</p>
+</p-dialog>

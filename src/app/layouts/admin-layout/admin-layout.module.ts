@@ -39,6 +39,7 @@ import { ToastModule } from 'primeng/toast';
 import { EventsComponent } from "src/app/pages/admin/events/events-component";
 import { FullCalendarModule } from '@fullcalendar/angular';
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
+import { DialogModule } from 'primeng/dialog';
 @NgModule({
   imports: [
     CommonModule,
@@ -67,6 +68,7 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     TabViewModule,
     ToastModule,
     FullCalendarModule,
+    DialogModule
   ],
   declarations: [
     DashboardComponent,
