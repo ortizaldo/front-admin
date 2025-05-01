@@ -6,11 +6,9 @@
         <select
           class="form-select"
           aria-label="Arma"
-          (change)="onChange()"
           formControlName="arma"
-          [(ngModel)]="arma"
         >
-          <option selected>Seleccionar un arma</option>
+          <option value="">Seleccionar un arma</option>
           <option *ngFor="let option of armas" [value]="option.value">
             {{ option.description }}
           </option>
