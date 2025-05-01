@@ -25,12 +25,7 @@ export class DerbyEditComponent implements OnInit {
   }
 
   onChange() {
-    this.selectedArma = this.armas.find(obj => obj.value === this.arma);
-    this.form.patchValue({
-      arma: this.selectedArma
-    });
-
-    console.log('%csrc/app/components/forms/derby-edit/derby-edit.component.ts:32 this.form.value', 'color: #007acc;', this.form.value);
+    this.form.patchValue({ armaSelected: _.where(this.armas, { value: this.form.value.arma })[0] });
   }
 
   ngOnInit(): void {

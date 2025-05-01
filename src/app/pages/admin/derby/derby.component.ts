@@ -69,6 +69,7 @@ export class DerbyComponent implements OnInit {
     this.derbyForm = this.fb.group({
       name: new UntypedFormControl(''),
       arma: new UntypedFormControl('', [Validators.required]),
+      armaSelected: new UntypedFormControl(''),
       numGallos: new UntypedFormControl('', [Validators.required]),
       entrance: new UntypedFormControl('', [Validators.required]),
       dateEvent: new UntypedFormControl(moment().format('YYYY-MM-DD')),
@@ -100,9 +101,9 @@ export class DerbyComponent implements OnInit {
   }
 
   saveDerby() {
-    const name = "Derby " + this.derbyForm.value.arma.description + " " + this.derbyForm.value.numGallos + " Gallos";
+    const name = "Derby " + this.derbyForm.value.armaSelected.description + " " + this.derbyForm.value.numGallos + " Gallos";
     this.derbyForm.patchValue({ name: name });
-    this.derbyForm.patchValue({ arma: this.derbyForm.value.arma.value });
+    this.derbyForm.patchValue({ arma: this.derbyForm.value.armaSelected.value });
     this.body = this.derbyForm.value;
     const self = this;
     this.crudService.post(this.body, "derby")
