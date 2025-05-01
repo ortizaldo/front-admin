@@ -1,0 +1,35 @@
+<p-toast></p-toast>
+<div class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-chart">
+        <div class="card-header">
+          <div class="row d-flex flex-row">
+            <div class="col-sm-6 text-left">
+              <h5 class="card-category">Eventos</h5>
+            </div>
+            <div class="col-sm-6"></div>
+          </div>
+          <div class="row d-flex flex-row">
+            <div class="p-2">
+              <h2 class="card-title">Calendario de eventos</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="row">
+            <full-calendar
+              [options]="calendarOptions"
+            ></full-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  acceptButtonStyleClass="p-button-success"
+  rejectButtonStyleClass="p-button-danger"
+></p-confirmDialog>

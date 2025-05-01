@@ -36,6 +36,8 @@ import { InputMaskModule } from "primeng/inputmask";
 import { IConfig, NgxMaskModule } from "ngx-mask";
 import { TabViewModule } from "primeng/tabview";
 import { ToastModule } from 'primeng/toast';
+import { EventsComponent } from "src/app/pages/admin/events/events-component";
+import { FullCalendarModule } from '@fullcalendar/angular';
 export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 @NgModule({
   imports: [
@@ -63,7 +65,8 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     SplitButtonModule,
     InputMaskModule,
     TabViewModule,
-    ToastModule
+    ToastModule,
+    FullCalendarModule,
   ],
   declarations: [
     DashboardComponent,
@@ -75,7 +78,9 @@ export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
     NotificationsComponent,
     MapComponent,
     ProfileComponent,
-    BettingBrokerageComponent
+    BettingBrokerageComponent,
+    BettingBrokerageComponent,
+    EventsComponent
   ]
 })
 export class AdminLayoutModule { }

@@ -1,0 +1,17 @@
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 0rem !important;
+  ;
+}
+
+ol,
+ul {
+  padding-left: 0rem !important;
+}
+
+app-events .text-bg-success {
+  color: #000000 !important;
+  background-color: #00f2c3 !important;
+}

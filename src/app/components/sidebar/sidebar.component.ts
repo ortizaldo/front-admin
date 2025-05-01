@@ -21,6 +21,12 @@ export const ROUTES: RouteInfo[] = [
     class: ""
   },
   {
+    path: "/events",
+    title: "Eventos",
+    icon: "pi pi-calendar",
+    class: ""
+  },
+  {
     path: "/derby-admin",
     title: "Derby",
     icon: "pi pi-briefcase",
