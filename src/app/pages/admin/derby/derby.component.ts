@@ -203,19 +203,43 @@ export class DerbyComponent implements OnInit {
 
 
   addNewTeam(cmd) {
+    if(!_.has(cmd, "isMany")){
+      this.saveOne(cmd);
+    }else{
+      console.log("🚀 ~ DerbyComponent ~ addNewTeam ~ cmd:", cmd)
+      this.saveMany(cmd);
+    }
     
+  }
+
+  saveOne(cmd) {
     const { teamName } = cmd;
-    delete cmd.teamName;
-    const teams = {
-      derby : this.selectedDerby._id,
-      teamName,
-      rings: cmd
-    };
-    this.crudService.post(teams, "team")
+      delete cmd.teamName;
+      const teams = {
+        derby : this.selectedDerby._id,
+        teamName,
+        rings: cmd
+      };
+      this.crudService.post(teams, "team")
+        .pipe(
+          tap((data: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Registro partidos', detail: 'Partido agregado', life: 3000 });
+            cmd.teamName = teamName;
+            this.getTeams();
+          }),
+          catchError(err => {
+            this.loading = false;
+            return err
+          })
+        )
+        .subscribe();
+  }
+
+  saveMany(cmd) {
+    this.crudService.post(cmd.data, "team")
       .pipe(
         tap((data: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Registro partidos', detail: 'Partido agregado', life: 3000 });
-          cmd.teamName = teamName;
+          this.messageService.add({ severity: 'success', summary: 'Registro partidos', detail: 'Se registraron los partidos', life: 3000 });
           this.getTeams();
         }),
         catchError(err => {

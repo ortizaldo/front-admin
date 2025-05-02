@@ -36,6 +36,10 @@ export class CrudService {
     return this.http.post(`${environment.api}/${endpoint}`, body, { responseType: 'json' });
   }
 
+  postMany(body: any = {}, endpoint: string = ""): Observable<any> {
+    return this.http.post(`${environment.api}/${endpoint}`, body, { responseType: 'json' });
+  }
+
   put(body: any = {}, id: string = "", endpoint: string = ""): Observable<any> {
     return this.http.put(`${environment.api}/${endpoint}/${id}`, body, { responseType: 'json' });
   }

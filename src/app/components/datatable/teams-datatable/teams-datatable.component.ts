@@ -151,33 +151,38 @@ export class TeamsDatatable implements OnInit, OnChanges  {
 
       const csvRecords = lines.map(line => {
         const values = line.split(',');
-        const obj: any = {};
+        let dataRound: any = {};
+        dataRound.derby = this.derby._id;
+        dataRound.rings = {};
         headers.forEach((header, i) => {
+          header = header.replace(/\r/g, '');
           const value = values[i];
-          obj[header] = isNaN(Number(value)) ? value : Number(value);
+          if(header.includes('ring') || header.includes('weight')){
+            dataRound.rings[header] = isNaN(Number(value)) ? value : Number(value);
+          }else{
+            dataRound[header] = isNaN(Number(value)) ? value : Number(value);
+          }
         });
-        return obj;
+        return dataRound;
       });
 
-      console.log('%csrc/app/components/datatable/teams-datatable/teams-datatable.component.ts:164 csvRecords', 'color: #007acc;', csvRecords);
-      const generateMongoId = () => {
-        const timestamp = Math.floor(Date.now() / 1000);
-        const random = crypto.getRandomValues(new Uint8Array(5));
-        const hex = Array.from(random).map(b => b.toString(16).padStart(2, '0')).join('');
-        return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
-      };
+      csvRecords.map((record: any) => {
+        record.rings._id = self.generateMongoId();
+      })
+
+      const data={data: csvRecords, isMany: true}
+      this.dataChange.emit(data);
       
-      const _id = generateMongoId();
-  
-      // let dataRound = {_id, teamName: csvRecordsArray[0]};
-      // for (let index = 0; index < this.derby.numGallos; index++) {
-      //   dataRound = { ...dataRound, ["R" + (index + 1) + "_ring"]: csvRecordsArray[index + 1], ["R" + (index + 1) + "_weight"]: csvRecordsArray[index + 2]};
-      // }
-      // self.addManyTeams(reader.result);
-      console.log('Contenido CSV:', text);
     };
 
     reader.readAsText(file);
+  }
+
+  generateMongoId() {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const random = crypto.getRandomValues(new Uint8Array(5));
+    const hex = Array.from(random).map(b => b.toString(16).padStart(2, '0')).join('');
+    return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
   }
 
   addManyTeams(data: any) {
