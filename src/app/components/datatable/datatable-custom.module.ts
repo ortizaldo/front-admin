@@ -23,6 +23,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { DividerModule } from "primeng/divider";
 import {CheckboxModule} from 'primeng/checkbox';
 import { FileUploadModule } from 'primeng/fileupload';
+import { WeightPipe } from "src/app/utils/weight-pipe";
 @NgModule({
   imports: [
     CommonModule,
@@ -46,8 +47,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     CheckboxModule,
     FileUploadModule,
   ],
-  declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
-  exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable],
+  declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],
+  exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],
   providers: [MessageService, ConfirmationService]
 })
 export class DatatableCustomModule { }

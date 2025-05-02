@@ -9,12 +9,13 @@ import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
 import { CSVRecord } from 'src/app/_models/CSVRecord';
 import { read, writeFileXLSX, readFile } from "xlsx";
+import { WeightPipe } from "src/app/utils/weight-pipe";
 @Component({
   selector: "app-teams-datatable",
   templateUrl: "teams-datatable.component.html",
   styleUrls: ["teams-datatable.component.css"],
   encapsulation: ViewEncapsulation.None,
-  providers: [UpperCasePipe]
+  providers: [UpperCasePipe, WeightPipe]
 })
 
 

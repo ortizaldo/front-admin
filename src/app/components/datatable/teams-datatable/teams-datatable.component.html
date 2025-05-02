@@ -202,7 +202,7 @@
                   pTemplate="output"
                   *ngIf="!col.field.includes('_id')"
                 >
-                  {{ data[col.field] }}
+                {{ col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field] }}
                 </ng-template>
               </p-cellEditor>
             </td>
