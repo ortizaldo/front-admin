@@ -186,16 +186,22 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
   }
 
-  addManyTeams(data: any) {
-    console.log("🚀 ~ TeamsDatatabl 9  e ~ addManyTeams ~ data:", data)
-    // this.dataChange.emit(this.selectedData);
-  }
-
   edit(_data: any, control?: string, key?: string){
+    console.log("🚀 ~ TeamsDatatable ~ edit ~ key:", key)
+    console.log("🚀 ~ TeamsDatatable ~ edit ~ control:", control)
+    console.log("🚀 ~ TeamsDatatable ~ edit ~ _data:", _data)
+    
+    if(!this.validacionesInputs()){
+      return
+    }
     if (control && key) {
       _data.teamName = this.formEdit.controls[control].value;
     }
     this.editRecords.emit(_data);
+  }
+
+  validacionesInputs(){
+    return true;
   }
 
   // showContextMenu(cm: ContextMenu, event: MouseEvent) { 

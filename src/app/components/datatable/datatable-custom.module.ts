@@ -24,6 +24,7 @@ import { DividerModule } from "primeng/divider";
 import {CheckboxModule} from 'primeng/checkbox';
 import { FileUploadModule } from 'primeng/fileupload';
 import { WeightPipe } from "src/app/utils/weight-pipe";
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   imports: [
     CommonModule,
@@ -46,6 +47,7 @@ import { WeightPipe } from "src/app/utils/weight-pipe";
     DividerModule,
     CheckboxModule,
     FileUploadModule,
+    TooltipModule
   ],
   declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],
   exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],

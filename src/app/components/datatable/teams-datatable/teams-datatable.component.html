@@ -39,6 +39,8 @@
                         class="btn btn-danger"
                         (click)="deleteSelected()"
                         [disabled]="!selectedData || !selectedData.length"
+                        pTooltip="Eliminar partidos" 
+                        tooltipPosition="top"
                       >
                         <i class="far fa-trash-alt"></i>
                       </button>
@@ -51,6 +53,8 @@
                         accept=".csv"
                         [auto]="true"
                         (uploadHandler)="onUpload($event)"
+                        pTooltip="Importar partidos" 
+                        tooltipPosition="top"
                         [customUpload]="true"
                       />
                     </div>
@@ -58,6 +62,8 @@
                       <button
                         icon="pi pi-plus"
                         class="btn btn-success"
+                        pTooltip="Agregar partido" 
+                        tooltipPosition="top"
                         (click)="addNewTeam()"
                       >
                         <i class="far fa-plus-square"></i>
@@ -162,7 +168,7 @@
                     [min]="1400"
                     [max]="2900"
                     locale="es-MX"
-                    (onBlur)="edit(data)"
+                    (onBlur)="edit(data, '', col.field)"
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -179,7 +185,7 @@
                     [formControlName]="col.field + '_' + data._id"
                     mode="decimal"
                     locale="es-MX"
-                    (onBlur)="edit(data)"
+                    (onBlur)="edit(data, '', col.field)"
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -195,7 +201,7 @@
                     type="text"
                     value="{{ data[col.field] }}"
                     [formControlName]="col.field + '_' + data._id"
-                    (change)="edit(data, col.field + '_' + data._id, col.field)"
+                    (change)="edit(data, col.field + '_' + data._id, col.field, col.field)"
                   />
                 </ng-template>
                 <ng-template
@@ -218,6 +224,8 @@
                 icon="pi pi-pencil"
                 (click)="onRowEditInit(data, dt)"
                 class="p-button-rounded p-button-text"
+                pTooltip="Editar partido" 
+                tooltipPosition="top"
               ></button>
               <button
                 *ngIf="editing"
@@ -227,11 +235,15 @@
                 pCancelEditableRow
                 icon="pi pi-times"
                 class="p-button-rounded p-button-text p-button-danger"
+                pTooltip="Cancelar edición" 
+                tooltipPosition="top"
               ></button>
               <button
                 type="button"
                 class="btn btn-danger btn-fab btn-icon btn-round"
                 (click)="delete(data)"
+                pTooltip="Eliminar partido" 
+                tooltipPosition="top"
               >
                 <i class="pi pi-trash"></i>
               </button>
