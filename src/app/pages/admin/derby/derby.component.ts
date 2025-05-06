@@ -372,15 +372,17 @@ export class DerbyComponent implements OnInit {
 
   onChange() {
     this.selectedDerby = this.derbys.find(obj => obj._id === this._id);
-    const params = {
+    if(this.selectedDerby){
+      const params = {
         filtersId: {
           derby: {
             value: this.selectedDerby._id,
           }
         }
       }
-    this.getDerbyConf("derby-conf", params);
-    this.getDerbyTeams("team", params);
+      this.getDerbyConf("derby-conf", params);
+      this.getDerbyTeams("team", params);
+    }
   }
 
   getDerbyConf(type: string, params: any) {
@@ -401,8 +403,8 @@ export class DerbyComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.teams = data.data;
-          console.log("🚀 ~ DerbyComponent ~ tap ~ this.teams:", this.teams)
           let _data = [];
+          const idx = 2;
           for (let index = 0; index < this.selectedDerby.numGallos; index++) {
             _data.push({ 
               header: "R" + (index + 1) + " Anillo", 
@@ -414,14 +416,14 @@ export class DerbyComponent implements OnInit {
               field: "R" + (index + 1) + "_weight"
             });
           }
-          this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName", idx: 1}, { field: "_id"}, ..._data];
+          this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName"}, { field: "_id"}, ..._data];
 
           this.columnsDT.map((column, idx) => {
+            console.log("🚀 ~ DerbyComponent ~ this.columnsDT.map ~ idx:", idx)
             column.idx = idx + 1;
+            column.tabIndex = idx;
           });
-
-          console.log('%csrc/app/pages/admin/derby/derby.component.ts:398 this.columnsDT', 'color: #007acc;', this.columnsDT);
-
+          console.log('%cfront-admin/src/app/pages/admin/derby/derby.component.ts:427 this.columnsDT', 'color: #007acc;', this.columnsDT);
           this.getTeams();
         }),
         catchError(err => {

@@ -148,8 +148,6 @@
         <tr [pEditableRow]="data">
           <ng-container *ngFor="let col of columns">
             <td
-              [focusable]="true"
-              pEditableColumn
               *ngIf="!col.field.includes('_id')"
               [ngStyle]="{ width: col.size }"
             >
@@ -168,7 +166,7 @@
                     [min]="1400"
                     [max]="2900"
                     locale="es-MX"
-                    (onBlur)="edit(data, '', col.field)"
+                    (change)="edit(data, '', col.field)"
                   >
                   </p-inputNumber>
                 </ng-template>
@@ -185,7 +183,7 @@
                     [formControlName]="col.field + '_' + data._id"
                     mode="decimal"
                     locale="es-MX"
-                    (onBlur)="edit(data, '', col.field)"
+                    (change)="edit(data, '', col.field)"
                   >
                   </p-inputNumber>
                 </ng-template>

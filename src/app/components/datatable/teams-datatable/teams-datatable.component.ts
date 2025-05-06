@@ -58,14 +58,25 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     if (changes.data) {
       this.formEdit = new UntypedFormGroup({});
       const self = this;
+      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:61 this.data', 'color: #007acc;', this.data);
       this.data.map((data, index) => {
         self.columns.forEach((column, idx) => {
           if (column.field !== "_id") {
-            this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl(data[column.field], Validators.required));
+            this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl(data[column.field]));
           }
         });
       });
     }
+  }
+
+  teamNameValidator(data: any, control: any) {
+    const teamName = control.value;
+    console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:77 this.data', 'color: #007acc;', this.data);
+    const existingTeamNames = this.data.map(item => item.teamName);
+    if (existingTeamNames.includes(teamName)) {
+      return { teamNameAlreadyExists: true };
+    }
+    return null;
   }
 
   ngAfterViewInit() {
@@ -187,11 +198,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   edit(_data: any, control?: string, key?: string){
-    console.log("🚀 ~ TeamsDatatable ~ edit ~ key:", key)
-    console.log("🚀 ~ TeamsDatatable ~ edit ~ control:", control)
-    console.log("🚀 ~ TeamsDatatable ~ edit ~ _data:", _data)
-    
-    if(!this.validacionesInputs()){
+    if(!this.validacionesInputs(key, control , _data)){
       return
     }
     if (control && key) {
@@ -200,14 +207,43 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     this.editRecords.emit(_data);
   }
 
-  validacionesInputs(){
+  validacionesInputs(key, control , data){
+    console.log("🚀 ~ TeamsDatatable ~ validacionesInputs ~ this.formEdit.controls:", this.formEdit.controls)
+    if(key.includes('weight')){
+      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:216 control', 'color: #007acc;', control);
+    }
+
+    if(key.includes('teamName')){
+      const existingTeamNames = this.data.map(item => item.teamName);
+      const value = this.formEdit.controls[control].value;
+      if (existingTeamNames.includes(value)) {
+        this.formEdit.controls[control].setErrors({ teamNameAlreadyExists: true });
+        this.formEdit.controls[control].markAsDirty();
+        this.formEdit.controls[control].patchValue("");
+        return true;
+      }
+    }
     return true;
   }
 
-  // showContextMenu(cm: ContextMenu, event: MouseEvent) { 
-  //   cm.onShow.emit(event);
-  //   event.stopPropagation();
-  // }
+  onKeyDown(event: KeyboardEvent, rowData: any) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+  
+      // Encontrar el siguiente elemento editable (pInputText, p-inputNumber, etc.)
+      const currentElement = event.target as HTMLElement;
+      const focusables = Array.from(document.querySelectorAll(
+        'input, p-inputNumber input'
+      )) as HTMLElement[];
+  
+      const index = focusables.indexOf(currentElement);
+      if (index > -1 && index < focusables.length - 1) {
+        setTimeout(() => {
+          focusables[index + 1]?.focus();
+        });
+      }
+    }
+  }
 
   deleteSelected() {
     this.deleteRecords.emit({ data: this.selectedData });
