@@ -33,18 +33,15 @@ import { ScrollPanelModule } from "primeng/scrollpanel";
 import { SplitButtonModule } from "primeng/splitbutton";
 import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage/betting-brokerage.component";
 import { InputMaskModule } from "primeng/inputmask";
-import { IConfig, NgxMaskModule } from "ngx-mask";
 import { TabViewModule } from "primeng/tabview";
 import { ToastModule } from 'primeng/toast';
 import { EventsComponent } from "src/app/pages/admin/events/events-component";
 import { FullCalendarModule } from '@fullcalendar/angular';
-export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 import { DialogModule } from 'primeng/dialog';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
-    NgxMaskModule.forRoot(),
     FormsModule,
     HttpClientModule,
     NgbModule,

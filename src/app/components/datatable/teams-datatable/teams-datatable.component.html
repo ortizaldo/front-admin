@@ -154,42 +154,6 @@
             >
               <p-cellEditor>
                 <ng-template
-                  *ngIf="col.field.includes('weight')"
-                  pTemplate="input"
-                >
-                  <p-inputNumber
-                    [style]="{ width: col.size }"
-                    inputId="folio-{{ data._id }}"
-                    [(ngModel)]="data[col.field]"
-                    [value]="data[col.field]"
-                    [formControlName]="col.field + '_' + data._id"
-                    mode="decimal"
-                    [min]="1400"
-                    [max]="2900"
-                    locale="es-MX"
-                    (change)="edit(data, '', col.field)"
-                  >
-                  </p-inputNumber>
-                </ng-template>
-
-                <ng-template
-                  *ngIf="col.field.includes('ring')"
-                  pTemplate="input"
-                >
-                  <p-inputNumber
-                    [style]="{ width: col.size }"
-                    inputId="folio-{{ data._id }}"
-                    [(ngModel)]="data[col.field]"
-                    [value]="data[col.field]"
-                    [formControlName]="col.field + '_' + data._id"
-                    mode="decimal"
-                    locale="es-MX"
-                    (change)="edit(data, '', col.field)"
-                  >
-                  </p-inputNumber>
-                </ng-template>
-
-                <ng-template
                   *ngIf="col.field.includes('teamName')"
                   pTemplate="input"
                 >
@@ -201,6 +165,37 @@
                     value="{{ data[col.field] }}"
                     [formControlName]="col.field + '_' + data._id"
                     (change)="edit(data, col.field + '_' + data._id, col.field, col.field)"
+                  />
+                </ng-template>
+                <ng-template
+                  *ngIf="col.field.includes('ring')"
+                  pTemplate="input"
+                >
+                  <input
+                    pInputNumber
+                    inputId="folio-{{ data._id }}"
+                    class="form-control p-inputtext-sm"
+                    type="text"
+                    [(ngModel)]="data[col.field]"
+                    value="{{ data[col.field] }}"
+                    [formControlName]="col.field + '_' + data._id"
+                    (change)="edit(data, '', col.field)"
+                  />
+                </ng-template>
+                <ng-template
+                  *ngIf="col.field.includes('weight')"
+                  pTemplate="input"
+                >
+                  <input
+                    pInputNumber
+                    inputId="folio-{{ data._id }}"
+                    class="form-control p-inputtext-sm"
+                    type="text"
+                    mask="0000-0000"
+                    [(ngModel)]="data[col.field]"
+                    value="{{ data[col.field] }}"
+                    [formControlName]="col.field + '_' + data._id"
+                    (change)="edit(data, '', col.field)"
                   />
                 </ng-template>
                 <ng-template

@@ -10,12 +10,13 @@ import { CrudService } from "src/app/_services/crud.service";
 import { CSVRecord } from 'src/app/_models/CSVRecord';
 import { read, writeFileXLSX, readFile } from "xlsx";
 import { WeightPipe } from "src/app/utils/weight-pipe";
+
 @Component({
   selector: "app-teams-datatable",
   templateUrl: "teams-datatable.component.html",
   styleUrls: ["teams-datatable.component.css"],
   encapsulation: ViewEncapsulation.None,
-  providers: [UpperCasePipe, WeightPipe]
+  providers: [UpperCasePipe, WeightPipe],
 })
 
 
@@ -58,7 +59,6 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     if (changes.data) {
       this.formEdit = new UntypedFormGroup({});
       const self = this;
-      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:61 this.data', 'color: #007acc;', this.data);
       this.data.map((data, index) => {
         self.columns.forEach((column, idx) => {
           if (column.field !== "_id") {
@@ -208,8 +208,9 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   validacionesInputs(key, control , data){
-    console.log("🚀 ~ TeamsDatatable ~ validacionesInputs ~ this.formEdit.controls:", this.formEdit.controls)
+    console.log("🚀 ~ TeamsDatatable ~ validacionesInputs ~ key:", key)
     if(key.includes('weight')){
+      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:213 this.confDerby', 'color: #007acc;', this.confDerby);
       console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:216 control', 'color: #007acc;', control);
     }
 

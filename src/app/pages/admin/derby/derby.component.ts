@@ -419,11 +419,9 @@ export class DerbyComponent implements OnInit {
           this.columnsDT = [{ header: "Partido", size: "150px", field: "teamName"}, { field: "_id"}, ..._data];
 
           this.columnsDT.map((column, idx) => {
-            console.log("🚀 ~ DerbyComponent ~ this.columnsDT.map ~ idx:", idx)
             column.idx = idx + 1;
             column.tabIndex = idx;
           });
-          console.log('%cfront-admin/src/app/pages/admin/derby/derby.component.ts:427 this.columnsDT', 'color: #007acc;', this.columnsDT);
           this.getTeams();
         }),
         catchError(err => {

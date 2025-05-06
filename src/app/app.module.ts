@@ -16,11 +16,7 @@ import { ComponentsModule } from "./components/components.module";
 import { AuthInterceptor } from "./_helpers/auth.interceptor";
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
 import { ConfirmationService, MessageService } from "primeng/api";
-import { NgxMaskModule, IConfig } from 'ngx-mask'
 import { DerbyLayoutComponent } from "./layouts/derby-layout/derby-layout.component";
-const maskConfig: Partial<IConfig> = {
-  validation: false,
-};
 
 registerLocaleData(localeEsMx, 'es-MX');
 @NgModule({
@@ -33,10 +29,10 @@ registerLocaleData(localeEsMx, 'es-MX');
     RouterModule,
     AppRoutingModule,
     ToastrModule.forRoot(),
-    NgxMaskModule.forRoot(maskConfig),
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, DerbyLayoutComponent],
   providers: [AuthInterceptor, MessageService, ConfirmationService, { provide: LOCALE_ID, useValue: 'es-MX' }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: []
 })
 export class AppModule { }
