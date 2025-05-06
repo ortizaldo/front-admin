@@ -150,6 +150,7 @@
             <td
               *ngIf="!col.field.includes('_id')"
               [ngStyle]="{ width: col.size }"
+              pEditableColumn
             >
               <p-cellEditor>
                 <ng-template
