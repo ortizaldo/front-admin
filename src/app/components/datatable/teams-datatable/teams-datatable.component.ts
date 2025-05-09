@@ -10,7 +10,7 @@ import { CrudService } from "src/app/_services/crud.service";
 import { CSVRecord } from 'src/app/_models/CSVRecord';
 import { read, writeFileXLSX, readFile } from "xlsx";
 import { WeightPipe } from "src/app/utils/weight-pipe";
-
+import * as _ from "underscore";
 @Component({
   selector: "app-teams-datatable",
   templateUrl: "teams-datatable.component.html",
@@ -42,9 +42,10 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   @ViewChild('csvReader') csvReader: any;
   
   ringForm: UntypedFormGroup;
+  errors: any = {};
   clonedData: { [s: string]: any } = {};
   formEdit: UntypedFormGroup;
-  titleFile = 'Angular7-readCSV';
+  titleFile = 'FRS-readCSV';
   public records: any[] = [];
 
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) {}
@@ -198,33 +199,56 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   edit(_data: any, control?: string, key?: string){
-    if(!this.validacionesInputs(key, control , _data)){
-      return
-    }
-    if (control && key) {
-      _data.teamName = this.formEdit.controls[control].value;
-    }
+    this.validacionesInputs(key, control , _data)
     this.editRecords.emit(_data);
   }
 
   validacionesInputs(key, control , data){
-    console.log("🚀 ~ TeamsDatatable ~ validacionesInputs ~ key:", key)
+    const value = this.formEdit.controls[control].value;
     if(key.includes('weight')){
-      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:213 this.confDerby', 'color: #007acc;', this.confDerby);
-      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:216 control', 'color: #007acc;', control);
+      const weight = parseInt(value);
+      if(weight > this.confDerby.maxWeight){
+        this.updateErrors(control, { control, error:{
+          title: "Errores de pesaje",
+          errorMessage: "El peso esta fuera del rango de pesos permitidos"
+        }, value });
+      }
+      if (weight < this.confDerby.minWeight) {
+        this.updateErrors(control, { control, error:{
+          title: "Errores de pesaje",
+          errorMessage: "El peso esta fuera del rango de pesos permitidos"
+        }, value });
+      }
     }
 
     if(key.includes('teamName')){
-      const existingTeamNames = this.data.map(item => item.teamName);
-      const value = this.formEdit.controls[control].value;
+      const existingTeamNames = this.data.map(item => item.teamName.value);
+      console.log("🚀 ~ TeamsDatatable ~ validacionesInputs ~ existingTeamNames:", existingTeamNames)
+      
       if (existingTeamNames.includes(value)) {
-        this.formEdit.controls[control].setErrors({ teamNameAlreadyExists: true });
-        this.formEdit.controls[control].markAsDirty();
-        this.formEdit.controls[control].patchValue("");
-        return true;
+        this.updateErrors(control, { control, error:{
+          title: "Errores de pesaje",
+          errorMessage: "Nombre de partido existente"
+        }, value });
       }
     }
-    return true;
+
+    if(key.includes('ring')){
+      const value = parseInt(this.formEdit.controls[control].value);
+      const existingRings = this.data.map(item => parseInt(item[key]));
+      
+      if (existingRings.includes(value)) {
+        this.updateErrors(control, { error:{
+          title: "Errores de pesaje",
+          errorMessage: "Anillo duplicado"
+        }, value });
+      }
+    }
+  }
+
+  updateErrors(control: string, error: any) {
+    this.errors = { ...this.errors, ...error };
+    // this.formEdit.controls[control].patchValue("");
   }
 
   onKeyDown(event: KeyboardEvent, rowData: any) {
@@ -259,8 +283,9 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   onRowEditInit(data: any, dt: any) {
-    dt.initRowEdit(data)
-    this.cd.detectChanges();
+    console.log("🚀 ~ TeamsDatatable ~ onRowEditInit ~ data:", data)
+    // dt.initRowEdit(data)
+    // this.cd.detectChanges();
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {

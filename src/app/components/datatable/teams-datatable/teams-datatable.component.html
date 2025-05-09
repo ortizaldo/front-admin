@@ -150,7 +150,6 @@
             <td
               *ngIf="!col.field.includes('_id')"
               [ngStyle]="{ width: col.size }"
-              pEditableColumn
             >
               <p-cellEditor>
                 <ng-template
@@ -162,9 +161,10 @@
                     inputId="folio-{{ data._id }}"
                     class="form-control p-inputtext-sm"
                     type="text"
-                    value="{{ data[col.field] }}"
+                    value="{{ data[col.field].value }}"
+                    [(ngModel)]="data[col.field].value"
                     [formControlName]="col.field + '_' + data._id"
-                    (change)="edit(data, col.field + '_' + data._id, col.field, col.field)"
+                    (change)="edit(data, col.field + '_' + data._id, col.field)"
                   />
                 </ng-template>
                 <ng-template
@@ -172,14 +172,14 @@
                   pTemplate="input"
                 >
                   <input
-                    pInputNumber
                     inputId="folio-{{ data._id }}"
                     class="form-control p-inputtext-sm"
                     type="text"
-                    [(ngModel)]="data[col.field]"
-                    value="{{ data[col.field] }}"
+                    mask="0*"
+                    [(ngModel)]="data[col.field].value"
+                    value="{{ data[col.field].value }}"
                     [formControlName]="col.field + '_' + data._id"
-                    (change)="edit(data, '', col.field)"
+                    (change)="edit(data, col.field + '_' + data._id, col.field)"
                   />
                 </ng-template>
                 <ng-template
@@ -187,22 +187,21 @@
                   pTemplate="input"
                 >
                   <input
-                    pInputNumber
                     inputId="folio-{{ data._id }}"
                     class="form-control p-inputtext-sm"
                     type="text"
-                    mask="0000-0000"
-                    [(ngModel)]="data[col.field]"
-                    value="{{ data[col.field] }}"
+                    mask="0.000"
+                    [(ngModel)]="data[col.field].value"
+                    value="{{ data[col.field].value }}"
                     [formControlName]="col.field + '_' + data._id"
-                    (change)="edit(data, '', col.field)"
+                    (change)="edit(data, col.field + '_' + data._id, col.field)"
                   />
                 </ng-template>
                 <ng-template
                   pTemplate="output"
                   *ngIf="!col.field.includes('_id')"
                 >
-                {{ col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field] }}
+                {{ col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field].value }}
                 </ng-template>
               </p-cellEditor>
             </td>

@@ -25,6 +25,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import { FileUploadModule } from 'primeng/fileupload';
 import { WeightPipe } from "src/app/utils/weight-pipe";
 import { TooltipModule } from 'primeng/tooltip';
+import { NgxMaskDirective } from "ngx-mask";
 @NgModule({
   imports: [
     CommonModule,
@@ -47,7 +48,8 @@ import { TooltipModule } from 'primeng/tooltip';
     DividerModule,
     CheckboxModule,
     FileUploadModule,
-    TooltipModule
+    TooltipModule,
+    NgxMaskDirective,
   ],
   declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],
   exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],
