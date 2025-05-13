@@ -26,6 +26,10 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { WeightPipe } from "src/app/utils/weight-pipe";
 import { TooltipModule } from 'primeng/tooltip';
 import { NgxMaskDirective } from "ngx-mask";
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { ErrorPipe } from "src/app/utils/error-pipe";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -50,9 +54,11 @@ import { NgxMaskDirective } from "ngx-mask";
     FileUploadModule,
     TooltipModule,
     NgxMaskDirective,
+    AvatarModule,
+    AvatarGroupModule
   ],
-  declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],
-  exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe],
+  declarations: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe, ErrorPipe],
+  exports: [SimpleDatatable, TeamsDatatable, CorretajeDatatable, WeightPipe, ErrorPipe],
   providers: [MessageService, ConfirmationService]
 })
 export class DatatableCustomModule { }

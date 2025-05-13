@@ -11,12 +11,14 @@ import { CSVRecord } from 'src/app/_models/CSVRecord';
 import { read, writeFileXLSX, readFile } from "xlsx";
 import { WeightPipe } from "src/app/utils/weight-pipe";
 import * as _ from "underscore";
+import { ErrorPipe } from "src/app/utils/error-pipe";
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: "app-teams-datatable",
   templateUrl: "teams-datatable.component.html",
   styleUrls: ["teams-datatable.component.css"],
   encapsulation: ViewEncapsulation.None,
-  providers: [UpperCasePipe, WeightPipe],
+  providers: [UpperCasePipe, WeightPipe, ErrorPipe],
 })
 
 
@@ -42,13 +44,13 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   @ViewChild('csvReader') csvReader: any;
   
   ringForm: UntypedFormGroup;
-  errors: any = {};
+  errors: any = [];
   clonedData: { [s: string]: any } = {};
   formEdit: UntypedFormGroup;
   titleFile = 'FRS-readCSV';
   public records: any[] = [];
 
-  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef) {}
+  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
     this.addFormDynamic();
@@ -58,6 +60,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
 
   ngOnChanges(changes: any): void {
     if (changes.data) {
+      this.errors = [];
       this.formEdit = new UntypedFormGroup({});
       const self = this;
       this.data.map((data, index) => {
@@ -66,13 +69,14 @@ export class TeamsDatatable implements OnInit, OnChanges  {
             this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl(data[column.field]));
           }
         });
+
+        self.validacionesInputs('teamName', data);
       });
     }
   }
 
   teamNameValidator(data: any, control: any) {
     const teamName = control.value;
-    console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:77 this.data', 'color: #007acc;', this.data);
     const existingTeamNames = this.data.map(item => item.teamName);
     if (existingTeamNames.includes(teamName)) {
       return { teamNameAlreadyExists: true };
@@ -88,10 +92,12 @@ export class TeamsDatatable implements OnInit, OnChanges  {
 
   addFormDynamic() {
     const data = this.teams;
+    // console.log("🚀 ~ TeamsDatatable ~ addFormDynamic ~ data:", data)
     const dataRings = [];
     data.forEach((team: any) => {
       team.rings.teamName = team.teamName.toUpperCase();
       team.rings.teamId = team._id;
+      team.rings._id = team._id;
       dataRings.push(team.rings);
     });
 
@@ -100,7 +106,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     dataRings.map((data, index) => {
       self.columns.forEach((column, idx) => {
         if (column.field !== "_id") {
-          this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl(data[column.field], Validators.required));
+          this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl("", Validators.required));
         }
       });
     });
@@ -199,56 +205,87 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   edit(_data: any, control?: string, key?: string){
-    this.validacionesInputs(key, control , _data)
+    // this.validacionesInputs(key, control , _data)
     this.editRecords.emit(_data);
   }
 
-  validacionesInputs(key, control , data){
-    const value = this.formEdit.controls[control].value;
-    if(key.includes('weight')){
-      const weight = parseInt(value);
-      if(weight > this.confDerby.maxWeight){
-        this.updateErrors(control, { control, error:{
-          title: "Errores de pesaje",
-          errorMessage: "El peso esta fuera del rango de pesos permitidos"
-        }, value });
-      }
-      if (weight < this.confDerby.minWeight) {
-        this.updateErrors(control, { control, error:{
-          title: "Errores de pesaje",
-          errorMessage: "El peso esta fuera del rango de pesos permitidos"
-        }, value });
-      }
-    }
+  // validacionesInputs(key, control , data){
+  //   const value = this.formEdit.controls[control].value;
+  //   if(key.includes('weight')){
+  //     const weight = parseInt(value);
+  //     if(weight > this.confDerby.maxWeight){
+  //       this.updateErrors(control, { control, error:{
+  //         title: "Errores de pesaje",
+  //         errorMessage: "El peso esta fuera del rango de pesos permitidos"
+  //       }, value }, data);
+  //     }
+  //     if (weight < this.confDerby.minWeight) {
+  //       this.updateErrors(control, { control, error:{
+  //         title: "Errores de pesaje",
+  //         errorMessage: "El peso esta fuera del rango de pesos permitidos"
+  //       }, value }, data);
+  //     }
+  //   }
 
-    if(key.includes('teamName')){
-      const existingTeamNames = this.data.map(item => item.teamName.value);
-      console.log("🚀 ~ TeamsDatatable ~ validacionesInputs ~ existingTeamNames:", existingTeamNames)
+  //   if(key.includes('teamName')){
+  //     const existingTeamNames = this.data.map(item => item.teamName);
       
-      if (existingTeamNames.includes(value)) {
-        this.updateErrors(control, { control, error:{
-          title: "Errores de pesaje",
-          errorMessage: "Nombre de partido existente"
-        }, value });
-      }
-    }
+  //     if (existingTeamNames.includes(value)) {
+  //       this.updateErrors(control, { control, error:{
+  //         title: "Errores de pesaje",
+  //         errorMessage: "Nombre de partido existente"
+  //       }, value }, data);
+  //     }
+  //   }
 
-    if(key.includes('ring')){
-      const value = parseInt(this.formEdit.controls[control].value);
-      const existingRings = this.data.map(item => parseInt(item[key]));
+  //   if(key.includes('ring')){
+  //     const value = parseInt(this.formEdit.controls[control].value);
+  //     const existingRings = this.data.map(item => parseInt(item[key]));
       
-      if (existingRings.includes(value)) {
-        this.updateErrors(control, { error:{
-          title: "Errores de pesaje",
-          errorMessage: "Anillo duplicado"
-        }, value });
+  //     if (existingRings.includes(value)) {
+  //       this.updateErrors(control, { error:{
+  //         title: "Errores de pesaje",
+  //         error : "Anillo duplicado"
+  //       }, value }, data);
+  //     }
+  //   }
+  // }
+
+  validacionesInputs(key, data) {
+    if (key.includes('teamName')) {
+
+      const itemExists = [];
+      this.data.map((item: any) =>{
+        if(item.teamName == data[key]){
+          itemExists.push(item);
+        }
+      });
+
+      if (itemExists.length >= 2) {
+          const error = {
+            error: {
+              title: "Errores de partido",
+              errorMessage: "El partido ya existe en el listado"
+            },
+            value: data[key],
+            _id: data._id,
+            key
+          };
+
+          this.errors.push(error);
       }
     }
   }
 
-  updateErrors(control: string, error: any) {
+  getErrorMessage(fieldValue: string): string | null {
+    const errorItem = this.errors.find(e => e.value === fieldValue);
+    return errorItem?.error?.errorMessage || null;
+  }
+
+  updateErrors(control: string, error: any, data: any) {
     this.errors = { ...this.errors, ...error };
     // this.formEdit.controls[control].patchValue("");
+    console.log("🚀 ~ TeamsDatatable ~ updateErrors ~ this.errors:", this.errors)
   }
 
   onKeyDown(event: KeyboardEvent, rowData: any) {
@@ -284,8 +321,8 @@ export class TeamsDatatable implements OnInit, OnChanges  {
 
   onRowEditInit(data: any, dt: any) {
     console.log("🚀 ~ TeamsDatatable ~ onRowEditInit ~ data:", data)
-    // dt.initRowEdit(data)
-    // this.cd.detectChanges();
+    dt.initRowEdit(data)
+    this.cd.detectChanges();
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {

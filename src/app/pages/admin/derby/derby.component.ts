@@ -313,36 +313,30 @@ export class DerbyComponent implements OnInit {
   }
 
   editSelected(data) {
-    console.log("🚀 ~ DerbyComponent ~ editSelected ~ data:", data)
-    // const { teamName } = data;
-    // const { teamId } = data;
-    // delete data.teamName;
-    // delete data.teamId;
-    // const rings = [];  
-    // Object.keys(data).forEach((key) => {
-    //   const value = data[key].value;
-    //   data[key] = value;
-    // });
     
-    // const teams = {
-    //   derby : this.selectedDerby._id,
-    //   teamName: teamName.value.toUpperCase(),
-    //   rings: data
-    // };
+    const { teamName } = data;
+    const { teamId } = data;
+    delete data.teamName;
+    delete data.teamId;
+    const rings = [];
+    
+    const teams = {
+      derby : this.selectedDerby._id,
+      teamName: teamName.toUpperCase(),
+      rings: data
+    };
 
-    // console.log('%cfront-admin/src/app/pages/admin/derby/derby.component.ts:333 teams', 'color: #007acc;', teams);
-
-    // this.crudService.put(teams, teamId.value, "team")
-    //   .pipe(
-    //     tap((data: any) => {
-    //       this.getTeams();
-    //     }),
-    //     catchError(err => {
-    //       this.loading = false;
-    //       return err
-    //     })
-    //   )
-    //   .subscribe();
+    this.crudService.put(teams, teamId, "team")
+      .pipe(
+        tap((data: any) => {
+          this.getTeams();
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
   }
   /**
    * Resets the derby form and closes the derby dialog.
@@ -450,22 +444,13 @@ export class DerbyComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           const teams = data.data;
-          console.log("🚀 ~ DerbyComponent ~ tap ~ teams:", teams)
           this.data = [];
           teams.forEach((team: any) => {
             const teamN = team.teamName.toUpperCase();
             team.rings.teamName = teamN;
             team.rings.teamId = team._id;
-            Object.keys(team.rings).forEach((key) => {
-              if (key === "_id") {
-                return;
-              }
-              const value = team.rings[key];
-              team.rings[key] = {
-                value: value,
-                errors: {}
-              };
-            });
+            team.rings._id = team._id;
+            
             this.data.push(team.rings);
             this.dataUpdated.emit();
           });
