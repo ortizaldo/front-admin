@@ -168,6 +168,14 @@ app-teams-datatable .buttons {
   padding-left: 2px !important; padding-right: 2px !important
 }
 
+app-teams-datatable .badge {
+  font-size: 0.9rem !important;
+}
+
+app-teams-datatable .bg-light {
+  background-color: transparent !important;
+}
+
 p-toolbar {
   display: flex;
   flex-wrap: wrap;

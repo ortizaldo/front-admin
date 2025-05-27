@@ -164,7 +164,6 @@
                     value="{{ data[col.field] }}"
                     [(ngModel)]="data[col.field]"
                     [formControlName]="col.field + '_' + data._id"
-                    (change)="edit(data, col.field + '_' + data._id, col.field)"
                   />
                 </ng-template>
                 <ng-template
@@ -179,7 +178,6 @@
                     [(ngModel)]="data[col.field]"
                     value="{{ data[col.field] }}"
                     [formControlName]="col.field + '_' + data._id"
-                    (change)="edit(data, col.field + '_' + data._id, col.field)"
                   />
                 </ng-template>
                 <ng-template
@@ -194,19 +192,18 @@
                     [(ngModel)]="data[col.field]"
                     value="{{ data[col.field] }}"
                     [formControlName]="col.field + '_' + data._id"
-                    (change)="edit(data, col.field + '_' + data._id, col.field)"
                   />
                 </ng-template>
                 <ng-template
                   pTemplate="output"
                   *ngIf="!col.field.includes('_id')"
                 >
-                <div class="row">
-                  <span>{{ col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field] }}</span>
-                  <p-avatar *ngIf="getErrorMessage(data[col.field]) as errorMsg" icon="pi pi-exclamation-circle" styleClass="mr-2"
-                    [style]="{ 'background-color': '#dee9fc', color: '#D82E0F' }" shape="circle" pTooltip="{{errorMsg}}"
-                    tooltipPosition="right">
-                  </p-avatar>
+                <div class="row col-6">
+                  <span *ngIf="!getErrorMessage(data[col.field]) as errorMsg" class="badge bg-light text-dark">{{ col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field] }}</span>
+                  <span *ngIf="getErrorMessage(data[col.field]) as errorMsg" class="badge bg-light text-dark" >
+                    {{col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field]}} <span class="badge bg-warning text-dark" pTooltip="{{errorMsg}}"
+                    tooltipPosition="right"><i class="fas fa-exclamation-circle"></i></span>
+                  </span>
                 </div>
                 </ng-template>
               </p-cellEditor>
@@ -226,6 +223,9 @@
                 pTooltip="Editar partido" 
                 tooltipPosition="top"
               ></button>
+              <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                (click)="onRowEditSave(data, dt)" class="p-button-rounded p-button-text p-button-success mr-2">
+              </button>
               <button
                 *ngIf="editing"
                 pButton

@@ -71,6 +71,8 @@ export class TeamsDatatable implements OnInit, OnChanges  {
         });
 
         self.validacionesInputs('teamName', data);
+        self.validacionesInputs('weight', data);
+        self.validacionesInputs('ring', data);
       });
     }
   }
@@ -204,77 +206,76 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
   }
 
-  edit(_data: any, control?: string, key?: string){
+  edit(_data: any){
     // this.validacionesInputs(key, control , _data)
     this.editRecords.emit(_data);
   }
 
-  // validacionesInputs(key, control , data){
-  //   const value = this.formEdit.controls[control].value;
-  //   if(key.includes('weight')){
-  //     const weight = parseInt(value);
-  //     if(weight > this.confDerby.maxWeight){
-  //       this.updateErrors(control, { control, error:{
-  //         title: "Errores de pesaje",
-  //         errorMessage: "El peso esta fuera del rango de pesos permitidos"
-  //       }, value }, data);
-  //     }
-  //     if (weight < this.confDerby.minWeight) {
-  //       this.updateErrors(control, { control, error:{
-  //         title: "Errores de pesaje",
-  //         errorMessage: "El peso esta fuera del rango de pesos permitidos"
-  //       }, value }, data);
-  //     }
-  //   }
-
-  //   if(key.includes('teamName')){
-  //     const existingTeamNames = this.data.map(item => item.teamName);
-      
-  //     if (existingTeamNames.includes(value)) {
-  //       this.updateErrors(control, { control, error:{
-  //         title: "Errores de pesaje",
-  //         errorMessage: "Nombre de partido existente"
-  //       }, value }, data);
-  //     }
-  //   }
-
-  //   if(key.includes('ring')){
-  //     const value = parseInt(this.formEdit.controls[control].value);
-  //     const existingRings = this.data.map(item => parseInt(item[key]));
-      
-  //     if (existingRings.includes(value)) {
-  //       this.updateErrors(control, { error:{
-  //         title: "Errores de pesaje",
-  //         error : "Anillo duplicado"
-  //       }, value }, data);
-  //     }
-  //   }
-  // }
-
   validacionesInputs(key, data) {
-    if (key.includes('teamName')) {
+    Object.keys(data).map((ring: any) => {
+      if (ring.includes(key) && key === 'teamName') {
+        const itemExists = [];
+        this.data.map((item: any) =>{
+          if(item.teamName == data[key]){
+            itemExists.push(item);
+          }
+        });
 
-      const itemExists = [];
-      this.data.map((item: any) =>{
-        if(item.teamName == data[key]){
-          itemExists.push(item);
+        if (itemExists.length >= 2) {
+            const error = {
+              error: {
+                title: "Errores de partido",
+                errorMessage: "El partido ya existe en el listado"
+              },
+              value: data[key],
+              _id: data._id,
+              key
+            };
+
+            this.errors.push(error);
         }
-      });
-
-      if (itemExists.length >= 2) {
+      }
+      
+      if (ring.includes(key) && key === 'weight') {
+        const weight = parseInt(data[ring]);
+        if (weight > this.confDerby.maxWeight || weight < this.confDerby.minWeight) {
           const error = {
             error: {
-              title: "Errores de partido",
-              errorMessage: "El partido ya existe en el listado"
+              title: "Errores de pesaje",
+              errorMessage: "El peso esta fuera del rango de pesos permitidos"
             },
-            value: data[key],
+            value: weight,
             _id: data._id,
             key
           };
-
           this.errors.push(error);
+        }
       }
-    }
+
+      if (ring.includes(key) && key === 'ring') {
+        const itemExists = [];
+        this.data.map((item: any) =>{
+          if(item[key] == data[key]){
+            itemExists.push(item);
+          }
+        });
+
+        if (itemExists.length >= 2) {
+            const error = {
+              error: {
+                title: "Errores en los anillos",
+                errorMessage: "El el anillo ya existe en el listado"
+              },
+              value: data[key],
+              _id: data._id,
+              key
+            };
+
+            this.errors.push(error);
+        }
+      }
+      
+    })
   }
 
   getErrorMessage(fieldValue: string): string | null {
@@ -320,9 +321,12 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   onRowEditInit(data: any, dt: any) {
-    console.log("🚀 ~ TeamsDatatable ~ onRowEditInit ~ data:", data)
     dt.initRowEdit(data)
     this.cd.detectChanges();
+  }
+
+  onRowEditSave(data: any) {
+    this.edit(data)
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
