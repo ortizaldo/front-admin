@@ -45,6 +45,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   
   ringForm: UntypedFormGroup;
   errors: any = [];
+  rings: any = [];
   clonedData: { [s: string]: any } = {};
   formEdit: UntypedFormGroup;
   titleFile = 'FRS-readCSV';
@@ -212,6 +213,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   validacionesInputs(key, data) {
+    // console.log("🚀 ~ TeamsDatatableComponent ~ validacionesInputs ~ data:", data)
     Object.keys(data).map((ring: any) => {
       if (ring.includes(key) && key === 'teamName') {
         const itemExists = [];
@@ -253,29 +255,34 @@ export class TeamsDatatable implements OnInit, OnChanges  {
       }
 
       if (ring.includes(key) && key === 'ring') {
-        const itemExists = [];
-        this.data.map((item: any) =>{
-          if(item[key] == data[key]){
-            itemExists.push(item);
-          }
-        });
-
-        if (itemExists.length >= 2) {
-            const error = {
-              error: {
-                title: "Errores en los anillos",
-                errorMessage: "El el anillo ya existe en el listado"
-              },
-              value: data[key],
-              _id: data._id,
-              key
-            };
-
-            this.errors.push(error);
-        }
+        this.rings.push({ringValue: data[ring], teamId: data._id});
       }
       
     })
+
+    if(this.rings.length > 0){
+      const counts = this.rings.reduce((acc, item) => {
+        acc[item.ringValue] = (acc[item.ringValue] || 0) + 1;
+        return acc;
+      }, {});
+
+      // Paso 2: Filtrar los que aparecen más de una vez
+      const duplicados = this.rings.filter(item => counts[item.ringValue] > 1);
+      if (duplicados.length > 0) {
+        duplicados.forEach((item: any) => {
+          const error = {
+            error: {
+              title: "Errores de anillos",
+              errorMessage: "El anillo ya existe en el listado"
+            },
+            value: item.ringValue,
+            _id: item.teamId,
+            key
+          };
+          this.errors.push(error);
+        });
+      }
+    }
   }
 
   getErrorMessage(fieldValue: string): string | null {
