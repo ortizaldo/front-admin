@@ -57,7 +57,6 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     this.addFormDynamic();
     this.cd.detectChanges();
     this.primengConfig.ripple = true;
-    console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:60 this.confDerby', 'color: #007acc;', this.confDerby);
   }
 
   ngOnChanges(changes: any): void {

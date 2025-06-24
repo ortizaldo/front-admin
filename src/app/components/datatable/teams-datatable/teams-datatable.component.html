@@ -2,6 +2,7 @@
 <div class="row">
   <form [formGroup]="formEdit">
     <p-table
+      *ngIf="data && data.length > 0"
       #dt
       [value]="data"
       [(selection)]="selectedData"

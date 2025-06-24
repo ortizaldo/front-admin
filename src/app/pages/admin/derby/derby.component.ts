@@ -383,6 +383,12 @@ export class DerbyComponent implements OnInit {
       }
       this.getDerbyConf("derby-conf", params);
       this.getDerbyTeams("team", params);
+    }else{
+      this.confDerby = null;
+      this.teams = [];
+      this.data = [];
+      this.columnsDT = [];
+      this.dataUpdated.emit();
     }
   }
 
