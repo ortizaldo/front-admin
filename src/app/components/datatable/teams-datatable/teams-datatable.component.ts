@@ -286,6 +286,20 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     }
   }
 
+  changeConfig(key, value) {
+    if (key === 'tolerance') {
+      this.confDerby.tolerance = value;
+    }
+
+    if (key === 'maxWeight') {
+      this.confDerby.maxWeight = value;
+    }
+
+    if (key === 'minWeight') {
+      this.confDerby.minWeight = value;
+    }
+  }
+
   getErrorMessage(fieldValue: string): string | null {
     const errorItem = this.errors.find(e => e.value === fieldValue);
     return errorItem?.error?.errorMessage || null;
