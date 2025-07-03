@@ -2,7 +2,6 @@
 <div class="row">
   <form [formGroup]="formEdit">
     <p-table
-      *ngIf="data && data.length > 0"
       #dt
       [value]="data"
       [(selection)]="selectedData"
@@ -79,7 +78,7 @@
                       class="form-control"
                       placeholder="Tolerancia"
                       type="text"
-                      value="{{ confDerby.tolerance }}"
+                      value="{{ roosterConf.tolerance }}"
                       (change)="changeConfig('tolerance', $event.target.value)"
                     />
                   </div>
@@ -91,7 +90,7 @@
                       class="form-control"
                       placeholder="Peso minimó"
                       type="text"
-                      value="{{ confDerby.minWeight }}"
+                      value="{{ roosterConf.minWeight }}"
                       (change)="changeConfig('minWeight', $event.target.value)"
                     />
                   </div>
@@ -103,7 +102,7 @@
                       class="form-control"
                       placeholder="Peso maximó"
                       type="text"
-                      value="{{ confDerby.maxWeight }}"
+                      value="{{ roosterConf.maxWeight }}"
                       (change)="changeConfig('maxWeight', $event.target.value)"
                     />
                   </div>

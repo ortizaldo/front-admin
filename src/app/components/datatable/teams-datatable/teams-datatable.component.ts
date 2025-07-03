@@ -49,6 +49,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   clonedData: { [s: string]: any } = {};
   formEdit: UntypedFormGroup;
   titleFile = 'FRS-readCSV';
+  roosterConf!: any;
   public records: any[] = [];
 
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private sanitizer: DomSanitizer) {}
@@ -65,6 +66,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
       this.rings = [];
       this.formEdit = new UntypedFormGroup({});
       const self = this;
+      this.roosterConf = this.confDerby.roosterConf;
       this.data.map((data, index) => {
         self.columns.forEach((column, idx) => {
           if (column.field !== "_id") {
@@ -241,7 +243,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
       
       if (ring.includes(key) && key === 'weight') {
         const weight = parseInt(data[ring]);
-        if (weight > this.confDerby.maxWeight || weight < this.confDerby.minWeight) {
+        if (weight > this.roosterConf.maxWeight || weight < this.roosterConf.minWeight) {
           const error = {
             error: {
               title: "Errores de pesaje",
@@ -288,16 +290,43 @@ export class TeamsDatatable implements OnInit, OnChanges  {
 
   changeConfig(key, value) {
     if (key === 'tolerance') {
-      this.confDerby.tolerance = value;
+      this.roosterConf.tolerance = value;
     }
 
     if (key === 'maxWeight') {
-      this.confDerby.maxWeight = value;
+      this.roosterConf.maxWeight = value;
     }
 
     if (key === 'minWeight') {
-      this.confDerby.minWeight = value;
+      this.roosterConf.minWeight = value;
     }
+
+    this.editConfDerby();
+  }
+
+  editConfDerby() {
+    
+    const confDerby = {
+      derby : this.derby._id,
+      roosterConf: {
+        tolerance: parseInt(this.roosterConf.tolerance),
+        maxWeight: parseInt(this.roosterConf.maxWeight),
+        minWeight: parseInt(this.roosterConf.minWeight)
+      }
+    };
+    console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:318 confDerby', 'color: #007acc;', confDerby);
+    this.crudService.put(confDerby, this.confDerby._id, "derby-conf")
+      .pipe(
+        tap((data: any) => {
+          console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:319 data', 'color: #007acc;', data);
+          this.toastr.success("Configuración actualizada correctamente", "Éxito");
+        }),
+        catchError(err => {
+          this.loading = false;
+          return err
+        })
+      )
+      .subscribe();
   }
 
   getErrorMessage(fieldValue: string): string | null {
@@ -307,8 +336,6 @@ export class TeamsDatatable implements OnInit, OnChanges  {
 
   updateErrors(control: string, error: any, data: any) {
     this.errors = { ...this.errors, ...error };
-    // this.formEdit.controls[control].patchValue("");
-    console.log("🚀 ~ TeamsDatatable ~ updateErrors ~ this.errors:", this.errors)
   }
 
   onKeyDown(event: KeyboardEvent, rowData: any) {

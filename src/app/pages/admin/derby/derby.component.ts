@@ -396,7 +396,8 @@ export class DerbyComponent implements OnInit {
     this.crudService.getMany(type, null, params)
       .pipe(
         tap((data: any) => {
-          this.confDerby = data.data[0]?.roosterConf;
+          this.confDerby = data.data[0];
+          console.log('%cfront-admin/src/app/pages/admin/derby/derby.component.ts:400 this.confDerby', 'color: #007acc;', this.confDerby);
         }),
         catchError(err => {
           return err
