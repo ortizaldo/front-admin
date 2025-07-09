@@ -221,12 +221,13 @@
                 pRipple
                 type="button"
                 pInitEditableRow
-                icon="pi pi-pencil"
                 (click)="onRowEditInit(data, dt)"
                 class="p-button-rounded p-button-text"
                 pTooltip="Editar partido" 
                 tooltipPosition="top"
-              ></button>
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
               <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
                 (click)="onRowEditSave(data, dt)" class="p-button-rounded p-button-text p-button-success mr-2">
               </button>
@@ -242,13 +243,15 @@
                 tooltipPosition="top"
               ></button>
               <button
+                pButton
+                pRipple
                 type="button"
-                class="btn btn-danger btn-fab btn-icon btn-round"
+                class="p-button-rounded p-button-text p-button-danger"
                 (click)="delete(data)"
                 pTooltip="Eliminar partido" 
                 tooltipPosition="top"
               >
-                <i class="pi pi-trash"></i>
+                <i class="bi bi-person-x"></i>
               </button>
             </div>
           </td>
