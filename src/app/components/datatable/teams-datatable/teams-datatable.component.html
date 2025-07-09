@@ -130,6 +130,7 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
+          <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
           <ng-container *ngFor="let col of columns">
             <th *ngIf="!col.field.includes('_id')">
               <span class="p-column-title">{{ col.header }}</span>
@@ -146,6 +147,9 @@
         let-ri="rowIndex"
       >
         <tr [pEditableRow]="data">
+          <td>
+            <p-tableCheckbox [value]="data" />
+          </td>
           <ng-container *ngFor="let col of columns">
             <td
               *ngIf="!col.field.includes('_id')"
@@ -174,7 +178,6 @@
                     inputId="folio-{{ data._id }}"
                     class="form-control p-inputtext-sm"
                     type="text"
-                    mask="0*"
                     [(ngModel)]="data[col.field]"
                     value="{{ data[col.field] }}"
                     [formControlName]="col.field + '_' + data._id"
@@ -201,6 +204,7 @@
                 <div class="row col-6">
                   <span *ngIf="!getErrorMessage(data[col.field]) as errorMsg" class="badge bg-light text-dark">{{ col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field] }}</span>
                   <span *ngIf="getErrorMessage(data[col.field]) as errorMsg" class="badge bg-light text-dark" >
+                    {{col.field}}
                     {{col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field]}} <span class="badge bg-warning text-dark" pTooltip="{{errorMsg}}"
                     tooltipPosition="right"><i class="fas fa-exclamation-circle"></i></span>
                   </span>

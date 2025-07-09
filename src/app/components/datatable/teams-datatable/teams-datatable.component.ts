@@ -78,6 +78,8 @@ export class TeamsDatatable implements OnInit, OnChanges  {
         self.validacionesInputs('weight', data);
         self.validacionesInputs('ring', data);
       });
+
+      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:82 this.data', 'color: #007acc;', this.data);
     }
   }
 
@@ -314,11 +316,9 @@ export class TeamsDatatable implements OnInit, OnChanges  {
         minWeight: parseInt(this.roosterConf.minWeight)
       }
     };
-    console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:318 confDerby', 'color: #007acc;', confDerby);
     this.crudService.put(confDerby, this.confDerby._id, "derby-conf")
       .pipe(
         tap((data: any) => {
-          console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:319 data', 'color: #007acc;', data);
           this.toastr.success("Configuración actualizada correctamente", "Éxito");
         }),
         catchError(err => {

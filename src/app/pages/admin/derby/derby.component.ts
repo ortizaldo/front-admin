@@ -278,8 +278,9 @@ export class DerbyComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.loading = false;
-
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registros Eliminados', life: 3000 });
+          this.getTeams();
+          this.selectedAny = null;
         }),
         catchError(err => {
           this.loading = false;
@@ -290,6 +291,7 @@ export class DerbyComponent implements OnInit {
   }
 
   deleteSelected(event) {
+    console.log("🚀 ~ DerbyComponent ~ deleteSelected ~ event:", event)
     let title = "Estas seguro de eliminar los siguientes partidos?";
     if (event.data.length === 1) {
       title = `Estas seguro de eliminar el partido ${event.data[0].teamName} ?`;
