@@ -1,18 +1,41 @@
 import { UpperCasePipe } from "@angular/common";
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren, ViewEncapsulation} from "@angular/core";
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  ViewEncapsulation,
+} from "@angular/core";
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
-import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
+import {
+  ConfirmationService,
+  MenuItem,
+  MessageService,
+  PrimeNGConfig,
+} from "primeng/api";
 import { ContextMenu } from "primeng/contextmenu";
 import { Table } from "primeng/table";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
-import { CSVRecord } from 'src/app/_models/CSVRecord';
+import { CSVRecord } from "src/app/_models/CSVRecord";
 import { read, writeFileXLSX, readFile } from "xlsx";
 import { WeightPipe } from "src/app/utils/weight-pipe";
 import * as _ from "underscore";
 import { ErrorPipe } from "src/app/utils/error-pipe";
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer } from "@angular/platform-browser";
 @Component({
   selector: "app-teams-datatable",
   templateUrl: "teams-datatable.component.html",
@@ -20,9 +43,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None,
   providers: [UpperCasePipe, WeightPipe, ErrorPipe],
 })
-
-
-export class TeamsDatatable implements OnInit, OnChanges  {
+export class TeamsDatatable implements OnInit, OnChanges {
   @Input() data!: any[];
   @Input() teams!: any[];
   @Input() confDerby!: any;
@@ -38,26 +59,64 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   @Output() dataChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('dt') table: Table;
-  @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  @ViewChildren('dynamicInput') inputs!: QueryList<ElementRef>;
-  @ViewChild('csvReader') csvReader: any;
-  
+  @ViewChild("dt") table: Table;
+  @ViewChild("contextMenuDT") contextMenu: ContextMenu;
+  @ViewChildren("dynamicInput") inputs!: QueryList<ElementRef>;
+  @ViewChild("csvReader") csvReader: any;
+
   ringForm: UntypedFormGroup;
   errors: any = [];
   rings: any = [];
+  itemsMenu: any = [];
   clonedData: { [s: string]: any } = {};
   formEdit: UntypedFormGroup;
-  titleFile = 'FRS-readCSV';
+  titleFile = "FRS-readCSV";
   roosterConf!: any;
   public records: any[] = [];
 
-  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService, private primengConfig: PrimeNGConfig, private cd: ChangeDetectorRef, private sanitizer: DomSanitizer) {}
+  @ViewChildren("menu") menus: QueryList<any>;
+  constructor(
+    private fb: UntypedFormBuilder,
+    private crudService: CrudService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private toastr: ToastrService,
+    private primengConfig: PrimeNGConfig,
+    private cd: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit() {
     this.addFormDynamic();
     this.cd.detectChanges();
     this.primengConfig.ripple = true;
+
+    this.itemsMenu = [
+      {
+        label: "Opciones",
+        items: [
+          {
+            label: "Editar",
+            icon: "pi pi-pencil",
+            command: (event, rowIndex, data) => {
+              console.log("🚀 ~ TeamsDatatable ~ ngOnInit ~ event:", data);
+            },
+          },
+          {
+            label: "Eliminar",
+            icon: "pi pi-trash",
+          },
+        ],
+      },
+    ];
+  }
+
+  toggleMenu(row: any) {
+    this.menus.forEach((menu, index) => {
+      if (index === row.index) {
+        menu.toggle();
+      }
+    });
   }
 
   ngOnChanges(changes: any): void {
@@ -70,22 +129,29 @@ export class TeamsDatatable implements OnInit, OnChanges  {
       this.data.map((data, index) => {
         self.columns.forEach((column, idx) => {
           if (column.field !== "_id") {
-            this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl(data[column.field]));
+            this.formEdit.addControl(
+              `${column.field}_${data._id}`,
+              new UntypedFormControl(data[column.field])
+            );
           }
         });
 
-        self.validacionesInputs('teamName', data);
-        self.validacionesInputs('weight', data);
-        self.validacionesInputs('ring', data);
+        self.validacionesInputs("teamName", data);
+        self.validacionesInputs("weight", data);
+        self.validacionesInputs("ring", data);
       });
 
-      console.log('%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:82 this.data', 'color: #007acc;', this.data);
+      console.log(
+        "%cfront-admin/src/app/components/datatable/teams-datatable/teams-datatable.component.ts:82 this.data",
+        "color: #007acc;",
+        this.data
+      );
     }
   }
 
   teamNameValidator(data: any, control: any) {
     const teamName = control.value;
-    const existingTeamNames = this.data.map(item => item.teamName);
+    const existingTeamNames = this.data.map((item) => item.teamName);
     if (existingTeamNames.includes(teamName)) {
       return { teamNameAlreadyExists: true };
     }
@@ -114,7 +180,10 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     dataRings.map((data, index) => {
       self.columns.forEach((column, idx) => {
         if (column.field !== "_id") {
-          this.formEdit.addControl(`${column.field}_${data._id}`, new UntypedFormControl("", Validators.required));
+          this.formEdit.addControl(
+            `${column.field}_${data._id}`,
+            new UntypedFormControl("", Validators.required)
+          );
         }
       });
     });
@@ -125,20 +194,25 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     input.select();
   }
 
-
   addNewTeam() {
     const generateMongoId = () => {
       const timestamp = Math.floor(Date.now() / 1000);
       const random = crypto.getRandomValues(new Uint8Array(5));
-      const hex = Array.from(random).map(b => b.toString(16).padStart(2, '0')).join('');
-      return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
+      const hex = Array.from(random)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+      return `${timestamp.toString(16).padStart(8, "0")}${hex}`;
     };
-    
+
     const _id = generateMongoId();
 
-    let dataRound = {_id, teamName: "Nombre del partido"};
+    let dataRound = { _id, teamName: "Nombre del partido" };
     for (let index = 0; index < this.derby.numGallos; index++) {
-      dataRound = { ...dataRound, ["R" + (index + 1) + "_ring"]: 0,["R" + (index + 1) + "_weight"]: 0,};
+      dataRound = {
+        ...dataRound,
+        ["R" + (index + 1) + "_ring"]: 0,
+        ["R" + (index + 1) + "_weight"]: 0,
+      };
     }
 
     this.dataChange.emit(dataRound);
@@ -155,12 +229,14 @@ export class TeamsDatatable implements OnInit, OnChanges  {
         let csvData = reader.result;
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
         let headersRow = this.getHeaderArray(csvRecordsArray);
-        this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+        this.records = this.getDataRecordsArrayFromCSVFile(
+          csvRecordsArray,
+          headersRow.length
+        );
       };
       reader.onerror = function () {
-        console.log('error is occured while reading file!');
+        console.log("error is occured while reading file!");
       };
-
     } else {
       alert("Please import valid .csv file.");
       this.fileReset();
@@ -173,20 +249,22 @@ export class TeamsDatatable implements OnInit, OnChanges  {
     const self = this;
     reader.onload = () => {
       const text = reader.result as string;
-      const [headerLine, ...lines] = text.trim().split('\n');
-      const headers = headerLine.split(',');
+      const [headerLine, ...lines] = text.trim().split("\n");
+      const headers = headerLine.split(",");
 
-      const csvRecords = lines.map(line => {
-        const values = line.split(',');
+      const csvRecords = lines.map((line) => {
+        const values = line.split(",");
         let dataRound: any = {};
         dataRound.derby = this.derby._id;
         dataRound.rings = {};
         headers.forEach((header, i) => {
-          header = header.replace(/\r/g, '');
+          header = header.replace(/\r/g, "");
           const value = values[i];
-          if(header.includes('ring') || header.includes('weight')){
-            dataRound.rings[header] = isNaN(Number(value)) ? value : Number(value);
-          }else{
+          if (header.includes("ring") || header.includes("weight")) {
+            dataRound.rings[header] = isNaN(Number(value))
+              ? value
+              : Number(value);
+          } else {
             dataRound[header] = isNaN(Number(value)) ? value : Number(value);
           }
         });
@@ -195,11 +273,10 @@ export class TeamsDatatable implements OnInit, OnChanges  {
 
       csvRecords.map((record: any) => {
         record.rings._id = self.generateMongoId();
-      })
+      });
 
-      const data={data: csvRecords, isMany: true}
+      const data = { data: csvRecords, isMany: true };
       this.dataChange.emit(data);
-      
     };
 
     reader.readAsText(file);
@@ -208,11 +285,13 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   generateMongoId() {
     const timestamp = Math.floor(Date.now() / 1000);
     const random = crypto.getRandomValues(new Uint8Array(5));
-    const hex = Array.from(random).map(b => b.toString(16).padStart(2, '0')).join('');
-    return `${timestamp.toString(16).padStart(8, '0')}${hex}`;
+    const hex = Array.from(random)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    return `${timestamp.toString(16).padStart(8, "0")}${hex}`;
   }
 
-  edit(_data: any){
+  edit(_data: any) {
     // this.validacionesInputs(key, control , _data)
     this.editRecords.emit(_data);
   }
@@ -220,69 +299,73 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   validacionesInputs(key, data) {
     // console.log("🚀 ~ TeamsDatatableComponent ~ validacionesInputs ~ data:", data)
     Object.keys(data).map((ring: any) => {
-      if (ring.includes(key) && key === 'teamName') {
+      if (ring.includes(key) && key === "teamName") {
         const itemExists = [];
-        this.data.map((item: any) =>{
-          if(item.teamName == data[key]){
+        this.data.map((item: any) => {
+          if (item.teamName == data[key]) {
             itemExists.push(item);
           }
         });
 
         if (itemExists.length >= 2) {
-            const error = {
-              error: {
-                title: "Errores de partido",
-                errorMessage: "El partido ya existe en el listado"
-              },
-              value: data[key],
-              _id: data._id,
-              key
-            };
+          const error = {
+            error: {
+              title: "Errores de partido",
+              errorMessage: "El partido ya existe en el listado",
+            },
+            value: data[key],
+            _id: data._id,
+            key,
+          };
 
-            this.errors.push(error);
+          this.errors.push(error);
         }
       }
-      
-      if (ring.includes(key) && key === 'weight') {
+
+      if (ring.includes(key) && key === "weight") {
         const weight = parseInt(data[ring]);
-        if (weight > this.roosterConf.maxWeight || weight < this.roosterConf.minWeight) {
+        if (
+          weight > this.roosterConf.maxWeight ||
+          weight < this.roosterConf.minWeight
+        ) {
           const error = {
             error: {
               title: "Errores de pesaje",
-              errorMessage: "El peso esta fuera del rango de pesos permitidos"
+              errorMessage: "El peso esta fuera del rango de pesos permitidos",
             },
             value: weight,
             _id: data._id,
-            key
+            key,
           };
           this.errors.push(error);
         }
       }
 
-      if (ring.includes(key) && key === 'ring') {
-        this.rings.push({ringValue: data[ring], teamId: data._id});
+      if (ring.includes(key) && key === "ring") {
+        this.rings.push({ ringValue: data[ring], teamId: data._id });
       }
-      
-    })
+    });
 
-    if(this.rings.length > 0){
+    if (this.rings.length > 0) {
       const counts = this.rings.reduce((acc, item) => {
         acc[item.ringValue] = (acc[item.ringValue] || 0) + 1;
         return acc;
       }, {});
 
       // Paso 2: Filtrar los que aparecen más de una vez
-      const duplicados = this.rings.filter(item => counts[item.ringValue] > 1);
+      const duplicados = this.rings.filter(
+        (item) => counts[item.ringValue] > 1
+      );
       if (duplicados.length > 0) {
         duplicados.forEach((item: any) => {
           const error = {
             error: {
               title: "Errores de anillos",
-              errorMessage: "El anillo ya existe en el listado"
+              errorMessage: "El anillo ya existe en el listado",
             },
             value: item.ringValue,
             _id: item.teamId,
-            key
+            key,
           };
           this.errors.push(error);
         });
@@ -291,15 +374,15 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   changeConfig(key, value) {
-    if (key === 'tolerance') {
+    if (key === "tolerance") {
       this.roosterConf.tolerance = value;
     }
 
-    if (key === 'maxWeight') {
+    if (key === "maxWeight") {
       this.roosterConf.maxWeight = value;
     }
 
-    if (key === 'minWeight') {
+    if (key === "minWeight") {
       this.roosterConf.minWeight = value;
     }
 
@@ -307,30 +390,33 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   editConfDerby() {
-    
     const confDerby = {
-      derby : this.derby._id,
+      derby: this.derby._id,
       roosterConf: {
         tolerance: parseInt(this.roosterConf.tolerance),
         maxWeight: parseInt(this.roosterConf.maxWeight),
-        minWeight: parseInt(this.roosterConf.minWeight)
-      }
+        minWeight: parseInt(this.roosterConf.minWeight),
+      },
     };
-    this.crudService.put(confDerby, this.confDerby._id, "derby-conf")
+    this.crudService
+      .put(confDerby, this.confDerby._id, "derby-conf")
       .pipe(
         tap((data: any) => {
-          this.toastr.success("Configuración actualizada correctamente", "Éxito");
+          this.toastr.success(
+            "Configuración actualizada correctamente",
+            "Éxito"
+          );
         }),
-        catchError(err => {
+        catchError((err) => {
           this.loading = false;
-          return err
+          return err;
         })
       )
       .subscribe();
   }
 
   getErrorMessage(fieldValue: string): string | null {
-    const errorItem = this.errors.find(e => e.value === fieldValue);
+    const errorItem = this.errors.find((e) => e.value === fieldValue);
     return errorItem?.error?.errorMessage || null;
   }
 
@@ -339,15 +425,15 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   onKeyDown(event: KeyboardEvent, rowData: any) {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       event.preventDefault();
-  
+
       // Encontrar el siguiente elemento editable (pInputText, p-inputNumber, etc.)
       const currentElement = event.target as HTMLElement;
-      const focusables = Array.from(document.querySelectorAll(
-        'input, p-inputNumber input'
-      )) as HTMLElement[];
-  
+      const focusables = Array.from(
+        document.querySelectorAll("input, p-inputNumber input")
+      ) as HTMLElement[];
+
       const index = focusables.indexOf(currentElement);
       if (index > -1 && index < focusables.length - 1) {
         setTimeout(() => {
@@ -366,22 +452,22 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   updData(idx, field, value) {
-    this.editRecords.emit({idx, field, value});
+    this.editRecords.emit({ idx, field, value });
   }
 
   onRowEditInit(data: any, dt: any) {
-    dt.initRowEdit(data)
+    dt.initRowEdit(data);
     this.cd.detectChanges();
   }
 
   onRowEditSave(data: any) {
-    this.edit(data)
+    this.edit(data);
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
     let csvArr = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
-      let curruntRecord = (<string>csvRecordsArray[i]).split(',');
+      let curruntRecord = (<string>csvRecordsArray[i]).split(",");
       if (curruntRecord.length == headerLength) {
         let csvRecord: CSVRecord = new CSVRecord();
         csvRecord.id = curruntRecord[0].trim();
@@ -401,7 +487,7 @@ export class TeamsDatatable implements OnInit, OnChanges  {
   }
 
   getHeaderArray(csvRecordsArr: any) {
-    let headers = (<string>csvRecordsArr[0]).split(',');
+    let headers = (<string>csvRecordsArr[0]).split(",");
     let headerArray = [];
     for (let j = 0; j < headers.length; j++) {
       headerArray.push(headers[j]);

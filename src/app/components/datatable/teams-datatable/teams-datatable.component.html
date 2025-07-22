@@ -1,3 +1,4 @@
+<p-toast />
 <p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
 <div class="row">
   <form [formGroup]="formEdit">
@@ -39,7 +40,7 @@
                         class="btn btn-danger"
                         (click)="deleteSelected()"
                         [disabled]="!selectedData || !selectedData.length"
-                        pTooltip="Eliminar partidos" 
+                        pTooltip="Eliminar partidos"
                         tooltipPosition="top"
                       >
                         <i class="far fa-trash-alt"></i>
@@ -53,7 +54,7 @@
                         accept=".csv"
                         [auto]="true"
                         (uploadHandler)="onUpload($event)"
-                        pTooltip="Importar partidos" 
+                        pTooltip="Importar partidos"
                         tooltipPosition="top"
                         [customUpload]="true"
                       />
@@ -62,7 +63,7 @@
                       <button
                         icon="pi pi-plus"
                         class="btn btn-success"
-                        pTooltip="Agregar partido" 
+                        pTooltip="Agregar partido"
                         tooltipPosition="top"
                         (click)="addNewTeam()"
                       >
@@ -130,7 +131,7 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+          <th [ngStyle]="{ width: '10px' }"><p-tableHeaderCheckbox /></th>
           <ng-container *ngFor="let col of columns">
             <th *ngIf="!col.field.includes('_id')">
               <span class="p-column-title">{{ col.header }}</span>
@@ -147,7 +148,7 @@
         let-ri="rowIndex"
       >
         <tr [pEditableRow]="data">
-          <td>
+          <td [ngStyle]="{ width: '10px' }">
             <p-tableCheckbox [value]="data" />
           </td>
           <ng-container *ngFor="let col of columns">
@@ -201,58 +202,58 @@
                   pTemplate="output"
                   *ngIf="!col.field.includes('_id')"
                 >
-                <div class="row col-6">
-                  <span *ngIf="!getErrorMessage(data[col.field]) as errorMsg" class="badge bg-light text-dark">{{ col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field] }}</span>
-                  <span *ngIf="getErrorMessage(data[col.field]) as errorMsg" class="badge bg-light text-dark" >
-                    {{col.field}}
-                    {{col.field.includes('weight') ? (data[col.field] | weightPipe) : data[col.field]}} <span class="badge bg-warning text-dark" pTooltip="{{errorMsg}}"
-                    tooltipPosition="right"><i class="fas fa-exclamation-circle"></i></span>
-                  </span>
-                </div>
+                  <div class="row col-6">
+                    <span
+                      *ngIf="!getErrorMessage(data[col.field]) as errorMsg"
+                      class="badge bg-light text-dark"
+                      >{{
+                        col.field.includes("weight")
+                          ? (data[col.field] | weightPipe)
+                          : data[col.field]
+                      }}</span
+                    >
+                    <span
+                      *ngIf="getErrorMessage(data[col.field]) as errorMsg"
+                      class="badge bg-light text-dark"
+                    >
+                      {{ col.field }}
+                      {{
+                        col.field.includes("weight")
+                          ? (data[col.field] | weightPipe)
+                          : data[col.field]
+                      }}
+                      <span
+                        class="badge bg-warning text-dark"
+                        pTooltip="{{ errorMsg }}"
+                        tooltipPosition="right"
+                        ><i class="fas fa-exclamation-circle"></i
+                      ></span>
+                    </span>
+                  </div>
                 </ng-template>
               </p-cellEditor>
             </td>
           </ng-container>
           <td ngbDropdown>
             <div class="flex align-items-center justify-content-center gap-2">
-              <button
-                *ngIf="!editing"
-                pButton
-                pRipple
-                type="button"
-                pInitEditableRow
-                (click)="onRowEditInit(data, dt)"
-                class="p-button-rounded p-button-text"
-                pTooltip="Editar partido" 
-                tooltipPosition="top"
-              >
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                (click)="onRowEditSave(data, dt)" class="p-button-rounded p-button-text p-button-success mr-2">
-              </button>
-              <button
-                *ngIf="editing"
-                pButton
-                pRipple
-                type="button"
-                pCancelEditableRow
-                icon="pi pi-times"
-                class="p-button-rounded p-button-text p-button-danger"
-                pTooltip="Cancelar edición" 
-                tooltipPosition="top"
-              ></button>
-              <button
-                pButton
-                pRipple
-                type="button"
-                class="p-button-rounded p-button-text p-button-danger"
-                (click)="delete(data)"
-                pTooltip="Eliminar partido" 
-                tooltipPosition="top"
-              >
-                <i class="bi bi-person-x"></i>
-              </button>
+              <p-menu
+                #menu
+                [model]="itemsMenu"
+                [popup]="true"
+                styleClass="custom-clean-menu"
+                appendTo="body"
+              />
+              <div class="col buttons">
+                <button
+                  icon="pi pi-ellipsis-v"
+                  class="btn btn-info"
+                  pTooltip="Opciones"
+                  tooltipPosition="top"
+                  (click)="menu.toggle($event, rowIndex, data)"
+                >
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
             </div>
           </td>
         </tr>
