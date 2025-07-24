@@ -11,17 +11,17 @@
 }
 
 .form-control:focus {
-  border-color: .5px solid #e14eca;
+  border-color: 0.5px solid #e14eca;
   background-color: transparent;
   box-shadow: none;
 }
 
 .input-group:focus-within {
-  outline: .5px solid #e14eca;
-  border-radius: .25rem;
+  outline: 0.5px solid #e14eca;
+  border-radius: 0.25rem;
 }
 
-.th-custom{
+.th-custom {
   border-bottom: none;
   color: #cac3da;
 }
@@ -39,7 +39,7 @@
   background: transparent !important;
 }
 
-.p-datatable .p-datatable-thead>tr>th {
+.p-datatable .p-datatable-thead > tr > th {
   text-align: left;
   padding: 1rem rem 1rem;
   border: 1px solid #5e6185;
@@ -58,26 +58,30 @@
   border-radius: 3px;
 }
 
-.p-datatable .p-datatable-tbody>tr>td {
+.p-datatable .p-datatable-tbody > tr > td {
   text-align: left;
   border: none;
   border-width: 0 0 1px 0;
   padding: 1rem 1rem;
 }
 
-.p-datatable .p-datatable-tbody>tr {
+.p-datatable .p-datatable-tbody > tr {
   background: #f9f9f9;
   color: #000000;
   transition: box-shadow 0.2s;
   outline-color: black;
 }
 
-.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+.p-datatable.p-datatable-hoverable-rows
+  .p-datatable-tbody
+  > tr:not(.p-highlight):hover {
   background: #c3c3c3;
   color: black;
 }
 
-.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+.p-datatable.p-datatable-hoverable-rows
+  .p-datatable-tbody
+  > tr:not(.p-highlight):hover {
   background: #c3c3c3;
   color: black;
 }
@@ -92,29 +96,28 @@
   padding: 0 0.5rem;
 }
 .p-button.p-button-success,
-.p-buttonset.p-button-success>.p-button,
-.p-splitbutton.p-button-success>.p-button {
+.p-buttonset.p-button-success > .p-button,
+.p-splitbutton.p-button-success > .p-button {
   color: #ffffff;
   background: #00f2c3;
   border: 1px solid #00f2c3;
 }
 
 .p-button.p-button-success:enabled:hover,
-.p-buttonset.p-button-success>.p-button:enabled:hover,
-.p-splitbutton.p-button-success>.p-button:enabled:hover {
+.p-buttonset.p-button-success > .p-button:enabled:hover,
+.p-splitbutton.p-button-success > .p-button:enabled:hover {
   background: #41d796;
   color: #ffffff;
   border-color: #41d796;
 }
 
 .p-button.p-button-danger,
-.p-buttonset.p-button-danger>.p-button,
-.p-splitbutton.p-button-danger>.p-button {
+.p-buttonset.p-button-danger > .p-button,
+.p-splitbutton.p-button-danger > .p-button {
   color: #ffffff;
   background: #fd5d93;
   border: 1px solid #fd5d93;
 }
-
 
 .p-toolbar {
   background: transparent;
@@ -126,24 +129,29 @@
   width: 100px;
 }
 
-.p-inputnumber input{
+.p-inputnumber input {
   width: 100px;
 }
 
-.p-datatable .p-datatable-tbody>tr>td {
+.p-datatable .p-datatable-tbody > tr > td {
   text-align: left;
   border: none;
   border-width: 0 0 1px 0;
   padding: 0.1rem 0.2rem;
 }
 
-app-teams-datatable .p-button.p-button-danger, .p-buttonset.p-button-danger>.p-button, .p-splitbutton.p-button-danger>.p-button {
+app-teams-datatable .p-button.p-button-danger,
+.p-buttonset.p-button-danger > .p-button,
+.p-splitbutton.p-button-danger > .p-button {
   color: #ff0505;
   background: transparent;
   border: none;
 }
 
-app-teams-datatable .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody>tr:not(.p-highlight):hover {
+app-teams-datatable
+  .p-datatable.p-datatable-hoverable-rows
+  .p-datatable-tbody
+  > tr:not(.p-highlight):hover {
   background: transparent;
   color: black;
 }
@@ -161,11 +169,13 @@ app-teams-datatable .btn {
   font-size: 0.875rem;
   line-height: 1.35em;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 app-teams-datatable .buttons {
-  padding-left: 2px !important; padding-right: 2px !important
+  padding-left: 2px !important;
+  padding-right: 2px !important;
 }
 
 app-teams-datatable .badge {
@@ -195,21 +205,20 @@ p-toolbar {
   border-radius: 10px; /* Ajusta la esquina para que se vea más redondeada */
 }
 
-
 .layout-wrapper {
-    display: flex;
-    min-height: 100vh;
+  display: flex;
+  min-height: 100vh;
 }
 
 .sidebar {
-    width: 250px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #dee2e6;
+  width: 250px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
 }
 
 .main-content {
-    flex: 1;
-    padding: 1rem;
+  flex: 1;
+  padding: 1rem;
 }
 
 .custom-clean-menu {
@@ -218,7 +227,7 @@ p-toolbar {
   background-color: white;
   padding: 0.5rem 0;
   min-width: 180px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .custom-clean-menu .p-menuitem {
@@ -256,11 +265,39 @@ p-toolbar {
   color: #9ca3af; /* text-gray-400 */
 }
 
-.custom-clean-menu ol, ul {
-    padding-left: .5rem;
+.custom-clean-menu ol,
+ul {
+  padding-left: 0.5rem;
 }
 
-.custom-clean-menu ol, ul, dl {
-    margin-top: 0;
-    margin-bottom: 0rem;
+.custom-clean-menu ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 0rem;
+}
+
+.custom-upload .p-button {
+  @apply btn btn-sm;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.custom-upload .p-fileupload-choose {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+  border: none;
+}
+
+.custom-upload .p-fileupload-upload {
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: white;
+  border: none;
+}
+
+.custom-upload .p-fileupload-cancel {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+  border: none;
 }

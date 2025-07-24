@@ -36,6 +36,7 @@ import { WeightPipe } from "src/app/utils/weight-pipe";
 import * as _ from "underscore";
 import { ErrorPipe } from "src/app/utils/error-pipe";
 import { DomSanitizer } from "@angular/platform-browser";
+import { Menu } from "primeng/menu";
 @Component({
   selector: "app-teams-datatable",
   templateUrl: "teams-datatable.component.html",
@@ -67,14 +68,15 @@ export class TeamsDatatable implements OnInit, OnChanges {
   ringForm: UntypedFormGroup;
   errors: any = [];
   rings: any = [];
-  itemsMenu: any = [];
+  menuItems: any[] = [];
   clonedData: { [s: string]: any } = {};
   formEdit: UntypedFormGroup;
   titleFile = "FRS-readCSV";
   roosterConf!: any;
+  selectedRow: any = null;
   public records: any[] = [];
 
-  @ViewChildren("menu") menus: QueryList<any>;
+  @ViewChild("menu") menu!: Menu;
   constructor(
     private fb: UntypedFormBuilder,
     private crudService: CrudService,
@@ -90,33 +92,35 @@ export class TeamsDatatable implements OnInit, OnChanges {
     this.addFormDynamic();
     this.cd.detectChanges();
     this.primengConfig.ripple = true;
+  }
 
-    this.itemsMenu = [
+  openMenu(event: MouseEvent, rowData: any, dt: any) {
+    this.selectedRow = rowData;
+
+    this.menuItems = [
       {
         label: "Opciones",
         items: [
           {
             label: "Editar",
             icon: "pi pi-pencil",
-            command: (event, rowIndex, data) => {
-              console.log("🚀 ~ TeamsDatatable ~ ngOnInit ~ event:", data);
-            },
+            command: () => this.onRowEditInit(this.selectedRow, dt),
           },
           {
             label: "Eliminar",
             icon: "pi pi-trash",
+            command: () => this.delete(this.selectedRow),
           },
         ],
       },
     ];
+
+    this.menu.toggle(event);
   }
 
-  toggleMenu(row: any) {
-    this.menus.forEach((menu, index) => {
-      if (index === row.index) {
-        menu.toggle();
-      }
-    });
+  viewProduct(product: any) {
+    console.log("Ver:", product);
+    // Aquí puedes hacer algo con el producto
   }
 
   ngOnChanges(changes: any): void {

@@ -37,7 +37,7 @@
                     <div class="col buttons">
                       <button
                         type="button"
-                        class="btn btn-danger"
+                        class="ml-2 btn btn-sm btn-danger"
                         (click)="deleteSelected()"
                         [disabled]="!selectedData || !selectedData.length"
                         pTooltip="Eliminar partidos"
@@ -57,12 +57,13 @@
                         pTooltip="Importar partidos"
                         tooltipPosition="top"
                         [customUpload]="true"
+                        class="p-fluid custom-upload"
                       />
                     </div>
                     <div class="col buttons">
                       <button
                         icon="pi pi-plus"
-                        class="btn btn-success"
+                        class="btn btn-sm btn-success"
                         pTooltip="Agregar partido"
                         tooltipPosition="top"
                         (click)="addNewTeam()"
@@ -236,22 +237,34 @@
           </ng-container>
           <td ngbDropdown>
             <div class="flex align-items-center justify-content-center gap-2">
-              <p-menu
-                #menu
-                [model]="itemsMenu"
-                [popup]="true"
-                styleClass="custom-clean-menu"
-                appendTo="body"
-              />
-              <div class="col buttons">
+              <div class="col buttons d-flex justify-content-center">
                 <button
+                  *ngIf="!editing"
                   icon="pi pi-ellipsis-v"
-                  class="btn btn-info"
+                  class="btn btn-info btn-sm"
                   pTooltip="Opciones"
                   tooltipPosition="top"
-                  (click)="menu.toggle($event, rowIndex, data)"
+                  (click)="openMenu($event, data, dt)"
                 >
                   <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <button
+                  *ngIf="editing"
+                  type="button"
+                  pSaveEditableRow
+                  (click)="onRowEditSave(product)"
+                  class="btn btn-success btn-sm mr-2"
+                >
+                  <i class="far fa-save"></i>
+                </button>
+                <button
+                  *ngIf="editing"
+                  type="button"
+                  pCancelEditableRow
+                  (click)="onRowEditCancel(product, ri)"
+                  class="btn btn-danger btn-sm"
+                >
+                  <i class="far fa-window-close"></i>
                 </button>
               </div>
             </div>
@@ -264,5 +277,12 @@
         </tr>
       </ng-template>
     </p-table>
+    <p-menu
+      #menu
+      [model]="menuItems"
+      [popup]="true"
+      styleClass="custom-clean-menu"
+      appendTo="body"
+    ></p-menu>
   </form>
 </div>
