@@ -217,7 +217,6 @@
                       *ngIf="getErrorMessage(data[col.field]) as errorMsg"
                       class="badge bg-light text-dark"
                     >
-                      {{ col.field }}
                       {{
                         col.field.includes("weight")
                           ? (data[col.field] | weightPipe)
@@ -261,7 +260,6 @@
                   *ngIf="editing"
                   type="button"
                   pCancelEditableRow
-                  (click)="onRowEditCancel(product, ri)"
                   class="btn btn-danger btn-sm"
                 >
                   <i class="far fa-window-close"></i>
