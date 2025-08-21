@@ -62,6 +62,7 @@
                     </div>
                     <div class="col buttons">
                       <button
+                        type="button"
                         icon="pi pi-plus"
                         class="btn btn-sm btn-success"
                         pTooltip="Agregar partido"
@@ -70,6 +71,16 @@
                       >
                         <i class="far fa-plus-square"></i>
                       </button>
+                    </div>
+                    <div class="col buttons">
+                      <p-button
+                        icon="pi pi-user"
+                        [rounded]="true"
+                        severity="info"
+                        pTooltip="Configurar compadres"
+                        tooltipPosition="top"
+                        (click)="openModalCompadres()"
+                      />
                     </div>
                   </div>
                 </div>

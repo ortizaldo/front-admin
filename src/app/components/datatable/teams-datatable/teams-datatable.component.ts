@@ -60,6 +60,7 @@ export class TeamsDatatable implements OnInit, OnChanges {
   @Output() dataChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
+  @Output() modalCompadres: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("dt") table: Table;
   @ViewChild("contextMenuDT") contextMenu: ContextMenu;
   @ViewChildren("dynamicInput") inputs!: QueryList<ElementRef>;
@@ -220,6 +221,10 @@ export class TeamsDatatable implements OnInit, OnChanges {
     }
 
     this.dataChange.emit(dataRound);
+  }
+
+  openModalCompadres(dt: any) {
+    this.modalCompadres.emit({ openDialog: true });
   }
 
   uploadListener($event: any): void {

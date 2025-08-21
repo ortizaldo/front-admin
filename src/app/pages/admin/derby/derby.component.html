@@ -84,6 +84,7 @@
                       (dataChange)="addNewTeam($event)"
                       (deleteRecords)="deleteSelected($event)"
                       (editRecords)="editSelected($event)"
+                      (modalCompadres)="openModalCompadres($event)"
                     ></app-teams-datatable>
                   </div>
                 </div>
@@ -116,6 +117,15 @@
   [model]="derbyModel"
 >
 </app-dialog-form>
+
+<app-dialog-compadres
+  [openDialog]="derbyDialog"
+  [size]="{ width: '50vw' }"
+  [headerDetails]="title"
+  (closeDialog)="openNewCompadres($event)"
+  [model]="derbyModel"
+>
+</app-dialog-compadres>
 
 <ng-template #buttonsTemplate>
   <button
@@ -163,6 +173,80 @@
   <div class="row">
     <div class="col-12" *ngIf="derbyDialog">
       <app-derby-edit [data]="derby" [form]="derbyForm"></app-derby-edit>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #derbyCompadresTemplate>
+  <div class="row">
+    <div class="col-12" *ngIf="derbyDialog">
+      <!-- <app-derby-edit [data]="derby" [form]="derbyForm"></app-derby-edit> -->
+      <div class="row">
+        <!-- Lista de partidos -->
+        <div class="col-md-4 bg-secondary text-black p-3 rounded">
+          <h3 class="text-center mb-3">Partidos</h3>
+          <div
+            *ngFor="let partido of teams"
+            pDraggable="partido"
+            [dragData]="partido"
+            class="p-2 mb-2 bg-light rounded cursor-pointer"
+          >
+            {{ partido.teamName }}
+          </div>
+        </div>
+
+        <!-- Grupos dinámicos -->
+        <div class="col-md-8 bg-secondary p-3 rounded">
+          <div class="row">
+            <div class="col-8 text-center">
+              <h3>Grupos</h3>
+            </div>
+            <div class="col-4 text-center">
+              <p-button
+                label="Agregar grupo"
+                icon="pi pi-plus"
+                [rounded]="true"
+                severity="info"
+                size="small"
+                (click)="agregarGrupo()"
+              />
+            </div>
+          </div>
+          <div class="row g-3">
+            <div *ngFor="let grupo of compadres" class="col-md-6">
+              <div class="card border-success h-100">
+                <div class="card-header bg-transparent border-success">
+                  {{ grupo.name }}
+                </div>
+                <div
+                  class="card-body bg-dark text-white p-2"
+                  pDroppable="partido"
+                  (onDrop)="onDrop(grupo, $event.dragData)"
+                  style="
+                    min-height: 80px;
+                    border: 1px dashed #198754;
+                    border-radius: 0.5rem;
+                  "
+                >
+                  <div
+                    *ngIf="grupo.partidos.length === 0"
+                    class="text-muted fst-italic"
+                  >
+                    Arrastra partidos aquí
+                  </div>
+
+                  <div
+                    *ngFor="let partido of grupo.partidos"
+                    class="p-2 mb-1 bg-success text-white rounded"
+                  >
+                    {{ partido.teamName }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ng-template>
