@@ -65,6 +65,10 @@ export class DerbyComponent implements OnInit {
   isEditing: boolean = false;
   loading: boolean = true;
 
+  draggedPartido: any | undefined | null;
+  partidosDisponibles: any[] | undefined;
+  selectedPartidos: any[] | undefined;
+
   @ViewChild("derbyTemplate", { static: true }) derbyTemplate: TemplateRef<any>;
   @ViewChild("derbyCompadresTemplate", { static: true })
   derbyCompadresTemplate: TemplateRef<any>;
@@ -446,11 +450,45 @@ export class DerbyComponent implements OnInit {
     this.compadres.push({ name: `Grupo ${countCompadres}`, partidos: [] });
   }
 
-  onDrop(grupo: any, partido: any) {
-    console.log("🚀 ~ DerbyComponent ~ onDrop ~ partido:", partido);
-    if (!grupo.partidos.some((p: any) => p.id === partido.id)) {
-      grupo.partidos.push(partido);
+  dragStart(partido: any) {
+    this.draggedPartido = partido;
+  }
+
+  dragEnd() {
+    this.draggedPartido = null;
+  }
+
+  onDrop(grupo: any) {
+    console.log("🚀 ~ DerbyComponent ~ drop ~ grupo:", grupo);
+    if (this.draggedPartido) {
+      grupo.partidos.push(this.draggedPartido);
+      // let draggedPartidoIndex = this.findIndex(this.draggedPartido);
+      // this.selectedPartidos = [
+      //   ...(this.selectedPartidos as any[]),
+      //   this.draggedPartido,
+      // ];
+      // this.partidosDisponibles = this.partidosDisponibles?.filter(
+      //   (val, i) => i != draggedPartidoIndex
+      // );
+      this.draggedPartido = null;
     }
+
+    console.log(
+      "%cfront-admin/src/app/pages/admin/derby/derby.component.ts:476 this.compadres",
+      "color: #007acc;",
+      this.compadres
+    );
+  }
+
+  findIndex(partido: any) {
+    let index = -1;
+    for (let i = 0; i < (this.partidosDisponibles as any[]).length; i++) {
+      if (partido.id === (this.partidosDisponibles as any[])[i].id) {
+        index = i;
+        break;
+      }
+    }
+    return index;
   }
 
   /**
