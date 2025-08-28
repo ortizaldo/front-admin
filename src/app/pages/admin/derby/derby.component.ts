@@ -61,6 +61,7 @@ export class DerbyComponent implements OnInit {
   teamModel = {};
 
   derbyDialog: boolean = false;
+  derbyDialogCompadres: boolean = false;
   teamDialog: boolean = false;
   isEditing: boolean = false;
   loading: boolean = true;
@@ -203,6 +204,48 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
+  saveGroup(grupo: String, partidos: any[]) {
+    const params = {
+      filtersId: {
+        derby: {
+          value: this.selectedDerby._id,
+        },
+      },
+    };
+    const body = {
+      derby: this.selectedDerby._id,
+      grupo,
+      compadres: partidos,
+    };
+    this.crudService
+      .post(body, "compadres")
+      .pipe(
+        tap((data: any) => {
+          // this.compadres.push({ name: grupo, partidos: [] });
+          this.getCompadres("compadres", params);
+          this.showNotification(
+            "top",
+            "right",
+            "Registro del grupo",
+            "Se registro correctamente",
+            "alert-success"
+          );
+        }),
+        catchError((err) => {
+          const _err = err.error ? err.error.err : err;
+          this.showNotification(
+            "top",
+            "right",
+            "Error al registrar",
+            _err.code == 11000 ? "Registro duplicado" : _err.message,
+            "alert-warning"
+          );
+          return err;
+        })
+      )
+      .subscribe();
+  }
+
   getDerbys() {
     const params = {
       filters: {
@@ -231,6 +274,25 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
+  getCompadres(type: string, params: any) {
+    this.crudService
+      .getMany(type, null, params)
+      .pipe(
+        tap((data: any) => {
+          this.compadres = data.data;
+          console.log(
+            "🚀 ~ DerbyComponent ~ getCompadres ~ this.compadres:",
+            this.compadres
+          );
+        }),
+        catchError((err) => {
+          this.loading = false;
+          return err;
+        })
+      )
+      .subscribe();
+  }
+
   /**
    * A function to open a new dialog based on the provided command.
    *
@@ -249,11 +311,6 @@ export class DerbyComponent implements OnInit {
   }
 
   openNewCompadres(cmd) {
-    console.log(
-      "%cfront-admin/src/app/pages/admin/derby/derby.component.ts:247 this.teams",
-      "color: #007acc;",
-      this.teams
-    );
     const { openDialog } = cmd;
     if (openDialog) {
       this.derbyModel = {
@@ -262,7 +319,7 @@ export class DerbyComponent implements OnInit {
       };
       this.title = "Configurar compadres";
     }
-    this.derbyDialog = openDialog;
+    this.derbyDialogCompadres = openDialog;
   }
 
   openNewTeam(cmd) {
@@ -391,7 +448,6 @@ export class DerbyComponent implements OnInit {
   }
 
   deleteSelected(event) {
-    console.log("🚀 ~ DerbyComponent ~ deleteSelected ~ event:", event);
     let title = "Estas seguro de eliminar los siguientes partidos?";
     if (event.data.length === 1) {
       title = `Estas seguro de eliminar el partido ${event.data[0].teamName} ?`;
@@ -441,13 +497,36 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
+  editCompadres(grupo: any) {
+    console.log("🚀 ~ DerbyComponent ~ editCompadres ~ grupo:", grupo);
+    const params = {
+      filtersId: {
+        derby: {
+          value: this.selectedDerby._id,
+        },
+      },
+    };
+    this.crudService
+      .put(grupo, grupo._id, "compadres")
+      .pipe(
+        tap((data: any) => {
+          this.getCompadres("compadres", params);
+        }),
+        catchError((err) => {
+          this.loading = false;
+          return err;
+        })
+      )
+      .subscribe();
+  }
+
   openModalCompadres(event) {
     this.openNewCompadres(event);
   }
 
   agregarGrupo() {
     const countCompadres = this.compadres.length + 1;
-    this.compadres.push({ name: `Grupo ${countCompadres}`, partidos: [] });
+    this.saveGroup(`Grupo ${countCompadres}`, []);
   }
 
   dragStart(partido: any) {
@@ -458,26 +537,34 @@ export class DerbyComponent implements OnInit {
     this.draggedPartido = null;
   }
 
-  onDrop(grupo: any) {
-    console.log("🚀 ~ DerbyComponent ~ drop ~ grupo:", grupo);
-    if (this.draggedPartido) {
-      grupo.partidos.push(this.draggedPartido);
-      // let draggedPartidoIndex = this.findIndex(this.draggedPartido);
-      // this.selectedPartidos = [
-      //   ...(this.selectedPartidos as any[]),
-      //   this.draggedPartido,
-      // ];
-      // this.partidosDisponibles = this.partidosDisponibles?.filter(
-      //   (val, i) => i != draggedPartidoIndex
-      // );
-      this.draggedPartido = null;
+  onDrop(grupo: any, event?: any) {
+    console.log("🚀 ~ DerbyComponent ~ onDrop ~ grupo:", grupo);
+    const dropped =
+      event && event.dragData ? event.dragData : this.draggedPartido;
+    if (!dropped) {
+      return;
     }
+    const exists =
+      grupo.compadres &&
+      grupo.compadres.some((p: any) => p && p._id === dropped._id);
+    if (exists) {
+      this.showNotification(
+        "top",
+        "right",
+        "Partido duplicado",
+        "Este partido ya fue asignado a este grupo",
+        "alert-warning"
+      );
+      this.draggedPartido = null;
+      return;
+    }
+    (grupo.compadres = grupo.compadres || []).push(dropped);
+    this.editCompadres(grupo);
+    this.draggedPartido = null;
+  }
 
-    console.log(
-      "%cfront-admin/src/app/pages/admin/derby/derby.component.ts:476 this.compadres",
-      "color: #007acc;",
-      this.compadres
-    );
+  trackByPartido(index: number, item: any) {
+    return item && (item._id || item.id || index);
   }
 
   findIndex(partido: any) {
@@ -546,6 +633,7 @@ export class DerbyComponent implements OnInit {
       };
       this.getDerbyConf("derby-conf", params);
       this.getDerbyTeams("team", params);
+      this.getCompadres("compadres", params);
     } else {
       this.confDerby = null;
       this.teams = [];
