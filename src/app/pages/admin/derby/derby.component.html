@@ -288,10 +288,6 @@
                 </div>
 
                 <div class="card-body">
-                  <div *ngIf="grupo.compadres.length === 0">
-                    Arrastra partidos aquí
-                  </div>
-
                   <table class="table table-sm mb-0">
                     <thead>
                       <tr>
@@ -307,7 +303,14 @@
                         "
                       >
                         <td>{{ partido.teamName }}</td>
-                        <td></td>
+                        <td>
+                          <button
+                            class="close-btn-compadres ms-auto"
+                            (click)="deletePartido(grupo, partido)"
+                          >
+                            X
+                          </button>
+                        </td>
                       </tr>
                     </tbody>
                   </table>

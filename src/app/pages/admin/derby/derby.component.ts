@@ -453,6 +453,34 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
+  deletePartido(grupo: any, partido: any) {
+    const params = {
+      filtersId: {
+        derby: {
+          value: this.selectedDerby._id,
+        },
+      },
+    };
+
+    const _compadres: any[] = grupo.compadres;
+
+    const index = this.findCompadre(partido, _compadres);
+    _compadres.splice(index, 1);
+
+    console.log(
+      "%cfront-admin/src/app/pages/admin/derby/derby.component.ts:470 _compadres",
+      "color: #007acc;",
+      _compadres
+    );
+
+    console.log(
+      "%cfront-admin/src/app/pages/admin/derby/derby.component.ts:470 _compadres",
+      "color: #007acc;",
+      grupo.compadres
+    );
+    this.editCompadres(grupo);
+  }
+
   deleteMany(items: any[]) {
     this.crudService
       .deleteMany(this.endpoint, items, {
@@ -547,7 +575,7 @@ export class DerbyComponent implements OnInit {
             "top",
             "right",
             "Edicion compadres",
-            "Se registraron las excepciones correctamente",
+            "Se actualizaron las excepciones correctamente",
             "alert-success"
           );
         }),
@@ -580,7 +608,6 @@ export class DerbyComponent implements OnInit {
     const seleccionados = [];
     grupo.seleccionados.map((partido: any) => {
       const index = this.findCompadre(partido, grupo.compadres);
-      console.log("🚀 ~ DerbyComponent ~ aprobarSeleccion ~ index:", index);
       if (index >= 0) {
         return;
       } else {
@@ -790,6 +817,8 @@ export class DerbyComponent implements OnInit {
             this.data.push(team.rings);
             this.dataUpdated.emit();
           });
+
+          this.teams = teams;
         }),
         catchError((err) => {
           return err;

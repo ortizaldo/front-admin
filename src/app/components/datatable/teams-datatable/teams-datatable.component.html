@@ -73,14 +73,15 @@
                       </button>
                     </div>
                     <div class="col buttons">
-                      <p-button
-                        icon="pi pi-user"
-                        [rounded]="true"
-                        severity="info"
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-info"
                         pTooltip="Configurar compadres"
                         tooltipPosition="top"
                         (click)="openModalCompadres()"
-                      />
+                      >
+                        <i class="far fa-user"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
