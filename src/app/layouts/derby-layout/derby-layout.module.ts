@@ -26,6 +26,8 @@ import { SplitButtonModule } from "primeng/splitbutton";
 import { TabViewModule } from "primeng/tabview";
 import { ToastModule } from "primeng/toast";
 import { DragDropModule } from "primeng/dragdrop";
+import { PickListModule } from "primeng/picklist";
+import { MultiSelectModule } from "primeng/multiselect";
 @NgModule({
   imports: [
     CommonModule,
@@ -53,6 +55,8 @@ import { DragDropModule } from "primeng/dragdrop";
     TabMenuModule,
     ToastModule,
     DragDropModule,
+    PickListModule,
+    MultiSelectModule,
   ],
   declarations: [DerbyComponent],
 })

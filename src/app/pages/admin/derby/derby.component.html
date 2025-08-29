@@ -180,10 +180,39 @@
 <ng-template #derbyCompadresTemplate>
   <div class="row">
     <div class="col-12" *ngIf="derbyDialogCompadres">
-      <!-- <app-derby-edit [data]="derby" [form]="derbyForm"></app-derby-edit> -->
+      <!-- <p-pickList
+        [source]="teams"
+        [target]="compadres"
+        sourceHeader="Partidos"
+        targetHeader="Grupos de compadres"
+        [dragdrop]="true"
+        [responsive]="true"
+        [sourceStyle]="{ height: '30rem' }"
+        [targetStyle]="{ height: '30rem' }"
+        breakpoint="1400px"
+      >
+        <ng-template pTemplate="sourceItem" let-p>
+          <div class="item partido">
+            <span class="team">{{ p.teamName }}</span>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="targetItem" let-g>
+          <div class="item grupo">
+            <div class="fila">
+              <span class="nombre">{{ g.grupo }}</span>
+              <span class="badge">{{ g.compadres?.length || 0 }}</span>
+            </div>
+            <div class="chips" *ngIf="g.compadres?.length">
+              <span class="chip" *ngFor="let c of g.compadres">{{
+                c.teamName
+              }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-pickList> -->
       <div class="row">
-        <!-- Lista de partidos -->
-        <div class="col-md-4 bg-secondary text-black p-3 rounded">
+        <!-- <div class="col-md-4 bg-secondary text-black p-3 rounded">
           <h3 class="text-center mb-3">Partidos</h3>
           <div
             *ngFor="let partido of teams"
@@ -195,57 +224,102 @@
           >
             {{ partido.teamName }}
           </div>
-        </div>
+        </div> -->
 
-        <!-- Grupos dinámicos -->
-        <div class="col-md-8 bg-secondary p-3 rounded">
+        <div class="col-md-12 bg-secondary p-3 rounded">
           <div class="row">
-            <div class="col-8 text-center">
-              <h3>Grupos</h3>
-            </div>
-            <div class="col-4 text-center">
-              <p-button
-                label="Agregar grupo"
-                icon="pi pi-plus"
-                [rounded]="true"
-                severity="info"
-                size="small"
-                (click)="agregarGrupo()"
-              />
+            <div class="d-flex align-items-center gap-3">
+              <h3 class="mb-0">Grupos</h3>
+
+              <!-- Acciones a la derecha -->
+              <div class="ms-auto d-flex align-items-center gap-2">
+                <input
+                  pInputText
+                  type="text"
+                  class="form-control"
+                  placeholder="Buscar…"
+                  [(ngModel)]="searchText"
+                  style="width: 260px"
+                />
+
+                <p-button
+                  icon="pi pi-plus"
+                  [rounded]="true"
+                  severity="info"
+                  size="small"
+                  (click)="agregarGrupo()"
+                  pTooltip="Agregar grupo"
+                  tooltipPosition="top"
+                />
+              </div>
             </div>
           </div>
-          <div class="row g-3">
-            <div *ngFor="let grupo of compadres" class="col-md-6">
-              <div class="card border-success h-100">
-                <div class="card-header bg-transparent border-success">
-                  {{ grupo.grupo }}
+          <div class="row g-3 pt-2">
+            <div *ngFor="let grupo of compadres" class="col-md-12">
+              <div class="card-compadres border-secondary">
+                <div
+                  class="card-header bg-transparent border-secondary d-flex align-items-center"
+                >
+                  <!-- Título -->
+                  <strong class="me-2">{{ grupo.grupo }}</strong>
+
+                  <!-- Multiselect a un costado -->
+                  <p-multiSelect
+                    class="me-2"
+                    [options]="teams"
+                    optionLabel="teamName"
+                    display="chip"
+                    [filter]="true"
+                    [showClear]="true"
+                    [panelStyle]="{ minWidth: '18rem' }"
+                    placeholder="Seleccionar partidos"
+                    [(ngModel)]="grupo.seleccionados"
+                  >
+                  </p-multiSelect>
+
+                  <!-- Botón de aprobación -->
+                  <button
+                    pButton
+                    type="button"
+                    icon="pi pi-check"
+                    class="p-button-rounded p-button-info me-auto"
+                    [disabled]="!grupo.seleccionados?.length"
+                    (click)="aprobarSeleccion(grupo)"
+                  ></button>
+
+                  <!-- Botón de cierre al extremo derecho -->
+                  <button
+                    class="close-btn-compadres ms-auto"
+                    (click)="deleteGrupo(grupo)"
+                  >
+                    X
+                  </button>
                 </div>
-                <div class="card-body bg-gray text-black p-2">
+
+                <div class="card-body">
                   <div *ngIf="grupo.compadres.length === 0">
                     Arrastra partidos aquí
                   </div>
-                  <div pDroppable="partidos" (onDrop)="onDrop(grupo, $event)">
-                    <table class="table table-sm mb-0">
-                      <thead>
-                        <tr>
-                          <th scope="col">Nombre del partido</th>
-                          <th scope="col">&nbsp;</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
-                          *ngFor="
-                            let partido of grupo.compadres;
-                            trackBy: trackByPartido
-                          "
-                        >
-                          <td>{{ partido.teamName }}</td>
-                          <td></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- <div class="p-2 mb-1 bg-success text-white rounded"></div> -->
+
+                  <table class="table table-sm mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre del partido</th>
+                        <th scope="col">&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let partido of grupo.compadres;
+                          trackBy: trackByPartido
+                        "
+                      >
+                        <td>{{ partido.teamName }}</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

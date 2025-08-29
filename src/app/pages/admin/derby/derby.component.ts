@@ -420,6 +420,39 @@ export class DerbyComponent implements OnInit {
       .subscribe();
   }
 
+  deleteGrupo(grupo: any) {
+    const params = {
+      filtersId: {
+        derby: {
+          value: this.selectedDerby._id,
+        },
+      },
+    };
+    this.crudService
+      .deleteOne("compadres", grupo._id, {
+        filters: {
+          hardDelete: true,
+        },
+      })
+      .pipe(
+        tap((data: any) => {
+          this.loading = false;
+          this.messageService.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Las excepciones del grupo fueron eliminadas",
+            life: 3000,
+          });
+          this.getCompadres("compadres", params);
+        }),
+        catchError((err) => {
+          this.loading = false;
+          return err;
+        })
+      )
+      .subscribe();
+  }
+
   deleteMany(items: any[]) {
     this.crudService
       .deleteMany(this.endpoint, items, {
@@ -498,7 +531,6 @@ export class DerbyComponent implements OnInit {
   }
 
   editCompadres(grupo: any) {
-    console.log("🚀 ~ DerbyComponent ~ editCompadres ~ grupo:", grupo);
     const params = {
       filtersId: {
         derby: {
@@ -511,6 +543,13 @@ export class DerbyComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.getCompadres("compadres", params);
+          this.showNotification(
+            "top",
+            "right",
+            "Edicion compadres",
+            "Se registraron las excepciones correctamente",
+            "alert-success"
+          );
         }),
         catchError((err) => {
           this.loading = false;
@@ -537,8 +576,33 @@ export class DerbyComponent implements OnInit {
     this.draggedPartido = null;
   }
 
+  aprobarSeleccion(grupo: any) {
+    const seleccionados = [];
+    grupo.seleccionados.map((partido: any) => {
+      const index = this.findCompadre(partido, grupo.compadres);
+      console.log("🚀 ~ DerbyComponent ~ aprobarSeleccion ~ index:", index);
+      if (index >= 0) {
+        return;
+      } else {
+        seleccionados.push(partido);
+      }
+    });
+    grupo.compadres = [...(grupo.compadres || []), ...seleccionados];
+    this.editCompadres(grupo);
+  }
+
+  findCompadre(partido: any, compadres: any[]) {
+    let index = -1;
+    for (let i = 0; i < (compadres as any[]).length; i++) {
+      if (partido._id === (compadres as any[])[i]._id) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
+
   onDrop(grupo: any, event?: any) {
-    console.log("🚀 ~ DerbyComponent ~ onDrop ~ grupo:", grupo);
     const dropped =
       event && event.dragData ? event.dragData : this.draggedPartido;
     if (!dropped) {
