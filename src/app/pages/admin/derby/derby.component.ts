@@ -466,18 +466,6 @@ export class DerbyComponent implements OnInit {
 
     const index = this.findCompadre(partido, _compadres);
     _compadres.splice(index, 1);
-
-    console.log(
-      "%cfront-admin/src/app/pages/admin/derby/derby.component.ts:470 _compadres",
-      "color: #007acc;",
-      _compadres
-    );
-
-    console.log(
-      "%cfront-admin/src/app/pages/admin/derby/derby.component.ts:470 _compadres",
-      "color: #007acc;",
-      grupo.compadres
-    );
     this.editCompadres(grupo);
   }
 
