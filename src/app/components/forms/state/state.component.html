@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Pais</label>
-        <p-dropdown
+        <!-- <p-dropdown
           styleClass="form-control"
           [options]="countrys"
           [(ngModel)]="selectedCountry"
@@ -12,7 +12,18 @@
           editable="false"
           formControlName="country"
         >
-        </p-dropdown>
+        </p-dropdown> -->
+        <select
+          class="form-select"
+          aria-label="Pais"
+          formControlName="country"
+          (change)="onChange()"
+        >
+          <option value="">Seleccionar un pais</option>
+          <option *ngFor="let option of countrys" [value]="option.value">
+            {{ option.description }}
+          </option>
+        </select>
       </div>
     </div>
     <div class="col-md-6">

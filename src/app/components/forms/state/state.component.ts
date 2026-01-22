@@ -1,19 +1,32 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/interfaces/user';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from "@angular/core";
+import {
+  UntypedFormBuilder,
+  FormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
+import { User } from "src/app/interfaces/user";
 
-import { SelectItem } from 'primeng/api';
-import { SelectItemGroup } from 'primeng/api';
-import { CrudService } from 'src/app/_services/crud.service';
-import { catchError, tap } from 'rxjs';
-import { Country } from 'src/app/interfaces/country';
-import { State } from 'src/app/interfaces/state';
-import { Municipality } from 'src/app/interfaces/municipality';
+import { SelectItem } from "primeng/api";
+import { SelectItemGroup } from "primeng/api";
+import { CrudService } from "src/app/_services/crud.service";
+import { catchError, tap } from "rxjs";
+import { Country } from "src/app/interfaces/country";
+import * as _ from "underscore";
+import { State } from "src/app/interfaces/state";
+import { Municipality } from "src/app/interfaces/municipality";
 
 @Component({
-  selector: 'app-state',
-  templateUrl: './state.component.html',
-  styleUrls: ['./state.component.scss'],
+  selector: "app-state",
+  templateUrl: "./state.component.html",
+  styleUrls: ["./state.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
 export class StateComponent implements OnInit {
@@ -25,9 +38,11 @@ export class StateComponent implements OnInit {
 
   items: SelectItem[];
 
-  @ViewChild('form') formElement: ElementRef;
-  constructor(private fb: UntypedFormBuilder, private crudService: CrudService) {
-  }
+  @ViewChild("form") formElement: ElementRef;
+  constructor(
+    private fb: UntypedFormBuilder,
+    private crudService: CrudService,
+  ) {}
 
   ngOnInit(): void {
     this.getCountries();
@@ -35,21 +50,35 @@ export class StateComponent implements OnInit {
 
   getCountries() {
     const params = {
-      select: ["description", "_id"]
+      select: ["description", "_id"],
     };
-    this.crudService.getMany("country", null, params)
+    this.crudService
+      .getMany("country", null, params)
       .pipe(
         tap((data: any) => {
-          this.countrys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+          this.countrys = [
+            { _id: 0, description: "Seleccione una opcion" },
+            ...data.data,
+          ];
 
           if (this.data) {
-            this.selectedCountry = this.countrys.find(x => x._id == this.data.country._id);
+            this.selectedCountry = this.countrys.find(
+              (x) => x._id == this.data.country._id,
+            );
           }
         }),
-        catchError(err => {
-          return err
-        })
+        catchError((err) => {
+          return err;
+        }),
       )
       .subscribe();
+  }
+
+  onChange() {
+    this.form.patchValue({
+      countrySelected: _.where(this.countrys, {
+        value: this.form.value.country,
+      })[0],
+    });
   }
 }
