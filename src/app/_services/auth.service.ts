@@ -1,35 +1,56 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable, ReplaySubject, catchError, combineLatest, map, tap, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { TokenStorageService } from './token-storage.service';
+import { Injectable } from "@angular/core";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from "@angular/common/http";
+import {
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  catchError,
+  combineLatest,
+  map,
+  tap,
+  throwError,
+} from "rxjs";
+import { Router } from "@angular/router";
+import { environment } from "src/environments/environment";
+import { TokenStorageService } from "./token-storage.service";
 
-const API_URL = 'http://localhost:8080/api/auth/';
+const API_URL = "http://localhost:8080/api/auth/";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+  headers: new HttpHeaders({
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  }),
 };
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
+  redirectUrl = "";
 
-  redirectUrl = '';
-
-  constructor(private http: HttpClient, private tokenService: TokenStorageService) {
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenStorageService,
+  ) {
     // no const
   }
 
   private static handleError(error: HttpErrorResponse): any {
     if (error.error instanceof ErrorEvent) {
-      console.error('An error occurred:', error.error.message);
+      console.error("An error occurred:", error.error.message);
     } else {
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+      // console.error(
+      //   `Backend returned code ${error.status}, ` + `body was: ${error.error}`,
+      // );
     }
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    return throwError(
+      () => new Error("Something bad happened; please try again later."),
+    );
   }
 
   private static log(message: string): any {
@@ -38,12 +59,12 @@ export class AuthService {
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(
-      environment.api + '/login',
+      environment.api + "/login",
       {
         email: username,
         password,
       },
-      httpOptions
+      httpOptions,
     );
   }
 
@@ -81,15 +102,12 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this.http.post(
-      environment.api + '/users/new',
-      data,
-      httpOptions
-    );
+    return this.http.post(environment.api + "/users/new", data, httpOptions);
   }
 
   secured(): Observable<any> {
-    return this.http.get<any>(API_URL + 'secret')
+    return this.http
+      .get<any>(API_URL + "secret")
       .pipe(catchError(AuthService.handleError));
   }
 }
