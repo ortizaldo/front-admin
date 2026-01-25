@@ -3,7 +3,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { TableModule } from 'primeng/table';
+import { TableModule } from "primeng/table";
 
 import { AdminLayoutRoutes } from "./admin-layout.routing";
 import { DashboardComponent } from "../../pages/admin/dashboard/dashboard.component";
@@ -15,17 +15,17 @@ import { TablesComponent } from "../../pages/admin/tables/tables.component";
 import { TypographyComponent } from "../../pages/admin/typography/typography.component";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { TabMenuModule } from 'primeng/tabmenu';
-import { SlideMenuModule } from 'primeng/slidemenu';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { PanelMenuModule } from "primeng/panelmenu";
+import { TabMenuModule } from "primeng/tabmenu";
+import { SlideMenuModule } from "primeng/slidemenu";
+import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 import { DatatableCustomModule } from "src/app/components/datatable/datatable-custom.module";
 import { DialogCustomModule } from "src/app/components/dialog/dialog-custom.module";
 import { FormGralModule } from "src/app/components/forms/form-general.module";
 import { ProfileComponent } from "src/app/pages/admin/profile/profile.component";
 import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.component";
-import { ButtonModule } from 'primeng/button';
+import { ButtonModule } from "primeng/button";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { SplitterModule } from "primeng/splitter";
 import { DropdownModule } from "primeng/dropdown";
@@ -34,10 +34,13 @@ import { SplitButtonModule } from "primeng/splitbutton";
 import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage/betting-brokerage.component";
 import { InputMaskModule } from "primeng/inputmask";
 import { TabViewModule } from "primeng/tabview";
-import { ToastModule } from 'primeng/toast';
+import { ToastModule } from "primeng/toast";
 import { EventsComponent } from "src/app/pages/admin/events/events-component";
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { DialogModule } from 'primeng/dialog';
+import { FullCalendarModule } from "@fullcalendar/angular";
+import { DialogModule } from "primeng/dialog";
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { CardModule } from "primeng/card";
+import { BrowserModule } from "@angular/platform-browser";
 @NgModule({
   imports: [
     CommonModule,
@@ -65,7 +68,9 @@ import { DialogModule } from 'primeng/dialog';
     TabViewModule,
     ToastModule,
     FullCalendarModule,
-    DialogModule
+    DialogModule,
+    AutoCompleteModule,
+    CardModule,
   ],
   declarations: [
     DashboardComponent,
@@ -79,7 +84,7 @@ import { DialogModule } from 'primeng/dialog';
     ProfileComponent,
     BettingBrokerageComponent,
     BettingBrokerageComponent,
-    EventsComponent
-  ]
+    EventsComponent,
+  ],
 })
-export class AdminLayoutModule { }
+export class AdminLayoutModule {}

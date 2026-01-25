@@ -5,55 +5,44 @@
         <div class="card-header">
           <div class="row d-flex flex-row">
             <div class="col-sm-6 text-left">
-              <h5 class="card-category">Captura de catalogos</h5>
+              <h5 class="card-category">Administración de catálogos</h5>
             </div>
-            <div class="col-sm-6"></div>
           </div>
           <div class="row d-flex flex-row">
-            <div class="col-2 m-2">
-              <h2 class="card-title">Catalogos</h2>
-            </div>
-            <div class="col-2">
-              <button
-                #btn
-                class="btn btn-info btn-fab btn-icon btn-round"
-                type="button"
-                (click)="menu3.toggle($event)"
-              >
-                <i class="fas fa-ellipsis-v"></i>
-              </button>
-              <p-slideMenu
-                #menu3
-                [model]="items"
-                [popup]="true"
-                [viewportHeight]="250"
-                appendTo="body"
-              ></p-slideMenu>
+            <div class="col m-2">
+              <h2 class="card-title">Catálogos</h2>
             </div>
           </div>
         </div>
         <div class="card-body p-4">
           <div class="row">
-            <div class="col-4">
-              <!-- <p-tabMenu [model]="items"></p-tabMenu> -->
+            <div class="card">
+              <span class="p-fluid">
+                <p-autoComplete
+                  placeholder="Buscar catálogo..."
+                  [(ngModel)]="selectedItem"
+                  [virtualScroll]="true"
+                  [suggestions]="filteredItems"
+                  [virtualScrollItemSize]="34"
+                  (completeMethod)="filterItems($event)"
+                  optionLabel="name"
+                  [dropdown]="true"
+                  appendTo="body"
+                />
+              </span>
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-sm">
-              <app-simple-datatable
-                *ngIf="data"
-                [loading]="false"
-                [title]="title"
-                [emptyMessage]="emptyMessage"
-                [data]="data"
-                [columns]="columns"
-                [selectedData]="selectedAny"
-                [items]="itemsDT"
-                (dialogChange)="openNew($event)"
-                (deleteRecords)="deleteSelected($event)"
-                (editRecords)="editSelected($event)"
-              ></app-simple-datatable>
+          <div class="row" *ngIf="items.length > 0">
+            <div class="col" *ngFor="let catalog of items">
+              <p-card header="{{ catalog.name }}" [style]="{ width: '360px' }">
+                <p class="text-sm text-gray-500">{{ catalog.description }}</p>
+                <span class="badge badge-success">{{ catalog.records }}</span>
+                <ng-template pTemplate="footer">
+                  <button type="button" class="btn btn-dark col-12">
+                    Administrar
+                  </button>
+                </ng-template>
+              </p-card>
             </div>
           </div>
         </div>

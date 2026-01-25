@@ -18,6 +18,7 @@ import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component
 import { ConfirmationService, MessageService } from "primeng/api";
 import { DerbyLayoutComponent } from "./layouts/derby-layout/derby-layout.component";
 import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from "ngx-mask";
+import { BrowserModule } from "@angular/platform-browser";
 registerLocaleData(localeEsMx, "es-MX");
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ registerLocaleData(localeEsMx, "es-MX");
     ComponentsModule,
     NgbModule,
     RouterModule,
+    BrowserModule,
     AppRoutingModule,
     ToastrModule.forRoot(),
     NgxMaskDirective,
