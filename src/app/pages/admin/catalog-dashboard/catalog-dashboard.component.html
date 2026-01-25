@@ -3,31 +3,96 @@
     <div class="col-12">
       <div class="card card-chart">
         <div class="card-header">
-          <div class="row">
+          <div class="row d-flex flex-row">
             <div class="col-sm-6 text-left">
               <h5 class="card-category">Catálogos / {{ catalog?.name }}</h5>
               <h2 class="card-title">{{ catalog?.name }}</h2>
             </div>
-            <div class="col-sm-6">
-              <div
-                class="btn-group btn-group-toggle float-right"
-                data-toggle="buttons"
-              >
-                <button class="btn btn-warning btn-sm mr-1 w-4 h-4">
-                  Nuevo
-                </button>
-                <button class="btn btn-outline-info btn-sm mr-1 w-4 h-4">
-                  Importar
-                </button>
-                <button class="btn btn-outline-info btn-sm mr-1 w-4 h-4">
-                  Exportar
-                </button>
-              </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm">
+              <app-simple-datatable
+                *ngIf="data"
+                [loading]="false"
+                [title]="title"
+                [emptyMessage]="emptyMessage"
+                [data]="data"
+                [columns]="columns"
+                [selectedData]="selectedAny"
+                [items]="itemsDT"
+                (dialogChange)="openNew($event)"
+                (deleteRecords)="deleteSelected($event)"
+                (editRecords)="editSelected($event)"
+              ></app-simple-datatable>
             </div>
           </div>
         </div>
-        <div class="card-body"></div>
       </div>
     </div>
   </div>
 </div>
+
+<app-dialog-form
+  [openDialog]="catalogDialog"
+  [size]="{ width: '50vw' }"
+  [headerDetails]="headerDetails"
+  (closeDialog)="openNew($event)"
+  [model]="myModel"
+>
+</app-dialog-form>
+
+<ng-template #catalogTemplate>
+  <div class="row">
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'country'">
+      <app-simple-catalog
+        [data]="catalog"
+        [label]="'País'"
+        [form]="catalogForm"
+      ></app-simple-catalog>
+    </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'state'">
+      <app-state [data]="catalog" [form]="catalogForm"></app-state>
+    </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'brooker'">
+      <app-brooker [data]="catalog" [form]="catalogForm"></app-brooker>
+    </div>
+
+    <div class="col-12" *ngIf="catalogDialog && endpoint === 'municipality'">
+      <app-municipality
+        [data]="catalog"
+        [form]="catalogForm"
+      ></app-municipality>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #buttonsTemplate>
+  <button
+    pButton
+    pRipple
+    label="Cancel"
+    icon="pi pi-trash"
+    class="p-button-danger"
+    (click)="hideDialog()"
+  ></button>
+  <button
+    pButton
+    pRipple
+    label="Save"
+    icon="pi pi-check"
+    class="p-button-success p-mr-2"
+    type="submit"
+    [disabled]="catalogForm.invalid"
+    (click)="!isEditing ? saveCatalog() : editCatalog()"
+  ></button>
+</ng-template>
+
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  acceptButtonStyleClass="p-button-success"
+  rejectButtonStyleClass="p-button-danger"
+></p-confirmDialog>

@@ -1,115 +1,102 @@
 <p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
 
-<p-toolbar styleClass="p-1">
-  <ng-template class="row p-1" pTemplate="left">
-    <div class="col p-1">
-      <button
-        pButton
-        pRipple
-        label="Nuevo"
-        icon="pi pi-plus"
-        class="p-button-success p-mr-2"
-        (click)="openDialog()"
-      ></button>
-    </div>
-    <div class="col p-1">
-      <button
-        pButton
-        pRipple
-        [label]="Delete"
-        icon="pi pi-trash"
-        class="p-button-danger"
-        (click)="deleteSelected()"
-        [disabled]="!selectedData || !selectedData.length"
-      ></button>
-    </div>
-  </ng-template>
-</p-toolbar>
-<p-table
-  #dt
-  [value]="data"
-  [(selection)]="selectedData"
-  dataKey="_id"
-  styleClass="p-datatable-customers"
-  [rowHover]="true"
-  [scrollable]="false"
-  [rows]="10"
-  [showCurrentPageReport]="true"
-  [rowsPerPageOptions]="[10, 25, 50]"
-  [paginator]="true"
-  [loading]="loading"
-  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
-  [filterDelay]="0"
-  [paginatorDropdownAppendTo]="'body'"
-  [globalFilterFields]="[
-    'name',
-    'country.name',
-    'representative.name',
-    'status'
-  ]"
->
-  <ng-template pTemplate="caption">
-    <div class="card-header table-header row">
-      <div class="col m-auto">
-        <h3>{{ title }}</h3>
-      </div>
-      <div class="col-6">&nbsp;</div>
-      <div class="col">
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="pi pi-search"></i></span>
+<div class="row">
+  <p-table
+    #dt
+    [value]="data"
+    [(selection)]="selectedData"
+    dataKey="_id"
+    styleClass="p-datatable-customers"
+    [rowHover]="true"
+    [scrollable]="false"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+    [loading]="loading"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    [filterDelay]="0"
+    [paginatorDropdownAppendTo]="'body'"
+    [globalFilterFields]="['description']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="card-header table-header row">
+        <div class="col-sm-6">
+          <div
+            class="btn-group btn-group-toggle float-left"
+            data-toggle="buttons"
+          >
+            <button
+              (click)="openDialog()"
+              class="btn btn-warning btn-sm mr-1 w-4 h-4"
+            >
+              Nuevo
+            </button>
+            <button class="btn btn-outline-info btn-sm mr-1 w-4 h-4">
+              Importar
+            </button>
+            <button class="btn btn-outline-info btn-sm mr-1 w-4 h-4">
+              Exportar
+            </button>
           </div>
-          <input
-            pInputText
-            class="form-control"
-            type="text"
-            (input)="dt.filterGlobal($event.target.value, 'contains')"
-            placeholder="Global Search"
-          />
+        </div>
+        <div class="col-sm-6">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="pi pi-search"></i></span>
+            </div>
+            <input
+              pInputText
+              class="form-control"
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Global Search"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="header">
-    <tr>
-      <th class="th-custom" style="width: 3rem">
-        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-      </th>
-      <th *ngFor="let col of columns">
-        <span class="p-column-title">{{ col.header }}</span>
-      </th>
-      <th class="th-custom" style="width: 8rem"></th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-data>
-    <tr class="p-selectable-row">
-      <td>
-        <p-tableCheckbox [value]="data"></p-tableCheckbox>
-      </td>
-      <td *ngFor="let col of columns">
-        {{ data[col.field] }}
-      </td>
-      <td ngbDropdown>
-        <button
-          type="button"
-          class="btn btn-info btn-fab btn-icon btn-round"
-          (click)="editSelected(data)"
-        >
-          <i class="pi pi-pencil"></i>
-        </button>
-        <button
-          type="button"
-          class="btn btn-danger btn-fab btn-icon btn-round"
-          (click)="delete(data)"
-        >
-          <i class="pi pi-trash"></i>
-        </button>
-      </td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td colspan="8">{{ emptyMessage }}</td>
-    </tr>
-  </ng-template>
-</p-table>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="th-custom" style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th *ngFor="let col of columns">
+          <span class="p-column-title">{{ col.header }}</span>
+        </th>
+        <th class="th-custom" style="width: 8rem"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr class="p-selectable-row">
+        <td>
+          <p-tableCheckbox [value]="data"></p-tableCheckbox>
+        </td>
+        <td *ngFor="let col of columns">
+          {{ data[col.field] }}
+        </td>
+        <td ngbDropdown>
+          <button
+            type="button"
+            class="btn btn-info btn-fab btn-icon btn-round"
+            (click)="editSelected(data)"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-fab btn-icon btn-round"
+            (click)="delete(data)"
+          >
+            <i class="pi pi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">{{ emptyMessage }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
