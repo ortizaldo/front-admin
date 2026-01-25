@@ -38,7 +38,11 @@
                 <p class="text-sm text-gray-500">{{ catalog.description }}</p>
                 <span class="badge badge-success">{{ catalog.records }}</span>
                 <ng-template pTemplate="footer">
-                  <button type="button" class="btn btn-dark col-12">
+                  <button
+                    type="button"
+                    class="btn btn-dark col-12"
+                    (click)="manageCatalog(catalog)"
+                  >
                     Administrar
                   </button>
                 </ng-template>

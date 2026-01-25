@@ -5,6 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { AutoCompleteCompleteEvent } from "primeng/autocomplete";
 import { catchError, tap } from "rxjs";
@@ -51,6 +52,7 @@ export class CatalogsComponent implements OnInit {
     private crudService: CrudService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -118,6 +120,10 @@ export class CatalogsComponent implements OnInit {
         tap((data: any) => {
           console.log("🚀 ~ CatalogsComponent ~ getCatalogs ~ data:", data);
           this.items = data.data;
+          console.log(
+            "🚀 ~ CatalogsComponent ~ getCatalogs ~ this.items:",
+            this.items,
+          );
           // if (this.derby) {
           //   this.selectedDerby = _.findWhere(this.derbys, {
           //     _id: this.derby._id,
@@ -147,6 +153,11 @@ export class CatalogsComponent implements OnInit {
       }
     }
     this.filteredItems = filtered;
+  }
+
+  manageCatalog(event) {
+    console.log("🚀 ~ CatalogsComponent ~ manageCatalog ~ event:", event);
+    this.router.navigate([`/catalog-dashboard/${event._id}`]);
   }
 
   enableCountry() {

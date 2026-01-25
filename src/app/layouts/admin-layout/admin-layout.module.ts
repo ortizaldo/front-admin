@@ -41,6 +41,7 @@ import { DialogModule } from "primeng/dialog";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { CardModule } from "primeng/card";
 import { BrowserModule } from "@angular/platform-browser";
+import { CatalogDashboardComponent } from "src/app/pages/admin/catalog-dashboard/catalog-dashboard.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -74,6 +75,7 @@ import { BrowserModule } from "@angular/platform-browser";
   ],
   declarations: [
     DashboardComponent,
+    CatalogDashboardComponent,
     CatalogsComponent,
     UserComponent,
     TablesComponent,
