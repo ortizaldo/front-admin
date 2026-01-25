@@ -75,10 +75,6 @@ export class StateComponent implements OnInit {
   }
 
   onChange() {
-    this.form.patchValue({
-      countrySelected: _.where(this.countrys, {
-        value: this.form.value.country,
-      })[0],
-    });
+    const self = this;
   }
 }

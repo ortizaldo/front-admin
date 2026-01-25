@@ -3,24 +3,13 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Pais</label>
-        <!-- <p-dropdown
-          styleClass="form-control"
-          [options]="countrys"
-          [(ngModel)]="selectedCountry"
-          optionLabel="description"
-          [appendTo]="'body'"
-          editable="false"
-          formControlName="country"
-        >
-        </p-dropdown> -->
         <select
           class="form-select"
           aria-label="Pais"
           formControlName="country"
           (change)="onChange()"
         >
-          <option value="">Seleccionar un pais</option>
-          <option *ngFor="let option of countrys" [value]="option.value">
+          <option *ngFor="let option of countrys" [value]="option._id">
             {{ option.description }}
           </option>
         </select>
