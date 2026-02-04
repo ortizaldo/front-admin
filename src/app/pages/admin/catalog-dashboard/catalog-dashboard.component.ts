@@ -203,23 +203,41 @@ export class CatalogDashboardComponent implements OnInit {
     this.isEditing = true;
     switch (this.endpoint) {
       case "state": {
+        this.catalogForm.patchValue(data.data);
+        this.catalogForm.patchValue({
+          country: data.data.country ? data.data.country._id : null,
+        });
+        console.log(
+          "%cfront-admin/src/app/pages/admin/catalog-dashboard/catalog-dashboard.component.ts:210 this.catalogForm.value",
+          "color: #007acc;",
+          this.catalogForm.value,
+        );
         this.headerDetails = "Editar registro de Estado";
         break;
       }
       case "municipality": {
+        this.catalogForm.patchValue(data.data);
         this.headerDetails = "Editar registro de Municipio";
         break;
       }
       case "country": {
+        this.catalogForm.patchValue(data.data);
         this.headerDetails = "Editar registro de País";
         break;
       }
       case "brooker": {
+        this.catalogForm.patchValue(data.data);
         this.headerDetails = "Editar registro de Corredor de apuestas";
         break;
       }
     }
-    this.catalogForm.patchValue(data.data);
+
+    console.log(
+      "%cfront-admin/src/app/pages/admin/catalog-dashboard/catalog-dashboard.component.ts:223 data.data",
+      "color: #007acc;",
+      data.data,
+    );
+
     this.catalogDialog = true;
   }
 

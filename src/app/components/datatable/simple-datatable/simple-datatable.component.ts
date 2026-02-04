@@ -71,10 +71,6 @@ export class SimpleDatatable implements OnInit {
   }
 
   editSelected(data) {
-    console.log(
-      "🚀 ~ file: simple-datatable.component.ts:56 ~ SimpleDatatable ~ editSelected ~ data:",
-      data,
-    );
     this.editRecords.emit({ data });
   }
 }

@@ -45,6 +45,11 @@ export class StateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(
+      "%cfront-admin/src/app/components/forms/state/state.component.ts:48 this.data",
+      "color: #007acc;",
+      this.data,
+    );
     this.getCountries();
   }
 
