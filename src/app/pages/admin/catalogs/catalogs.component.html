@@ -32,7 +32,7 @@
               </span>
             </div>
           </div>
-          <div class="row" *ngIf="items.length > 0">
+          <div class="row">
             <div class="col" *ngFor="let catalog of items">
               <p-card header="{{ catalog.name }}" [style]="{ width: '360px' }">
                 <p class="text-sm text-gray-500">{{ catalog.description }}</p>
@@ -40,7 +40,7 @@
                 <ng-template pTemplate="footer">
                   <button
                     type="button"
-                    class="btn btn-dark col-12"
+                    class="btn btn-warning col-12"
                     (click)="manageCatalog(catalog)"
                   >
                     Administrar

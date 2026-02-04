@@ -40,6 +40,7 @@ import { FullCalendarModule } from "@fullcalendar/angular";
 import { DialogModule } from "primeng/dialog";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { CardModule } from "primeng/card";
+import { BreadcrumbModule } from "primeng/breadcrumb";
 import { BrowserModule } from "@angular/platform-browser";
 import { CatalogDashboardComponent } from "src/app/pages/admin/catalog-dashboard/catalog-dashboard.component";
 @NgModule({
@@ -72,6 +73,7 @@ import { CatalogDashboardComponent } from "src/app/pages/admin/catalog-dashboard
     DialogModule,
     AutoCompleteModule,
     CardModule,
+    BreadcrumbModule,
   ],
   declarations: [
     DashboardComponent,

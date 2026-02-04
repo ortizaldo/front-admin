@@ -1,0 +1,26 @@
+app-catalog-dashboard .p-breadcrumb {
+  background: transparent;
+  border: transparent;
+  border-radius: 3px;
+  padding: 0px !important;
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+}
+
+app-catalog-dashboard .p-breadcrumb .p-breadcrumb-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+app-catalog-dashboard a {
+  color: #0e0e0e;
+  font-weight: 300;
+}
+
+app-catalog-dashboard .p-menuitem-link .text-primary {
+  color: #0e0e0e !important;
+}

@@ -1,5 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from "@angular/core";
-import { ConfirmationService, MenuItem, MessageService, PrimeNGConfig } from "primeng/api";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation,
+} from "@angular/core";
+import {
+  ConfirmationService,
+  MenuItem,
+  MessageService,
+  PrimeNGConfig,
+} from "primeng/api";
 import { ContextMenu } from "primeng/contextmenu";
 import { Table } from "primeng/table";
 import { catchError, tap } from "rxjs";
@@ -11,10 +24,8 @@ import { CrudService } from "src/app/_services/crud.service";
   styleUrls: ["simple-datatable.component.css"],
   encapsulation: ViewEncapsulation.None,
 })
-
-
 export class SimpleDatatable implements OnInit {
-  @Input() data!: any[];
+  @Input() data: any[] = [];
   @Input() selectedData: any[];
   @Input() columns: any[];
   @Input() loading: boolean = true;
@@ -26,13 +37,20 @@ export class SimpleDatatable implements OnInit {
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
 
-
-  @ViewChild('dt') table: Table;
-  @ViewChild('contextMenuDT') contextMenu: ContextMenu;
-  constructor(private crudService: CrudService, private primengConfig: PrimeNGConfig) { }
+  @ViewChild("dt") table: Table;
+  @ViewChild("contextMenuDT") contextMenu: ContextMenu;
+  constructor(
+    private crudService: CrudService,
+    private primengConfig: PrimeNGConfig,
+  ) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true;
+    console.log(
+      "%cfront-admin/src/app/components/datatable/simple-datatable/simple-datatable.component.ts:36 this.data",
+      "color: #007acc;",
+      this.data,
+    );
   }
 
   openDialog() {
@@ -53,7 +71,10 @@ export class SimpleDatatable implements OnInit {
   }
 
   editSelected(data) {
-    console.log("🚀 ~ file: simple-datatable.component.ts:56 ~ SimpleDatatable ~ editSelected ~ data:", data)
+    console.log(
+      "🚀 ~ file: simple-datatable.component.ts:56 ~ SimpleDatatable ~ editSelected ~ data:",
+      data,
+    );
     this.editRecords.emit({ data });
   }
 }
