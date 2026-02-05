@@ -5,28 +5,47 @@
         <div class="contact">
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <h3>Inicio de sesión</h3>
-            <input formControlName="email" type="text" placeholder="Email" />
+            <input
+              formControlName="email"
+              type="text"
+              placeholder="Email"
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.invalid && (loginForm.dirty || loginForm.touched),
+              }"
+            />
             <div
+              class="invalid-feedback"
               *ngIf="
                 loginForm.get('email').invalid &&
                 (loginForm.get('email').dirty || loginForm.get('email').touched)
               "
             >
-              Por favor proporcione un email.
+              <span *ngIf="loginForm.get('password').errors?.['required']"
+                >Por favor proporcione un email.</span
+              >
             </div>
             <input
               formControlName="password"
               type="password"
               placeholder="Contraseña"
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.invalid && (loginForm.dirty || loginForm.touched),
+              }"
             />
             <div
+              class="invalid-feedback"
               *ngIf="
                 loginForm.get('password').invalid &&
                 (loginForm.get('password').dirty ||
                   loginForm.get('password').touched)
               "
             >
-              Por favor proporcione una contraseña.
+              <span *ngIf="loginForm.get('password').errors?.['required']"
+                >Por favor proporcione una contraseña.</span
+              >
+              <!-- Por favor proporcione una contraseña. -->
             </div>
             <button class="submit" type="submit" [disabled]="loginForm.invalid">
               Iniciar sesion

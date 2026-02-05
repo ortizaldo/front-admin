@@ -1,7 +1,7 @@
 @import "primeicons/primeicons.css";
 /* You can add global styles to this file, and also import other style files */
-.sidebar .nav li.active>a:not([data-toggle="collapse"])::before,
-.off-canvas-sidebar .nav li.active>a:not([data-toggle="collapse"])::before {
+.sidebar .nav li.active > a:not([data-toggle="collapse"])::before,
+.off-canvas-sidebar .nav li.active > a:not([data-toggle="collapse"])::before {
   background-image: initial;
   background-color: rgb(20, 23, 24);
   display: none;
@@ -16,4 +16,34 @@
   padding: 1px 10px 0 !important;
   border: 0;
   color: rgba(255, 255, 255, 0.8);
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.06);
+  padding-right: 2.25rem; /* para icono opcional */
+}
+
+.form-control.is-invalid:focus {
+  background-color: rgba(220, 53, 69, 0.07);
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.18);
+}
+
+.form-error {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.25);
+  color: #dc3545;
+  font-size: 0.85rem;
+}
+
+.main-panel {
+  position: relative;
+  float: right;
+  width: 100%;
+  min-height: 100vh;
+  background: transparent !important;
+  transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
 }
