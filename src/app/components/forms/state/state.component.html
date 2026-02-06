@@ -3,7 +3,37 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Pais</label>
-        <select
+        <p-dropdown
+          [options]="countrys"
+          [(ngModel)]="selectedCountry"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          placeholder="Select a Country"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                [class]="'flag flag-' + selectedCountry.code.toLowerCase()"
+                style="width: 18px"
+              />
+              <div>{{ selectedOption.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-country pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <img
+                src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                [class]="'flag flag-' + country.code.toLowerCase()"
+                style="width: 18px"
+              />
+              <div>{{ country.name }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <!-- <select
           class="form-select"
           aria-label="Pais"
           formControlName="country"
@@ -12,7 +42,7 @@
           <option *ngFor="let option of countrys" [value]="option._id">
             {{ option.description }}
           </option>
-        </select>
+        </select> -->
       </div>
     </div>
     <div class="col-md-6">

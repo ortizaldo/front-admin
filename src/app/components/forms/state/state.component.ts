@@ -45,24 +45,19 @@ export class StateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(
-      "%cfront-admin/src/app/components/forms/state/state.component.ts:48 this.data",
-      "color: #007acc;",
-      this.data,
-    );
     this.getCountries();
   }
 
   getCountries() {
     const params = {
-      select: ["description", "_id"],
+      select: ["name", "_id"],
     };
     this.crudService
       .getMany("country", null, params)
       .pipe(
         tap((data: any) => {
           this.countrys = [
-            { _id: 0, description: "Seleccione una opcion" },
+            { _id: 0, name: "Seleccione una opcion" },
             ...data.data,
           ];
 

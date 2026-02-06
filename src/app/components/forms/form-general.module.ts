@@ -2,13 +2,13 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { TableModule } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ButtonModule } from 'primeng/button';
-import { UserReadComponent } from './user-read/user-read.component';
-import { UserEditComponent } from './user-edit/user-edit.component';
+import { TableModule } from "primeng/table";
+import { ToolbarModule } from "primeng/toolbar";
+import { ButtonModule } from "primeng/button";
+import { UserReadComponent } from "./user-read/user-read.component";
+import { UserEditComponent } from "./user-edit/user-edit.component";
 import { DropdownModule } from "primeng/dropdown";
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SimpleCatalogComponent } from "./simple-catalog/simple-catalog.component";
 import { StateComponent } from "./state/state.component";
 import { MunicipalityComponent } from "./municipality/municipality.component";
@@ -20,7 +20,6 @@ import { InputMaskModule } from "primeng/inputmask";
 import { InputSwitchModule } from "primeng/inputswitch";
 import { TabViewModule } from "primeng/tabview";
 import { BetStubComponent } from "./bet-stub/bet-stub.component";
-
 
 @NgModule({
   imports: [
@@ -59,7 +58,7 @@ import { BetStubComponent } from "./bet-stub/bet-stub.component";
     CompanyComponent,
     DerbyEditComponent,
     BrookerComponent,
-    BetStubComponent
+    BetStubComponent,
   ],
 })
-export class FormGralModule { }
+export class FormGralModule {}

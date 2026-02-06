@@ -114,17 +114,8 @@ export class CatalogDashboardComponent implements OnInit {
     this.headerDetails = metadata.texts.headerDetails;
     this.emptyMessage = metadata.texts.emptyMessage;
     this.endpoint = metadata.endpoint;
-    console.log(
-      "🚀 ~ CatalogDashboardComponent ~ enableCatalog ~ metadata:",
-      metadata,
-    );
 
     if (metadata.form) {
-      console.log(
-        "%cfront-admin/src/app/pages/admin/catalog-dashboard/catalog-dashboard.component.ts:119 metadata.form",
-        "color: #007acc;",
-        metadata.form,
-      );
       this.catalogForm = new UntypedFormGroup({});
       metadata.form.forEach((field) => {
         const control = new UntypedFormControl("", Validators.required || []);
@@ -156,10 +147,17 @@ export class CatalogDashboardComponent implements OnInit {
         tap((data: any) => {
           if (endpoint === "state") {
             data.data.forEach((item: any) => {
-              item.countryDesc = item.country ? item.country.description : null;
-              item.countryId = item.country ? item.country._id : null;
+              const country = item.country_id[0];
+              item.countryDesc = country ? country.name : null;
+              item.countryId = country ? country._id : null;
             });
           }
+
+          console.log(
+            "%cfront-admin/src/app/pages/admin/catalog-dashboard/catalog-dashboard.component.ts:160 data.data",
+            "color: #007acc;",
+            data.data,
+          );
 
           if (endpoint === "municipality") {
             data.data.forEach((item: any) => {
