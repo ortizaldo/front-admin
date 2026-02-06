@@ -1,19 +1,31 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/interfaces/user';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from "@angular/core";
+import {
+  UntypedFormBuilder,
+  FormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
+import { User } from "src/app/interfaces/user";
 
-import { SelectItem } from 'primeng/api';
-import { SelectItemGroup } from 'primeng/api';
-import { CrudService } from 'src/app/_services/crud.service';
-import { catchError, tap } from 'rxjs';
-import { Country } from 'src/app/interfaces/country';
-import { State } from 'src/app/interfaces/state';
-import { Municipality } from 'src/app/interfaces/municipality';
+import { SelectItem } from "primeng/api";
+import { SelectItemGroup } from "primeng/api";
+import { CrudService } from "src/app/_services/crud.service";
+import { catchError, tap } from "rxjs";
+import { Country } from "src/app/interfaces/country";
+import { State } from "src/app/interfaces/state";
+import { Municipality } from "src/app/interfaces/municipality";
 
 @Component({
-  selector: 'app-simple-catalog',
-  templateUrl: './simple-catalog.component.html',
-  styleUrls: ['./simple-catalog.component.scss'],
+  selector: "app-simple-catalog",
+  templateUrl: "./simple-catalog.component.html",
+  styleUrls: ["./simple-catalog.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
 export class SimpleCatalogComponent implements OnInit {
@@ -32,12 +44,44 @@ export class SimpleCatalogComponent implements OnInit {
 
   items: SelectItem[];
 
-  @ViewChild('form') formElement: ElementRef;
-  constructor(private fb: UntypedFormBuilder, private crudService: CrudService) {
-  }
+  @ViewChild("form") formElement: ElementRef;
+  constructor(
+    private fb: UntypedFormBuilder,
+    private crudService: CrudService,
+  ) {}
 
   ngOnInit(): void {
+    console.log(
+      "%cfront-admin/src/app/components/forms/simple-catalog/simple-catalog.component.ts:40 this.form",
+      "color: #007acc;",
+      this.form,
+    );
+    this.dynamicForm();
     this.getCountries();
+  }
+
+  dynamicForm() {
+    const group: Record<string, any> = {};
+
+    for (const [name, control] of Object.entries(this.form.controls)) {
+      const v = this.data?.[name] ?? control.value ?? null;
+
+      const validators = [];
+      if (control.hasError("required")) validators.push(Validators.required);
+
+      group[name] = [{ value: v, disabled: control.disabled }, validators];
+    }
+
+    this.form = this.fb.group(group);
+  }
+
+  fc(name: string) {
+    return this.form.get(name);
+  }
+
+  showError(name: string) {
+    const ctrl = this.fc(name);
+    return !!ctrl && ctrl.invalid && (ctrl.dirty || ctrl.touched);
   }
 
   onChange(evt: any, endpoint: string) {
@@ -47,10 +91,10 @@ export class SimpleCatalogComponent implements OnInit {
         filtersId: {
           country: {
             value: this.selectedCountry._id,
-          }
+          },
         },
-        select: ["country", "description", "_id"]
-      }
+        select: ["country", "description", "_id"],
+      };
     }
 
     if (endpoint === "municipality") {
@@ -61,48 +105,58 @@ export class SimpleCatalogComponent implements OnInit {
           },
           state: {
             value: this.selectedState._id,
-          }
+          },
         },
-        select: ["country", "state", "description", "_id"]
-      }
+        select: ["country", "state", "description", "_id"],
+      };
     }
     this.getCatalogDependent(endpoint, params);
   }
 
   getCountries() {
     const params = {
-      select: ["description", "_id"]
+      select: ["description", "_id"],
     };
-    this.crudService.getMany("country", null, params)
+    this.crudService
+      .getMany("country", null, params)
       .pipe(
         tap((data: any) => {
-          this.countrys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+          this.countrys = [
+            { _id: 0, description: "Seleccione una opcion" },
+            ...data.data,
+          ];
         }),
-        catchError(err => {
-          return err
-        })
+        catchError((err) => {
+          return err;
+        }),
       )
       .subscribe();
   }
 
   getCatalogDependent(type: string, params: any) {
-    this.crudService.getMany(type, null, params)
+    this.crudService
+      .getMany(type, null, params)
       .pipe(
         tap((data: any) => {
-
           if (type === "state") {
-            this.states = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+            this.states = [
+              { _id: 0, description: "Seleccione una opcion" },
+              ...data.data,
+            ];
             this.selectedState = this.states[0];
           }
 
           if (type === "municipality") {
-            this.municipalitys = [{ _id: 0, description: "Seleccione una opcion" }, ...data.data];
+            this.municipalitys = [
+              { _id: 0, description: "Seleccione una opcion" },
+              ...data.data,
+            ];
             this.selectedMunicipality = this.municipalitys[0];
           }
         }),
-        catchError(err => {
-          return err
-        })
+        catchError((err) => {
+          return err;
+        }),
       )
       .subscribe();
   }

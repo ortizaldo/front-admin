@@ -114,8 +114,17 @@ export class CatalogDashboardComponent implements OnInit {
     this.headerDetails = metadata.texts.headerDetails;
     this.emptyMessage = metadata.texts.emptyMessage;
     this.endpoint = metadata.endpoint;
+    console.log(
+      "🚀 ~ CatalogDashboardComponent ~ enableCatalog ~ metadata:",
+      metadata,
+    );
 
     if (metadata.form) {
+      console.log(
+        "%cfront-admin/src/app/pages/admin/catalog-dashboard/catalog-dashboard.component.ts:119 metadata.form",
+        "color: #007acc;",
+        metadata.form,
+      );
       this.catalogForm = new UntypedFormGroup({});
       metadata.form.forEach((field) => {
         const control = new UntypedFormControl("", Validators.required || []);
@@ -139,9 +148,7 @@ export class CatalogDashboardComponent implements OnInit {
     let params = {
       select,
       populate,
-      filters: {
-        deleted: false,
-      },
+      filters: {},
     };
     this.crudService
       .getMany(endpoint, null, params)

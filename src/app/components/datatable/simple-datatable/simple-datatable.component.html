@@ -14,10 +14,10 @@
     [rowsPerPageOptions]="[10, 25, 50]"
     [paginator]="true"
     [loading]="loading"
-    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
     [filterDelay]="0"
     [paginatorDropdownAppendTo]="'body'"
-    [globalFilterFields]="['description']"
+    [globalFilterFields]="['name', 'description']"
   >
     <ng-template pTemplate="caption">
       <div class="card-header table-header row">
