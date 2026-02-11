@@ -153,18 +153,15 @@ export class CatalogDashboardComponent implements OnInit {
             });
           }
 
-          console.log(
-            "%cfront-admin/src/app/pages/admin/catalog-dashboard/catalog-dashboard.component.ts:160 data.data",
-            "color: #007acc;",
-            data.data,
-          );
-
           if (endpoint === "municipality") {
             data.data.forEach((item: any) => {
-              item.countryDesc = item.country ? item.country.description : null;
-              item.countryId = item.country ? item.country._id : null;
-              item.stateId = item.state ? item.state._id : null;
-              item.stateDesc = item.state ? item.state.description : null;
+              const country = item.country_id[0];
+              item.countryDesc = country ? country.name : null;
+              item.countryId = country ? country._id : null;
+
+              const state = item.state_id[0];
+              item.stateId = state ? state._id : null;
+              item.stateDesc = state ? state.name : null;
             });
           }
 
