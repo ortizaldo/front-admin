@@ -19,6 +19,8 @@ import { BrookerComponent } from "./brooker/brooker.component";
 import { InputMaskModule } from "primeng/inputmask";
 import { InputSwitchModule } from "primeng/inputswitch";
 import { TabViewModule } from "primeng/tabview";
+import { AvatarModule } from "primeng/avatar";
+import { TagModule } from "primeng/tag";
 import { BetStubComponent } from "./bet-stub/bet-stub.component";
 
 @NgModule({
@@ -35,6 +37,8 @@ import { BetStubComponent } from "./bet-stub/bet-stub.component";
     InputMaskModule,
     InputSwitchModule,
     TabViewModule,
+    AvatarModule,
+    TagModule,
   ],
   declarations: [
     UserReadComponent,
