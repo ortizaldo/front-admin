@@ -1,5 +1,5 @@
 export interface Country {
   _id: string;
-  description?: any;
+  name?: any;
   active: boolean;
 }

@@ -5,16 +5,6 @@
         <div class="card-body">
           <app-user-edit [data]="user" [form]="userForm"></app-user-edit>
         </div>
-        <div class="card-footer">
-          <button
-            class="btn btn-fill btn-danger"
-            type="submit"
-            [disabled]="userForm.invalid"
-            (click)="saveUser()"
-          >
-            Guardar
-          </button>
-        </div>
       </div>
     </div>
   </div>

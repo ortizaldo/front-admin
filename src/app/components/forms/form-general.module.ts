@@ -21,7 +21,13 @@ import { InputSwitchModule } from "primeng/inputswitch";
 import { TabViewModule } from "primeng/tabview";
 import { AvatarModule } from "primeng/avatar";
 import { TagModule } from "primeng/tag";
+import { CalendarModule } from "primeng/calendar";
 import { BetStubComponent } from "./bet-stub/bet-stub.component";
+
+import {
+  DlDateTimeDateModule,
+  DlDateTimePickerModule,
+} from "angular-bootstrap-datetimepicker";
 
 @NgModule({
   imports: [
@@ -39,6 +45,7 @@ import { BetStubComponent } from "./bet-stub/bet-stub.component";
     TabViewModule,
     AvatarModule,
     TagModule,
+    CalendarModule,
   ],
   declarations: [
     UserReadComponent,

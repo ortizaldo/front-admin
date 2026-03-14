@@ -6,4 +6,7 @@ export interface User {
   email: string;
   typeUser?: any;
   phoneNumber: string;
+  birth: string;
+  addressStreet: string;
+  postalCode: string;
 }
