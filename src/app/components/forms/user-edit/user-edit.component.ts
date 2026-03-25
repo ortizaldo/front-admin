@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from "@angular/core";
 import {
   UntypedFormBuilder,
   FormControl,
@@ -7,7 +14,7 @@ import {
 } from "@angular/forms";
 import { User } from "src/app/interfaces/user";
 import * as _ from "underscore";
-import { SelectItem } from "primeng/api";
+import { ConfirmationService, MessageService, SelectItem } from "primeng/api";
 import { SelectItemGroup } from "primeng/api";
 import { CrudService } from "src/app/_services/crud.service";
 import { catchError, tap } from "rxjs";
@@ -28,6 +35,7 @@ export class UserEditComponent implements OnInit {
   @Input() countrys: Country[] | undefined;
   @Input() states: State[] | undefined;
   @Input() municipalitys: Municipality[] | undefined;
+  @Output() save: EventEmitter<any> = new EventEmitter<any>();
 
   selectedCountry: any | undefined = {};
   selectedState: any | undefined = {};
@@ -41,6 +49,8 @@ export class UserEditComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private crudService: CrudService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -49,9 +59,6 @@ export class UserEditComponent implements OnInit {
 
   onChange(evt: any = null, select: string, endpoint: string = "") {
     if (select === "country") {
-      // this.selectedCountry = _.where(this.countrys, {
-      //   _id: this.form.value.country,
-      // })[0];
       this.selectedCountry = this.countrys?.find(
         (x) => x._id == this.form.value.country,
       );
@@ -93,12 +100,6 @@ export class UserEditComponent implements OnInit {
         },
         select: ["country_id", "state_id", "name", "_id"],
       };
-
-      console.log(
-        "%cfront-admin/src/app/components/forms/user-edit/user-edit.component.ts:96 params",
-        "color: #007acc;",
-        params,
-      );
       this.getCatalogDependent(endpoint, params);
     }
   }
@@ -115,7 +116,20 @@ export class UserEditComponent implements OnInit {
             { _id: 0, name: "Seleccione una opcion" },
             ...data.data,
           ];
-          this.selectedCountry = this.countrys[0];
+
+          if (_.has(this.data, "address")) {
+            const { country } = this.data.address;
+            this.selectedCountry = this.data
+              ? this.countrys?.find((x) => x._id == country)
+              : this.countrys[0];
+
+            this.form.patchValue({
+              country: this.selectedCountry._id,
+            });
+            this.onChange(null, "country", "state");
+          } else {
+            this.selectedCountry = this.countrys[0];
+          }
         }),
         catchError((err) => {
           return err;
@@ -135,15 +149,19 @@ export class UserEditComponent implements OnInit {
               ...data.data,
             ];
             this.selectedState = this.states[0];
-            // if (_.has(this.data, "address")) {
-            //   const { state } = this.data.address;
-            //   this.selectedState = this.data
-            //     ? this.states.find((x) => x._id == state)
-            //     : this.states[0];
-            //   this.onChange(null, "municipality");
-            // } else {
-            //   this.selectedState = this.states[0];
-            // }
+            if (_.has(this.data, "address")) {
+              const { state } = this.data.address;
+              this.selectedState = this.data
+                ? this.states.find((x) => x._id == state)
+                : this.states[0];
+
+              this.form.patchValue({
+                state: this.selectedState._id,
+              });
+              this.onChange(null, "state", "municipality");
+            } else {
+              this.selectedState = this.states[0];
+            }
           }
 
           if (type === "municipality") {
@@ -152,14 +170,18 @@ export class UserEditComponent implements OnInit {
               ...data.data,
             ];
             this.selectedMunicipality = this.municipalitys[0];
-            // if (_.has(this.data, "address")) {
-            //   const { municipality } = this.data.address;
-            //   this.selectedMunicipality = this.data
-            //     ? this.municipalitys.find((x) => x._id == municipality)
-            //     : this.municipalitys[0];
-            // } else {
-            //   this.selectedMunicipality = this.municipalitys[0];
-            // }
+            if (_.has(this.data, "address")) {
+              const { municipality } = this.data.address;
+              this.selectedMunicipality = this.data
+                ? this.municipalitys.find((x) => x._id == municipality)
+                : this.municipalitys[0];
+              this.form.patchValue({
+                municipality: this.selectedMunicipality._id,
+              });
+              this.onChange(null, "municipality");
+            } else {
+              this.selectedMunicipality = this.municipalitys[0];
+            }
           }
         }),
         catchError((err) => {
@@ -170,10 +192,10 @@ export class UserEditComponent implements OnInit {
   }
 
   saveUser() {
-    console.log(
-      "%cprofile.component.ts line:34 this.userForm",
-      "color: #007acc;",
-      this.data,
-    );
+    this.save.emit({
+      form: this.form.value,
+      _id: this.data._id,
+      data: this.data,
+    });
   }
 }

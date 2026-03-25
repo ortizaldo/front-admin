@@ -3,7 +3,11 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
-          <app-user-edit [data]="user" [form]="userForm"></app-user-edit>
+          <app-user-edit
+            [data]="user"
+            [form]="userForm"
+            (save)="saveUser($event)"
+          ></app-user-edit>
         </div>
       </div>
     </div>
