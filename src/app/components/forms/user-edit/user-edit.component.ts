@@ -151,7 +151,6 @@ export class UserEditComponent implements OnInit {
             this.selectedState = this.states[0];
             if (_.has(this.data, "address")) {
               const { state } = this.data.address;
-              console.log("🚀 ~ UserEditComponent ~ getCatalogDependent ~ state:", state)
               this.selectedState = this.data
                 ? this.states.find((x) => x._id == state._id)
                 : this.states[0];
