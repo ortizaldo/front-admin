@@ -13,12 +13,11 @@ import {
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
-import Chart from "chart.js";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MenuItem, MessageService } from "primeng/api";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
-import * as moment from "moment";
+import moment from 'moment';
 import * as _ from "underscore";
 
 @Component({
@@ -507,7 +506,7 @@ export class DerbyComponent implements OnInit {
       icon: "pi pi-exclamation-triangle",
       accept: () => {
         if (event.data.length > 1) {
-          let items = [];
+          let items:string[] = [];
           event.data.forEach((item: any) => {
             items.push(item.teamId);
           });

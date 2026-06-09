@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user';
 import * as _ from "underscore";
-import * as moment from "moment";
+import moment from 'moment';
 import { CrudService } from 'src/app/_services/crud.service';
 import { catchError, tap } from 'rxjs';
 

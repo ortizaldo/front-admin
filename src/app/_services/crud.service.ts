@@ -9,8 +9,8 @@ import { environment } from 'src/environments/environment';
 export class CrudService {
   constructor(private http: HttpClient) { }
 
-  get<T>(endpoint?: string, params: any = {}, options?: any): Observable<T> {
-    const paramsStr = {};
+  get<T>(endpoint: string, params: any = {}, options?: any): Observable<T> {
+    const paramsStr: { [key: string]: string } = {};
     for (const key in params) {
       if (params.hasOwnProperty(key)) {
         paramsStr[key] = JSON.stringify(params[key]);
@@ -26,7 +26,7 @@ export class CrudService {
     return this.http.get<T>(endpoint, opts).pipe(map((r: any) => r));
   }
 
-  getMany(endpoint: string, id: string = "", params: any): Observable<any> {
+  getMany(endpoint: string, id: string | null = "", params: any): Observable<any> {
     const url = id ? `${environment.api}/${endpoint}/${id}` : `${environment.api}/${endpoint}`;
     const options = { responseType: 'json' };
     return this.get<any>(url, params, options);
@@ -45,7 +45,7 @@ export class CrudService {
   }
 
   deleteOne(endpoint: string, id: string, params: any = {}) {
-    const paramsStr = {};
+    const paramsStr: { [key: string]: string } = {};
     for (const key in params) {
       if (params.hasOwnProperty(key)) {
         paramsStr[key] = JSON.stringify(params[key]);
@@ -57,7 +57,7 @@ export class CrudService {
   }
 
   deleteMany(endpoint: string, ids: string[], params: any = {}) {
-    const paramsStr = {};
+    const paramsStr: { [key: string]: string } = {};
     for (const key in params) {
       if (params.hasOwnProperty(key)) {
         paramsStr[key] = JSON.stringify(params[key]);

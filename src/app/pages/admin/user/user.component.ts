@@ -12,13 +12,13 @@ import { CrudService } from "src/app/_services/crud.service";
   encapsulation: ViewEncapsulation.None,
 })
 export class UserComponent implements OnInit {
-  userForm: UntypedFormGroup;
+  userForm!: UntypedFormGroup;
   users!: any[];
-  user: any;
-  body: any;
+  user: any = null;
+  body: any = null;
   title: string = "Crear usuario";
-  selectedUsers: any[];
-  columns: any[];
+  selectedUsers!: any[];
+  columns!: any[];
 
   userDialog: boolean = false;
   isEditing: boolean = false;
@@ -27,8 +27,8 @@ export class UserComponent implements OnInit {
   myModel = {
   };
 
-  @ViewChild('userTemplate', { static: true }) userTemplate: TemplateRef<any>;
-  @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate: TemplateRef<any>;
+  @ViewChild('userTemplate', { static: true }) userTemplate!: TemplateRef<any>;
+  @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate!: TemplateRef<any>;
 
   constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
 
@@ -75,7 +75,7 @@ export class UserComponent implements OnInit {
         "phoneNumber"
       ]
     };
-    this.crudService.getMany("users", null, params)
+    this.crudService.getMany("users", "", params)
       .pipe(
         tap((data: any) => {
           this.users = data.data;
@@ -90,14 +90,14 @@ export class UserComponent implements OnInit {
 
   }
 
-  deleteSelected(event) {
+  deleteSelected(event: any) {
     this.confirmationService.confirm({
       message: 'Estas seguro de eliminar este registro?',
       header: 'Eliminar registro',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         if (event.data.length > 1) {
-          let items = [];
+          let items: any[] = [];
           event.data.forEach((item: any) => {
             items.push(item._id);
           });
@@ -109,7 +109,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  editSelected(data) {
+  editSelected(data: any) {
     this.userDialog = true;
     this.title = "Editar usuario";
     this.user = data.data;
@@ -159,7 +159,7 @@ export class UserComponent implements OnInit {
       .subscribe();
   }
 
-  openNew(cmd) {
+  openNew(cmd: any) {
     const { openDialog } = cmd;
     this.userDialog = openDialog;
   }
@@ -197,7 +197,7 @@ export class UserComponent implements OnInit {
       .subscribe();
   }
 
-  showNotification(from, align, title = '', message = '', color = "alert-info") {
+  showNotification(from: string, align: string, title = '', message = '', color = "alert-info") {
     this.toastr.info(`<span class="tim-icons icon-bell-55" [data-notify]="icon"></span> ${title}</b> - ${message}.`, '', {
       disableTimeOut: true,
       closeButton: true,
@@ -227,7 +227,7 @@ export class UserComponent implements OnInit {
       .subscribe();
   }
 
-  hideDialog(cmd) {
+  hideDialog(cmd: any) {
     this.userForm.reset();
     this.userDialog = false;
   }

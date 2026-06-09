@@ -132,7 +132,7 @@
                       >
                         <option
                           *ngFor="let option of countrys"
-                          [value]="option._id"
+                          [ngValue]="option._id"
                         >
                           {{ option.name }}
                         </option>
@@ -150,7 +150,7 @@
                       >
                         <option
                           *ngFor="let option of states"
-                          [value]="option._id"
+                          [ngValue]="option._id"
                         >
                           {{ option.name }}
                         </option>
@@ -168,7 +168,7 @@
                       >
                         <option
                           *ngFor="let option of municipalitys"
-                          [value]="option._id"
+                          [ngValue]="option._id"
                         >
                           {{ option.name }}
                         </option>

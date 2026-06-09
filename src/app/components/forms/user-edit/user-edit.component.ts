@@ -54,6 +54,7 @@ export class UserEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('%cfront-admin/src/app/components/forms/user-edit/user-edit.component.ts:57 this.data', 'color: #007acc;', this.data);
     this.getCountries();
   }
 
@@ -120,9 +121,8 @@ export class UserEditComponent implements OnInit {
           if (_.has(this.data, "address")) {
             const { country } = this.data.address;
             this.selectedCountry = this.data
-              ? this.countrys?.find((x) => x._id == country)
+              ? this.countrys?.find((x) => x._id == country._id)
               : this.countrys[0];
-
             this.form.patchValue({
               country: this.selectedCountry._id,
             });
@@ -151,8 +151,9 @@ export class UserEditComponent implements OnInit {
             this.selectedState = this.states[0];
             if (_.has(this.data, "address")) {
               const { state } = this.data.address;
+              console.log("🚀 ~ UserEditComponent ~ getCatalogDependent ~ state:", state)
               this.selectedState = this.data
-                ? this.states.find((x) => x._id == state)
+                ? this.states.find((x) => x._id == state._id)
                 : this.states[0];
 
               this.form.patchValue({
@@ -173,7 +174,7 @@ export class UserEditComponent implements OnInit {
             if (_.has(this.data, "address")) {
               const { municipality } = this.data.address;
               this.selectedMunicipality = this.data
-                ? this.municipalitys.find((x) => x._id == municipality)
+                ? this.municipalitys.find((x) => x._id == municipality._id)
                 : this.municipalitys[0];
               this.form.patchValue({
                 municipality: this.selectedMunicipality._id,

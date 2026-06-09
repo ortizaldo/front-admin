@@ -13,7 +13,6 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CrudService } from "src/app/_services/crud.service";
-import Chart from "chart.js";
 // import { ConfirmationService, MessageService } from "primeng/api/public_api";
 import { tap } from "rxjs/internal/operators/tap";
 import { catchError } from "rxjs";

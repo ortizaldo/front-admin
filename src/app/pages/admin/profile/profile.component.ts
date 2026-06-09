@@ -18,7 +18,7 @@ import { User } from "src/app/interfaces/user";
 })
 export class ProfileComponent implements OnInit {
   user: any;
-  userForm: UntypedFormGroup;
+  userForm!: UntypedFormGroup;
   constructor(
     private fb: UntypedFormBuilder,
     private tokenService: TokenStorageService,
@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit {
   }
 
   saveUser(evt: any) {
+    console.log("🚀 ~ ProfileComponent ~ saveUser ~ evt:", evt)
     const value = {
       firstName: evt.form.firstName,
       lastName: evt.form.lastName,
@@ -53,6 +54,7 @@ export class ProfileComponent implements OnInit {
       .put(value, evt._id, "users")
       .pipe(
         tap((data: any) => {
+          console.log("🚀 ~ ProfileComponent ~ saveUser ~ data:", data)
           this.messageService.add({
             severity: "success",
             summary: "Successful",
@@ -101,6 +103,8 @@ export class ProfileComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           const _data = data.data;
+          this.user = _data;
+          console.log("🚀 ~ ProfileComponent ~ getUser ~ this.user:", this.user)
           this.setForm(data.data);
         }),
         catchError((err) => {
