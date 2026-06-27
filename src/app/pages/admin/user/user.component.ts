@@ -1,5 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+} from "@angular/core";
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { catchError, tap } from "rxjs";
@@ -24,39 +35,45 @@ export class UserComponent implements OnInit {
   isEditing: boolean = false;
   loading: boolean = true;
 
-  myModel = {
-  };
+  myModel = {};
 
-  @ViewChild('userTemplate', { static: true }) userTemplate!: TemplateRef<any>;
-  @ViewChild('buttonsTemplate', { static: true }) buttonsTemplate!: TemplateRef<any>;
+  @ViewChild("userTemplate", { static: true }) userTemplate!: TemplateRef<any>;
+  @ViewChild("buttonsTemplate", { static: true })
+  buttonsTemplate!: TemplateRef<any>;
 
-  constructor(private fb: UntypedFormBuilder, private crudService: CrudService, private confirmationService: ConfirmationService, private messageService: MessageService, private toastr: ToastrService) { }
+  constructor(
+    private fb: UntypedFormBuilder,
+    private crudService: CrudService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private toastr: ToastrService,
+  ) {}
 
   ngOnInit() {
     this.columns = [
-      { field: 'firstName', header: 'Nombre' },
-      { field: 'lastName', header: 'Apellidos' },
-      { field: 'email', header: 'Email' },
-      { field: 'typeUser', header: 'Tipo' },
-      { field: 'phoneNumber', header: 'Telefono' },
-    ]
+      { field: "firstName", header: "Nombre" },
+      { field: "lastName", header: "Apellidos" },
+      { field: "email", header: "Email" },
+      { field: "typeUser", header: "Tipo" },
+      { field: "phoneNumber", header: "Telefono" },
+    ];
     this.getUsers();
 
     this.myModel = {
       template: this.userTemplate,
-      templateButtons: this.buttonsTemplate
-    }
+      templateButtons: this.buttonsTemplate,
+    };
 
     this.userForm = this.fb.group({
-      firstName: new UntypedFormControl('', [Validators.required]),
-      lastName: new UntypedFormControl('', [Validators.required]),
-      email: new UntypedFormControl('', [Validators.required]),
-      phoneNumber: new UntypedFormControl('', [Validators.required]),
-      addressStreet: new UntypedFormControl('', [Validators.required]),
-      postalCode: new UntypedFormControl('', [Validators.required]),
-      country: new UntypedFormControl('', [Validators.required]),
-      state: new UntypedFormControl('', [Validators.required]),
-      municipality: new UntypedFormControl('', [Validators.required]),
+      firstName: new UntypedFormControl("", [Validators.required]),
+      lastName: new UntypedFormControl("", [Validators.required]),
+      email: new UntypedFormControl("", [Validators.required]),
+      phoneNumber: new UntypedFormControl("", [Validators.required]),
+      addressStreet: new UntypedFormControl("", [Validators.required]),
+      postalCode: new UntypedFormControl("", [Validators.required]),
+      country: new UntypedFormControl("", [Validators.required]),
+      state: new UntypedFormControl("", [Validators.required]),
+      municipality: new UntypedFormControl("", [Validators.required]),
     });
   }
 
@@ -72,29 +89,29 @@ export class UserComponent implements OnInit {
         "email",
         "typeUser",
         "address",
-        "phoneNumber"
-      ]
+        "phoneNumber",
+      ],
     };
-    this.crudService.getMany("users", "", params)
+    this.crudService
+      .getMany("users", "", params)
       .pipe(
         tap((data: any) => {
           this.users = data.data;
           this.loading = false;
         }),
-        catchError(err => {
+        catchError((err) => {
           this.loading = false;
-          return err
-        })
+          return err;
+        }),
       )
       .subscribe();
-
   }
 
   deleteSelected(event: any) {
     this.confirmationService.confirm({
-      message: 'Estas seguro de eliminar este registro?',
-      header: 'Eliminar registro',
-      icon: 'pi pi-exclamation-triangle',
+      message: "Estas seguro de eliminar este registro?",
+      header: "Eliminar registro",
+      icon: "pi pi-exclamation-triangle",
       accept: () => {
         if (event.data.length > 1) {
           let items: any[] = [];
@@ -105,7 +122,7 @@ export class UserComponent implements OnInit {
         } else {
           this.deleteOne(event.data[0]);
         }
-      }
+      },
     });
   }
 
@@ -116,45 +133,64 @@ export class UserComponent implements OnInit {
     this.isEditing = true;
     this.userForm.patchValue(data.data);
     if (data.data.address) {
-      const { addressStreet, postalCode, country, state, municipality } = data.data.address;
-      this.userForm.patchValue({ addressStreet, postalCode, country, state, municipality });
+      const { addressStreet, postalCode, country, state, municipality } =
+        data.data.address;
+      this.userForm.patchValue({
+        addressStreet,
+        postalCode,
+        country,
+        state,
+        municipality,
+      });
     }
   }
 
   deleteOne(item: any) {
-    this.crudService.deleteOne("users", item._id, {
-      filters: {
-        hardDelete: false,
-      },
-    })
+    this.crudService
+      .deleteOne("users", item._id, {
+        filters: {
+          hardDelete: false,
+        },
+      })
       .pipe(
         tap((data: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
+          this.messageService.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Registro Eliminado",
+            life: 3000,
+          });
           this.getUsers();
         }),
-        catchError(err => {
+        catchError((err) => {
           this.loading = false;
-          return err
-        })
+          return err;
+        }),
       )
       .subscribe();
   }
 
   deleteMany(items: any[]) {
-    this.crudService.deleteMany("users", items, {
-      filters: {
-        hardDelete: false,
-      },
-    })
+    this.crudService
+      .deleteMany("users", items, {
+        filters: {
+          hardDelete: false,
+        },
+      })
       .pipe(
         tap((data: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Registro Eliminado', life: 3000 });
+          this.messageService.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Registro Eliminado",
+            life: 3000,
+          });
           this.getUsers();
         }),
-        catchError(err => {
+        catchError((err) => {
           this.loading = false;
-          return err
-        })
+          return err;
+        }),
       )
       .subscribe();
   }
@@ -165,13 +201,23 @@ export class UserComponent implements OnInit {
   }
 
   addToAddress() {
-    const { addressStreet, postalCode, country, state, municipality } = this.userForm.value;
-    this.body = { ...this.body, address: { addressStreet, postalCode, country, state, municipality } };
+    const { addressStreet, postalCode, country, state, municipality } =
+      this.userForm.value;
+    this.body = {
+      ...this.body,
+      address: { addressStreet, postalCode, country, state, municipality },
+    };
 
-    const keysToDelete = ["addressStreet", "postalCode", "country", "state", "municipality"];
+    const keysToDelete = [
+      "addressStreet",
+      "postalCode",
+      "country",
+      "state",
+      "municipality",
+    ];
 
     const self = this;
-    keysToDelete.forEach(key => {
+    keysToDelete.forEach((key) => {
       delete self.body[key];
     });
   }
@@ -179,7 +225,8 @@ export class UserComponent implements OnInit {
   saveUser() {
     this.body = this.userForm.value;
     this.addToAddress();
-    this.crudService.post(this.body, "users")
+    this.crudService
+      .post(this.body, "users")
       .pipe(
         tap((data: any) => {
           this.getUsers();
@@ -188,29 +235,46 @@ export class UserComponent implements OnInit {
           this.userForm.reset();
           this.user = null;
         }),
-        catchError(err => {
+        catchError((err) => {
           const _err = err.error ? err.error.err : err;
-          this.showNotification('top', 'right', "Error al registrar", _err.code == 11000 ? "Registro duplicado" : _err.message, "alert-warning")
-          return err
-        })
+          this.showNotification(
+            "top",
+            "right",
+            "Error al registrar",
+            _err.code == 11000 ? "Registro duplicado" : _err.message,
+            "alert-warning",
+          );
+          return err;
+        }),
       )
       .subscribe();
   }
 
-  showNotification(from: string, align: string, title = '', message = '', color = "alert-info") {
-    this.toastr.info(`<span class="tim-icons icon-bell-55" [data-notify]="icon"></span> ${title}</b> - ${message}.`, '', {
-      disableTimeOut: true,
-      closeButton: true,
-      enableHtml: true,
-      toastClass: `alert ${color} alert-with-icon`,
-      positionClass: 'toast-' + from + '-' + align
-    });
+  showNotification(
+    from: string,
+    align: string,
+    title = "",
+    message = "",
+    color = "alert-info",
+  ) {
+    this.toastr.info(
+      `<span class="tim-icons icon-bell-55" [data-notify]="icon"></span> ${title}</b> - ${message}.`,
+      "",
+      {
+        disableTimeOut: true,
+        closeButton: true,
+        enableHtml: true,
+        toastClass: `alert ${color} alert-with-icon`,
+        positionClass: "toast-" + from + "-" + align,
+      },
+    );
   }
 
   editUser() {
     this.body = this.userForm.value;
     this.addToAddress();
-    this.crudService.put(this.body, this.user._id, "users")
+    this.crudService
+      .put(this.body, this.user._id, "users")
       .pipe(
         tap((data: any) => {
           this.getUsers();
@@ -219,10 +283,10 @@ export class UserComponent implements OnInit {
           this.userForm.reset();
           this.user = null;
         }),
-        catchError(err => {
+        catchError((err) => {
           this.loading = false;
-          return err
-        })
+          return err;
+        }),
       )
       .subscribe();
   }

@@ -9,6 +9,7 @@
             [data]="users"
             [columns]="columns"
             [selectedData]="selectedUsers"
+            [globalFilter]="['firstName', 'lastName', 'email', 'typeUser']"
             (dialogChange)="openNew($event)"
             (deleteRecords)="deleteSelected($event)"
             (editRecords)="editSelected($event)"

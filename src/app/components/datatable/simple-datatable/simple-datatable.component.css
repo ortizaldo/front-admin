@@ -245,6 +245,147 @@
   }
 }
 
+.users-table__actions-cell {
+  width: 190px;
+  min-width: 190px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.users-table__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.users-action-btn {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  outline: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+.users-action-btn__icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Ver detalle */
+.users-action-btn--view {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.18);
+}
+
+.users-action-btn--view:hover {
+  color: #ffffff;
+  background: #2563eb;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* Editar */
+.users-action-btn--edit {
+  color: #ff2f55;
+  background: rgba(255, 47, 85, 0.1);
+  border-color: rgba(255, 47, 85, 0.18);
+}
+
+.users-action-btn--edit:hover {
+  color: #ffffff;
+  background: #ff2f55;
+  border-color: #ff2f55;
+  transform: translateY(-1px);
+}
+
+/* Cambiar contraseña */
+.users-action-btn--password {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.22);
+}
+
+.users-action-btn--password:hover {
+  color: #ffffff;
+  background: #f59e0b;
+  border-color: #f59e0b;
+  transform: translateY(-1px);
+}
+
+/* Activar / Desactivar */
+.users-action-btn--status {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
+.users-action-btn--status:hover {
+  color: #ffffff;
+  background: #10b981;
+  border-color: #10b981;
+  transform: translateY(-1px);
+}
+
+/* Eliminar */
+.users-action-btn--delete {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.users-action-btn--delete:hover {
+  color: #ffffff;
+  background: #ef4444;
+  border-color: #ef4444;
+  transform: translateY(-1px);
+}
+
+/* Estado activo */
+.users-action-btn:active {
+  transform: scale(0.96);
+}
+
+/* Accesibilidad */
+.users-action-btn:focus {
+  box-shadow:
+    0 0 0 3px rgba(255, 47, 85, 0.18),
+    0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .users-table__actions-cell {
+    width: 170px;
+    min-width: 170px;
+  }
+
+  .users-table__actions {
+    gap: 6px;
+  }
+
+  .users-action-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 9px;
+  }
+
+  .users-action-btn__icon {
+    font-size: 13px;
+  }
+}
+
 /* .p-dialog .p-dialog-header {
   border-bottom: 1px solid #7d86c3;
   background: #eeeeee;

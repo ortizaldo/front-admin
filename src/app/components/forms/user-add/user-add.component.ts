@@ -23,12 +23,12 @@ import { State } from "src/app/interfaces/state";
 import { Municipality } from "src/app/interfaces/municipality";
 
 @Component({
-  selector: "app-user-edit",
-  templateUrl: "./user-edit.component.html",
-  styleUrls: ["./user-edit.component.scss"],
+  selector: "app-user-add",
+  templateUrl: "./user-add.component.html",
+  styleUrls: ["./user-add.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class UserEditComponent implements OnInit {
+export class UserAddComponent implements OnInit {
   @Input() data: any | undefined;
   @Input() form: UntypedFormGroup;
   @Input() companys: any[] | undefined;
@@ -55,7 +55,7 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(
-      "%cfront-admin/src/app/components/forms/user-edit/user-edit.component.ts:57 this.form",
+      "%cfront-admin/src/app/components/forms/user-add/user-add.component.ts:57 this.form",
       "color: #007acc;",
       this.form,
     );

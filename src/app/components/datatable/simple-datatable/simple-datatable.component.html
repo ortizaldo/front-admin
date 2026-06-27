@@ -17,7 +17,7 @@
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
     [filterDelay]="0"
     [paginatorDropdownAppendTo]="'body'"
-    [globalFilterFields]="['name', 'description', 'countryDesc']"
+    [globalFilterFields]="globalFilter"
   >
     <ng-template pTemplate="caption">
       <div class="card-header table-header row">
@@ -72,45 +72,6 @@
             />
           </span>
         </div>
-        <!-- <div class="col-sm-6">
-          <div
-            class="btn-group btn-group-toggle float-left"
-            data-toggle="buttons"
-          >
-            <button
-              (click)="openDialog()"
-              class="btn btn-warning btn-sm mr-1 w-4 h-4"
-            >
-              Nuevo
-            </button>
-            <button
-              *ngIf="export"
-              class="btn btn-outline-info btn-sm mr-1 w-4 h-4"
-            >
-              Importar
-            </button>
-            <button
-              *ngIf="export"
-              class="btn btn-outline-info btn-sm mr-1 w-4 h-4"
-            >
-              Exportar
-            </button>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="pi pi-search"></i></span>
-            </div>
-            <input
-              pInputText
-              class="form-control"
-              type="text"
-              (input)="dt.filterGlobal($event.target.value, 'contains')"
-              placeholder="Global Search"
-            />
-          </div>
-        </div> -->
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -132,6 +93,7 @@
         <td *ngFor="let col of columns">
           {{ data[col.field] }}
         </td>
+
         <td ngbDropdown>
           <button
             type="button"
@@ -140,6 +102,7 @@
           >
             <i class="pi pi-pencil"></i>
           </button>
+          &nbsp;
           <button
             type="button"
             class="btn btn-danger btn-fab btn-icon btn-round"

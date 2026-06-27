@@ -27,9 +27,11 @@ import { CrudService } from "src/app/_services/crud.service";
 export class SimpleDatatable implements OnInit {
   @Input() data: any[] = [];
   @Input() selectedData: any[];
+  @Input() globalFilter: any[] = ["name", "description", "countryDesc"];
   @Input() columns: any[];
   @Input() loading: boolean = true;
   @Input() export: boolean = false;
+  @Input() statsUsers: boolean = true;
   @Input() title: string = "";
   @Input() items: MenuItem[];
   @Input() emptyMessage: string = "No se encontraron registros.";
@@ -46,11 +48,6 @@ export class SimpleDatatable implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true;
-    console.log(
-      "%cfront-admin/src/app/components/datatable/simple-datatable/simple-datatable.component.ts:36 this.data",
-      "color: #007acc;",
-      this.data,
-    );
   }
 
   openDialog() {
