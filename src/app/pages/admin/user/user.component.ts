@@ -67,10 +67,12 @@ export class UserComponent implements OnInit {
     this.userForm = this.fb.group({
       firstName: new UntypedFormControl("", [Validators.required]),
       lastName: new UntypedFormControl("", [Validators.required]),
+      birth: new UntypedFormControl("", [Validators.required]),
       email: new UntypedFormControl("", [Validators.required]),
+      typeUser: new UntypedFormControl("", [Validators.required]),
       phoneNumber: new UntypedFormControl("", [Validators.required]),
       addressStreet: new UntypedFormControl("", [Validators.required]),
-      postalCode: new UntypedFormControl("", [Validators.required]),
+      postalCode: new UntypedFormControl(),
       country: new UntypedFormControl("", [Validators.required]),
       state: new UntypedFormControl("", [Validators.required]),
       municipality: new UntypedFormControl("", [Validators.required]),
@@ -224,6 +226,7 @@ export class UserComponent implements OnInit {
 
   saveUser() {
     this.body = this.userForm.value;
+    console.log("🚀 ~ UserComponent ~ saveUser ~ this.body:", this.body);
     this.addToAddress();
     this.crudService
       .post(this.body, "users")

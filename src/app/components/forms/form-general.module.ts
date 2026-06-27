@@ -28,6 +28,7 @@ import {
   DlDateTimeDateModule,
   DlDateTimePickerModule,
 } from "angular-bootstrap-datetimepicker";
+import { UserAddComponent } from "./user-add/user-add.component";
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import {
   declarations: [
     UserReadComponent,
     UserEditComponent,
+    UserAddComponent,
     SimpleCatalogComponent,
     StateComponent,
     MunicipalityComponent,
@@ -70,6 +72,7 @@ import {
     DerbyEditComponent,
     BrookerComponent,
     BetStubComponent,
+    UserAddComponent,
   ],
 })
 export class FormGralModule {}
