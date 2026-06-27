@@ -14,10 +14,6 @@ const routes: Routes = [
   {
     path: "",
     redirectTo: "dashboard",
-    canActivate: [AuthGuard, roleGuard],
-    data: {
-      roles: ["ADMIN"],
-    },
     pathMatch: "full",
   },
   {
