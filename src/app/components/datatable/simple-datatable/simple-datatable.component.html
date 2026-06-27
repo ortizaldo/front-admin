@@ -21,7 +21,58 @@
   >
     <ng-template pTemplate="caption">
       <div class="card-header table-header row">
-        <div class="col-sm-6">
+        <div class="users-page-header__content">
+          <div>
+            <h1 class="users-page-header__title">Administración de Usuarios</h1>
+
+            <p class="users-page-header__subtitle">
+              Gestiona los usuarios registrados en la plataforma.
+            </p>
+          </div>
+
+          <div class="users-page-header__actions">
+            <button
+              type="button"
+              (click)="openDialog()"
+              class="btn users-page-header__primary-btn"
+            >
+              <i class="pi pi-plus"></i>
+              <span>Nuevo Usuario</span>
+            </button>
+
+            <button
+              *ngIf="export"
+              type="button"
+              class="btn users-page-header__secondary-btn"
+            >
+              <i class="pi pi-upload"></i>
+              <span>Importar</span>
+            </button>
+
+            <button
+              *ngIf="export"
+              type="button"
+              class="btn users-page-header__secondary-btn"
+            >
+              <i class="pi pi-download"></i>
+              <span>Exportar</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="users-page-header__search">
+          <span class="p-input-icon-left users-page-header__search-box">
+            <i class="pi pi-search"></i>
+
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar por nombre o correo..."
+            />
+          </span>
+        </div>
+        <!-- <div class="col-sm-6">
           <div
             class="btn-group btn-group-toggle float-left"
             data-toggle="buttons"
@@ -32,10 +83,16 @@
             >
               Nuevo
             </button>
-            <button class="btn btn-outline-info btn-sm mr-1 w-4 h-4">
+            <button
+              *ngIf="export"
+              class="btn btn-outline-info btn-sm mr-1 w-4 h-4"
+            >
               Importar
             </button>
-            <button class="btn btn-outline-info btn-sm mr-1 w-4 h-4">
+            <button
+              *ngIf="export"
+              class="btn btn-outline-info btn-sm mr-1 w-4 h-4"
+            >
               Exportar
             </button>
           </div>
@@ -53,7 +110,7 @@
               placeholder="Global Search"
             />
           </div>
-        </div>
+        </div> -->
       </div>
     </ng-template>
     <ng-template pTemplate="header">
