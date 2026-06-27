@@ -8,34 +8,51 @@ import { LoginComponent } from "./pages/auth/login/login.component";
 import { AuthGuard } from "./middleware/auth.guard";
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
 import { DerbyLayoutComponent } from "./layouts/derby-layout/derby-layout.component";
+import { roleGuard } from "./middleware/role.guard";
 
 const routes: Routes = [
   {
     path: "",
     redirectTo: "dashboard",
+    canActivate: [AuthGuard, roleGuard],
+    data: {
+      roles: ["ADMIN"],
+    },
     pathMatch: "full",
   },
   {
     path: "derby-admin",
     component: DerbyLayoutComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, roleGuard],
+    data: {
+      roles: ["ADMIN", "OPERADOR"],
+    },
     children: [
       {
         path: "",
-        loadChildren: () => import("./layouts/derby-layout/derby-layout.module").then(m => m.DerbyLayoutModule)
-      }
-    ]
+        loadChildren: () =>
+          import("./layouts/derby-layout/derby-layout.module").then(
+            (m) => m.DerbyLayoutModule,
+          ),
+      },
+    ],
   },
   {
     path: "",
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, roleGuard],
     children: [
       {
         path: "",
-        loadChildren: () => import("./layouts/admin-layout/admin-layout.module").then(m => m.AdminLayoutModule)
-      }
-    ]
+        loadChildren: () =>
+          import("./layouts/admin-layout/admin-layout.module").then(
+            (m) => m.AdminLayoutModule,
+          ),
+      },
+    ],
+    data: {
+      roles: ["ADMIN"],
+    },
   },
   {
     path: "",
@@ -43,14 +60,17 @@ const routes: Routes = [
     children: [
       {
         path: "",
-        loadChildren: () => import("./layouts/auth-layout/auth-layout.module").then(m => m.AuthLayoutModule)
-      }
-    ]
+        loadChildren: () =>
+          import("./layouts/auth-layout/auth-layout.module").then(
+            (m) => m.AuthLayoutModule,
+          ),
+      },
+    ],
   },
   {
     path: "**",
-    redirectTo: "dashboard"
-  }
+    redirectTo: "dashboard",
+  },
 ];
 
 @NgModule({
@@ -58,9 +78,9 @@ const routes: Routes = [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes, {
-      useHash: true
-    })
+      useHash: true,
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

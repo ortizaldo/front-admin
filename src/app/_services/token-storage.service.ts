@@ -47,6 +47,16 @@ export class TokenStorageService {
     return {};
   }
 
+
+  public getRole(): any {
+    const user = window.sessionStorage.getItem(USER_KEY);
+    if (user) {
+      return JSON.parse(user).typeUser;
+    }
+
+    return {};
+  }
+
   saveRefreshToken(refreshToken: any): void {
     localStorage.setItem(REFRESH_TOKEN, refreshToken);
   }
