@@ -55,9 +55,9 @@ export class UserAddComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(
-      "%cfront-admin/src/app/components/forms/user-add/user-add.component.ts:57 this.form",
+      "%cfront-admin/src/app/components/forms/user-add/user-add.component.ts:57 this.data",
       "color: #007acc;",
-      this.form,
+      this.data,
     );
     this.getCountries();
   }
@@ -121,11 +121,10 @@ export class UserAddComponent implements OnInit {
             { _id: 0, name: "Seleccione una opcion" },
             ...data.data,
           ];
-
           if (_.has(this.data, "address")) {
             const { country } = this.data.address;
             this.selectedCountry = this.data
-              ? this.countrys?.find((x) => x._id == country._id)
+              ? this.countrys?.find((x) => x._id == country)
               : this.countrys[0];
             this.form.patchValue({
               country: this.selectedCountry._id,
@@ -156,7 +155,7 @@ export class UserAddComponent implements OnInit {
             if (_.has(this.data, "address")) {
               const { state } = this.data.address;
               this.selectedState = this.data
-                ? this.states.find((x) => x._id == state._id)
+                ? this.states.find((x) => x._id == state)
                 : this.states[0];
 
               this.form.patchValue({
@@ -177,7 +176,7 @@ export class UserAddComponent implements OnInit {
             if (_.has(this.data, "address")) {
               const { municipality } = this.data.address;
               this.selectedMunicipality = this.data
-                ? this.municipalitys.find((x) => x._id == municipality._id)
+                ? this.municipalitys.find((x) => x._id == municipality)
                 : this.municipalitys[0];
               this.form.patchValue({
                 municipality: this.selectedMunicipality._id,

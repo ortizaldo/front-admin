@@ -90,6 +90,7 @@ export class UserComponent implements OnInit {
         "lastName",
         "email",
         "typeUser",
+        "birth",
         "address",
         "phoneNumber",
       ],
