@@ -92,6 +92,7 @@ export class UserComponent implements OnInit {
         "typeUser",
         "birth",
         "address",
+        "status",
         "phoneNumber",
       ],
     };
