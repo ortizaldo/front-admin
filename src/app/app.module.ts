@@ -19,6 +19,8 @@ import { ConfirmationService, MessageService } from "primeng/api";
 import { DerbyLayoutComponent } from "./layouts/derby-layout/derby-layout.component";
 import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from "ngx-mask";
 import { BrowserModule } from "@angular/platform-browser";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { ButtonModule } from "primeng/button";
 registerLocaleData(localeEsMx, "es-MX");
 @NgModule({
   imports: [
@@ -33,6 +35,8 @@ registerLocaleData(localeEsMx, "es-MX");
     ToastrModule.forRoot(),
     NgxMaskDirective,
     NgxMaskPipe,
+    ProgressSpinnerModule,
+    ButtonModule,
   ],
   declarations: [
     AppComponent,

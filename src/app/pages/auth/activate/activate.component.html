@@ -1,0 +1,295 @@
+<main class="activation-page">
+  <section
+    class="activation-card"
+    aria-live="polite"
+    aria-labelledby="activation-title"
+  >
+    <!-- =========================================
+         VALIDATING — Validando token
+    ========================================== -->
+    <ng-container *ngIf="state === 'validating'">
+      <div class="status-icon status-icon--info">
+        <i class="pi pi-shield"></i>
+      </div>
+
+      <h1 id="activation-title">Validando tu enlace</h1>
+
+      <p class="activation-description">
+        Estamos comprobando que tu enlace de activación sea válido y seguro.
+      </p>
+
+      <div class="activation-loader">
+        <p-progressSpinner
+          styleClass="activation-spinner"
+          strokeWidth="5"
+          animationDuration=".8s"
+        >
+        </p-progressSpinner>
+      </div>
+
+      <p class="activation-helper">Esto solo tomará un momento.</p>
+    </ng-container>
+
+    <!-- =========================================
+         VALID — Token válido
+    ========================================== -->
+    <ng-container *ngIf="state === 'valid'">
+      <div class="status-icon status-icon--success">
+        <i class="pi pi-check"></i>
+      </div>
+
+      <span class="status-label status-label--success">
+        Enlace verificado
+      </span>
+
+      <h1 id="activation-title">Tu cuenta está lista para activarse</h1>
+
+      <p class="activation-description">
+        Verificamos correctamente tu enlace para
+        <strong class="activation-email"> {{ maskedEmail }} </strong>.
+      </p>
+
+      <p class="activation-description activation-description--secondary">
+        Confirma para activar tu cuenta.
+      </p>
+
+      <p-button
+        label="Activar mi cuenta"
+        icon="pi pi-check-circle"
+        styleClass="activation-button"
+        (onClick)="activateAccount()"
+      >
+      </p-button>
+
+      <button type="button" class="activation-link" (click)="goToLogin()">
+        ¿Ya activaste tu cuenta?
+        <strong>Iniciar sesión</strong>
+      </button>
+    </ng-container>
+
+    <!-- =========================================
+         ACTIVATING — Activando usuario
+    ========================================== -->
+    <ng-container *ngIf="state === 'activating'">
+      <div class="status-icon status-icon--info">
+        <p-progressSpinner
+          styleClass="status-spinner"
+          strokeWidth="5"
+          animationDuration=".8s"
+        >
+        </p-progressSpinner>
+      </div>
+
+      <h1 id="activation-title">Activando tu cuenta</h1>
+
+      <p class="activation-description">
+        Estamos completando la activación de tu cuenta. Esto solo tomará un
+        momento.
+      </p>
+
+      <p-button
+        label="Activando..."
+        icon="pi pi-check-circle"
+        styleClass="activation-button"
+        [disabled]="true"
+      >
+      </p-button>
+
+      <p class="activation-helper">No cierres esta ventana.</p>
+    </ng-container>
+
+    <!-- =========================================
+         ACTIVATED — Cuenta activada
+    ========================================== -->
+    <ng-container *ngIf="state === 'activated'">
+      <div class="status-icon status-icon--success">
+        <i class="pi pi-check"></i>
+      </div>
+
+      <span class="status-label status-label--success">
+        Activación completada
+      </span>
+
+      <h1 id="activation-title">Tu cuenta está activa</h1>
+
+      <p class="activation-description">
+        Tu correo fue verificado y tu cuenta se activó correctamente.
+      </p>
+
+      <p class="activation-description activation-description--secondary">
+        Ya puedes iniciar sesión.
+      </p>
+
+      <p-button
+        label="Iniciar sesión"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        styleClass="activation-button"
+        (onClick)="goToLogin()"
+      >
+      </p-button>
+    </ng-container>
+
+    <!-- =========================================
+         EXPIRED — Token expirado
+    ========================================== -->
+    <ng-container *ngIf="state === 'expired'">
+      <div class="status-icon status-icon--warning">
+        <i class="pi pi-exclamation-triangle"></i>
+      </div>
+
+      <span class="status-label status-label--warning"> Enlace expirado </span>
+
+      <h1 id="activation-title">Este enlace ya no es válido</h1>
+
+      <p class="activation-description">
+        El enlace de activación ha expirado o ya fue utilizado.
+      </p>
+
+      <p class="activation-description activation-description--secondary">
+        Podemos enviarte uno nuevo para que termines de activar tu cuenta.
+      </p>
+
+      <p-button
+        label="Reenviar correo de activación"
+        icon="pi pi-send"
+        styleClass="activation-button"
+        (onClick)="resendActivation()"
+      >
+      </p-button>
+
+      <button type="button" class="activation-link" (click)="goToLogin()">
+        ¿Ya activaste tu cuenta?
+        <strong>Iniciar sesión</strong>
+      </button>
+    </ng-container>
+
+    <!-- =========================================
+         RESENDING — Reenviando correo
+    ========================================== -->
+    <ng-container *ngIf="state === 'resending'">
+      <div class="status-icon status-icon--info">
+        <p-progressSpinner
+          styleClass="status-spinner"
+          strokeWidth="5"
+          animationDuration=".8s"
+        >
+        </p-progressSpinner>
+      </div>
+
+      <h1 id="activation-title">Enviando un nuevo enlace</h1>
+
+      <p class="activation-description">
+        Estamos preparando un nuevo correo de activación para
+      </p>
+
+      <strong class="activation-email activation-email--block">
+        {{ maskedEmail }}
+      </strong>
+
+      <p-button
+        label="Enviando..."
+        icon="pi pi-send"
+        styleClass="activation-button"
+        [disabled]="true"
+      >
+      </p-button>
+
+      <p class="activation-helper">Por favor espera un momento.</p>
+    </ng-container>
+
+    <!-- =========================================
+         SENT — Correo enviado
+    ========================================== -->
+    <ng-container *ngIf="state === 'sent'">
+      <div class="status-icon status-icon--success">
+        <i class="pi pi-envelope"></i>
+      </div>
+
+      <span class="status-label status-label--success"> Enlace enviado </span>
+
+      <h1 id="activation-title">Revisa tu correo</h1>
+
+      <p class="activation-description">
+        Enviamos un nuevo enlace de activación a
+      </p>
+
+      <strong class="activation-email activation-email--block">
+        {{ maskedEmail }}
+      </strong>
+
+      <p class="activation-description activation-description--secondary">
+        Revisa también tu carpeta de spam o correo no deseado.
+      </p>
+
+      <!-- Durante cooldown -->
+      <p-button
+        *ngIf="resendSeconds > 0"
+        [label]="'Reenviar en ' + resendSeconds + ' s'"
+        icon="pi pi-clock"
+        styleClass="activation-button"
+        [disabled]="true"
+      >
+      </p-button>
+
+      <!-- Cooldown terminado -->
+      <p-button
+        *ngIf="resendSeconds <= 0"
+        label="Reenviar correo"
+        icon="pi pi-refresh"
+        styleClass="activation-button"
+        (onClick)="resendActivation()"
+      >
+      </p-button>
+
+      <button type="button" class="activation-link" (click)="goToLogin()">
+        Volver a
+        <strong>Iniciar sesión</strong>
+      </button>
+    </ng-container>
+
+    <!-- =========================================
+         ERROR — Error técnico
+    ========================================== -->
+    <ng-container *ngIf="state === 'error'">
+      <div class="status-icon status-icon--error">
+        <i class="pi pi-times"></i>
+      </div>
+
+      <span class="status-label status-label--error">
+        Ocurrió un problema
+      </span>
+
+      <h1 id="activation-title">No pudimos completar la operación</h1>
+
+      <p class="activation-description">
+        Ocurrió un problema temporal mientras procesábamos tu solicitud.
+      </p>
+
+      <p class="activation-description activation-description--secondary">
+        Inténtalo nuevamente en unos segundos.
+      </p>
+
+      <p-button
+        label="Intentar de nuevo"
+        icon="pi pi-refresh"
+        styleClass="activation-button"
+        (onClick)="retry()"
+      >
+      </p-button>
+
+      <button type="button" class="activation-link" (click)="goToLogin()">
+        Volver a
+        <strong>Iniciar sesión</strong>
+      </button>
+    </ng-container>
+
+    <!-- =========================================
+         FOOTER COMÚN
+    ========================================== -->
+    <footer class="activation-security">
+      <i class="pi pi-lock"></i>
+      <span>Proceso de activación protegido</span>
+    </footer>
+  </section>
+</main>
