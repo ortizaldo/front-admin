@@ -85,9 +85,10 @@ export class AuthService {
   }
 
   resendActivationEmail(token: string) {
-    return this.http.post(`${environment.api}/resend-activation/`, {
-      token: token,
-    });
+    return this.http.post(
+      `${environment.api}/resend-activation-email/${token}`,
+      {},
+    );
   }
 
   activateAccount(data: { token: string }) {

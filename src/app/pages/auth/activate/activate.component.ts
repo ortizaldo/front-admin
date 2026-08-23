@@ -89,22 +89,11 @@ export class ActivateComponent implements OnInit, OnDestroy {
 
     this.state = "resending";
 
-    // Sustituye esta simulación por tu servicio HTTP real.
-    // this.requestTimer = setTimeout(() => {
-    //   this.state = "sent";
-    //   this.startCooldown(45);
-    // }, 1100);
     this.authService.resendActivationEmail(this.token).subscribe({
       next: (data: any) => {
-        console.log("Account activation response:", data);
-        this.setTokenState("activated");
+        this.setTokenState("sent");
       },
-
       error: (error) => {
-        console.log(
-          "🚀 ~ ActivateComponent ~ resendActivation ~ error:",
-          error,
-        );
         this.tokenValid = false;
         this.validatingToken = false;
       },
