@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="card card-chart">
         <div class="card-body table">
-          <app-simple-datatable
+          <app-users-datatable
             [loading]="loading"
             [title]="'Lista de Usuarios'"
             [data]="users"
@@ -13,7 +13,7 @@
             (dialogChange)="openNew($event)"
             (deleteRecords)="deleteSelected($event)"
             (editRecords)="editSelected($event)"
-          ></app-simple-datatable>
+          ></app-users-datatable>
         </div>
       </div>
     </div>

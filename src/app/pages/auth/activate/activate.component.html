@@ -53,6 +53,56 @@
         Confirma para activar tu cuenta.
       </p>
 
+      <div class="activation-card" *ngIf="!validatingToken && tokenValid">
+        <h2>Activar cuenta</h2>
+
+        <p>Crea una contraseña para completar tu registro.</p>
+
+        <form [formGroup]="form" (ngSubmit)="activateAccount()">
+          <div class="field">
+            <label> Contraseña </label>
+
+            <p-password
+              formControlName="password"
+              [toggleMask]="true"
+              [feedback]="true"
+            >
+            </p-password>
+          </div>
+
+          <div class="field">
+            <label> Confirmar contraseña </label>
+
+            <p-password
+              formControlName="confirmPassword"
+              [toggleMask]="true"
+              [feedback]="false"
+            >
+            </p-password>
+          </div>
+
+          <small
+            class="p-error"
+            *ngIf="
+              form.value.password &&
+              form.value.confirmPassword &&
+              form.value.password !== form.value.confirmPassword
+            "
+          >
+            Las contraseñas no coinciden.
+          </small>
+
+          <button
+            pButton
+            type="submit"
+            label="Activar cuenta"
+            icon="pi pi-check"
+            [loading]="loading"
+            [disabled]="form.invalid"
+          ></button>
+        </form>
+      </div>
+
       <p-button
         label="Activar mi cuenta"
         icon="pi pi-check-circle"

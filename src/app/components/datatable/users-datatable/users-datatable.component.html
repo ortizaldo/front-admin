@@ -90,27 +90,19 @@
         <td>
           <p-tableCheckbox [value]="data"></p-tableCheckbox>
         </td>
-
         <td *ngFor="let col of columns">
-          {{ data[col.field] }}
+          <div [innerHTML]="data[col.field]"></div>
         </td>
-
-        <td ngbDropdown>
-          <button
-            type="button"
-            class="btn btn-info btn-fab btn-icon btn-round"
-            (click)="editSelected(data)"
-          >
-            <i class="pi pi-pencil"></i>
-          </button>
-          &nbsp;
-          <button
-            type="button"
-            class="btn btn-danger btn-fab btn-icon btn-round"
-            (click)="delete(data)"
-          >
-            <i class="pi pi-trash"></i>
-          </button>
+        <td>
+          <p-splitButton
+            label="Editar"
+            size="sm"
+            [model]="getItems(data)"
+            (onClick)="editSelected(data)"
+            outlined
+            severity="danger"
+            appendTo="body"
+          />
         </td>
       </tr>
     </ng-template>

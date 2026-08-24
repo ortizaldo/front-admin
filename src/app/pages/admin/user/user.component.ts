@@ -55,6 +55,7 @@ export class UserComponent implements OnInit {
       { field: "lastName", header: "Apellidos" },
       { field: "email", header: "Email" },
       { field: "typeUser", header: "Tipo" },
+      { field: "htmlStatus", header: "Estatus" },
       { field: "phoneNumber", header: "Telefono" },
     ];
     this.getUsers();
@@ -101,6 +102,24 @@ export class UserComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.users = data.data;
+          this.users.forEach((user: any) => {
+            switch (user.status) {
+              case "PENDING_ACTIVATION":
+                user.htmlStatus = `<span class="p-tag p-tag-warning">Pendiente de Activación</span>`;
+                break;
+              case "ACTIVE":
+                user.htmlStatus = `<span class="p-tag p-tag-success">Activo</span>`;
+                break;
+              case "INACTIVE":
+                user.htmlStatus = `<span class="p-tag p-tag-danger">Inactivo</span>`;
+                break;
+              case "BLOCKED":
+                user.htmlStatus = `<span class="p-tag p-tag-danger">Bloqueado</span>`;
+                break;
+              default:
+                user.htmlStatus = `<span class="p-tag p-tag-info">Desconocido</span>`;
+            }
+          });
           this.loading = false;
         }),
         catchError((err) => {
