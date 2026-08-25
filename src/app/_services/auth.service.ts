@@ -98,7 +98,7 @@ export class AuthService {
     );
   }
 
-  activateAccount(data: { token: string }) {
+  activateAccount(data: { token: string; password: string }) {
     return this.http.post(`${environment.api}/activate-account`, data);
   }
 

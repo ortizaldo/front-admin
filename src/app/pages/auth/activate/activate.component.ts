@@ -1,4 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/_services/auth.service";
 
@@ -18,6 +24,7 @@ type ActivationState =
   styleUrls: ["./activate.component.scss"],
 })
 export class ActivateComponent implements OnInit, OnDestroy {
+  passwordForm!: UntypedFormGroup;
   state: ActivationState = "expired";
   readonly maskedEmail = "o*************o@g***l.com";
   resendSeconds = 0;
@@ -31,6 +38,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private authService: AuthService,
   ) {}
@@ -45,6 +53,11 @@ export class ActivateComponent implements OnInit, OnDestroy {
     }
 
     this.validateToken();
+
+    this.passwordForm = this.fb.group({
+      password: new UntypedFormControl("", [Validators.required]),
+      confirmPassword: new UntypedFormControl("", [Validators.required]),
+    });
   }
 
   validateToken(): void {
@@ -70,10 +83,10 @@ export class ActivateComponent implements OnInit, OnDestroy {
     this.authService
       .activateAccount({
         token: this.token,
+        password: this.passwordForm.value.password,
       })
       .subscribe({
         next: (data: any) => {
-          console.log("Account activation response:", data);
           this.setTokenState("activated");
         },
 

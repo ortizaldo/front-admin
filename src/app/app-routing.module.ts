@@ -47,7 +47,7 @@ const routes: Routes = [
       },
     ],
     data: {
-      roles: ["ADMIN"],
+      roles: ["ADMIN", "OPERADOR"],
     },
   },
   {

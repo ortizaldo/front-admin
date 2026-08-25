@@ -58,7 +58,7 @@
 
         <p>Crea una contraseña para completar tu registro.</p>
 
-        <form [formGroup]="form" (ngSubmit)="activateAccount()">
+        <form [formGroup]="passwordForm">
           <div class="field">
             <label> Contraseña </label>
 
@@ -84,22 +84,13 @@
           <small
             class="p-error"
             *ngIf="
-              form.value.password &&
-              form.value.confirmPassword &&
-              form.value.password !== form.value.confirmPassword
+              passwordForm.value.password &&
+              passwordForm.value.confirmPassword &&
+              passwordForm.value.password !== passwordForm.value.confirmPassword
             "
           >
             Las contraseñas no coinciden.
           </small>
-
-          <button
-            pButton
-            type="submit"
-            label="Activar cuenta"
-            icon="pi pi-check"
-            [loading]="loading"
-            [disabled]="form.invalid"
-          ></button>
         </form>
       </div>
 
