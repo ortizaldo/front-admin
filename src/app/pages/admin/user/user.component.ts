@@ -14,6 +14,7 @@ import {
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { catchError, tap } from "rxjs";
+import { AuthService } from "src/app/_services/auth.service";
 import { CrudService } from "src/app/_services/crud.service";
 
 @Component({
@@ -47,6 +48,7 @@ export class UserComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private toastr: ToastrService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -279,11 +281,25 @@ export class UserComponent implements OnInit {
   }
 
   sendInvitation(event: any) {
-    // if (this.isEditing) {
-    //   this.editUser();
-    // } else {
-    //   this.saveUser();
-    // }
+    console.log(
+      "%cfront-admin/src/app/pages/admin/user/user.component.ts:284 event",
+      "color: #007acc;",
+      event,
+    );
+    this.authService.sendActivationEmail(event.data._id).subscribe({
+      next: (data: any) => {
+        this.showNotification(
+          "top",
+          "right",
+          "Invitación enviada",
+          "Se ha enviado la invitación al usuario",
+          "alert-success",
+        );
+      },
+      error: (error) => {
+        console.log("🚀 ~ UserComponent ~ sendInvitation ~ error:", error);
+      },
+    });
   }
 
   showNotification(

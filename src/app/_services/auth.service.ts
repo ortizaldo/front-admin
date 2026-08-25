@@ -91,6 +91,13 @@ export class AuthService {
     );
   }
 
+  sendActivationEmail(userId: string) {
+    return this.http.post(
+      `${environment.api}/send-activation-email/${userId}`,
+      {},
+    );
+  }
+
   activateAccount(data: { token: string }) {
     return this.http.post(`${environment.api}/activate-account`, data);
   }

@@ -39,6 +39,7 @@ export class UsersDatatable implements OnInit {
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() saveRecords: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sendInvitation: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("dt") table: Table;
   @ViewChild("contextMenuDT") contextMenu: ContextMenu;
   constructor(
@@ -98,7 +99,7 @@ export class UsersDatatable implements OnInit {
         label: "Reenviar invitación",
         icon: "pi pi-send",
         command: () => {
-          // this.resendInvitation(data);
+          this.sendInvitation.emit({ data });
         },
       });
     }
