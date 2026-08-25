@@ -97,7 +97,8 @@
           <p-splitButton
             label="Editar"
             size="sm"
-            [model]="getItems(data)"
+            [model]="items"
+            (onDropdownClick)="getItems(data)"
             (onClick)="editSelected(data)"
             outlined
             severity="danger"

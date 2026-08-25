@@ -38,7 +38,7 @@ export class UsersDatatable implements OnInit {
   @Output() dialogChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
-
+  @Output() saveRecords: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("dt") table: Table;
   @ViewChild("contextMenuDT") contextMenu: ContextMenu;
   constructor(
@@ -47,30 +47,20 @@ export class UsersDatatable implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.items = [
-      {
-        name: "Options",
-        icon: "pi pi-upload",
-        routerLink: ["/fileupload"],
-      },
-    ];
     this.primengConfig.ripple = true;
   }
 
   openDialog() {
     this.dialogChange.emit({ openDialog: true });
   }
-
-  // showContextMenu(cm: ContextMenu, event: MouseEvent) {
-  //   cm.onShow.emit(event);
-  //   event.stopPropagation();
-  // }
+  o;
 
   deleteSelected() {
     this.deleteRecords.emit({ data: this.selectedData });
   }
 
   delete(data) {
+    console.log("🚀 ~ UsersDatatable ~ delete ~ data:", data);
     this.deleteRecords.emit({ data: [data] });
   }
 
@@ -83,35 +73,28 @@ export class UsersDatatable implements OnInit {
       return [];
     }
 
-    let items: MenuItem[] = [
-      {
-        label: "Editar",
-        icon: "pi pi-pencil",
-        command: () => {
-          // this.editUser(data);
-        },
-      },
+    this.items = [
       {
         label: "Eliminar",
         icon: "pi pi-trash",
         command: () => {
-          // this.deleteUser(data);
+          this.delete(data);
         },
       },
     ];
 
     if (data.status === "ACTIVE") {
-      items.push({
+      this.items.push({
         label: "Desactivar",
         icon: "pi pi-ban",
         command: () => {
-          // this.deactivateUser(data);
+          this.saveRecords.emit({ data, status: "INACTIVE" });
         },
       });
     }
 
     if (data.status === "PENDING_ACTIVATION") {
-      items.push({
+      this.items.push({
         label: "Reenviar invitación",
         icon: "pi pi-send",
         command: () => {
@@ -121,14 +104,13 @@ export class UsersDatatable implements OnInit {
     }
 
     if (data.status !== "ACTIVE" && data.status !== "PENDING_ACTIVATION") {
-      items.push({
-        label: data.status === "Active" ? "Desactivar" : "Activar",
-        icon: data.status === "Active" ? "pi pi-ban" : "pi pi-check-circle",
+      this.items.push({
+        label: data.status === "ACTIVE" ? "Desactivar" : "Activar",
+        icon: data.status === "ACTIVE" ? "pi pi-ban" : "pi pi-check-circle",
         command: () => {
-          // this.deactivateUser(data);
+          this.saveRecords.emit({ data, status: "ACTIVE" });
         },
       });
     }
-    return items;
   }
 }

@@ -62,13 +62,12 @@ export class LoginComponent implements OnInit {
           //   "color: #007acc;",
           //   err,
           // );
-          const _err = err.error.err;
-          this.errorMessage = _err.message;
+          this.errorMessage = err.error.message;
           this.showNotification(
             "top",
             "right",
-            _err.title,
-            _err.message,
+            "Error al iniciar sesión",
+            this.errorMessage,
             "alert-warning",
           );
           this.isLoginFailed = true;

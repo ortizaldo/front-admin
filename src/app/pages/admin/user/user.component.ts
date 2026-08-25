@@ -247,7 +247,6 @@ export class UserComponent implements OnInit {
 
   saveUser() {
     this.body = this.userForm.value;
-    console.log("🚀 ~ UserComponent ~ saveUser ~ this.body:", this.body);
     this.addToAddress();
     this.crudService
       .post(this.body, "users")
@@ -274,6 +273,19 @@ export class UserComponent implements OnInit {
       .subscribe();
   }
 
+  saveRecords(event: any) {
+    event.data.status = event.status;
+    this.editUser(null, event.data);
+  }
+
+  sendInvitation(event: any) {
+    // if (this.isEditing) {
+    //   this.editUser();
+    // } else {
+    //   this.saveUser();
+    // }
+  }
+
   showNotification(
     from: string,
     align: string,
@@ -294,9 +306,19 @@ export class UserComponent implements OnInit {
     );
   }
 
-  editUser() {
-    this.body = this.userForm.value;
-    this.addToAddress();
+  editUser(form?: UntypedFormGroup, data?: any) {
+    this.body = form ? form : data;
+    if (!this.body) {
+      this.toastr.error("No hay datos para actualizar", "Error");
+      return;
+    }
+
+    if (form) {
+      this.addToAddress();
+    }
+
+    this.user = data ? data : this.user;
+
     this.crudService
       .put(this.body, this.user._id, "users")
       .pipe(
