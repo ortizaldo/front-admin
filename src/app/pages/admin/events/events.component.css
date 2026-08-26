@@ -3,7 +3,6 @@ ul,
 dl {
   margin-top: 0;
   margin-bottom: 0rem !important;
-  ;
 }
 
 ol,
@@ -14,4 +13,26 @@ ul {
 app-events .text-bg-success {
   color: #000000 !important;
   background-color: #00f2c3 !important;
+}
+
+.events-page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.events-page-header__primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff5b93 0%, #ff2f55 100%);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 10px 22px rgba(255, 47, 85, 0.28);
+  transition: all 180ms ease;
 }

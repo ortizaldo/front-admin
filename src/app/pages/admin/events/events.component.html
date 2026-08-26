@@ -6,21 +6,35 @@
         <div class="card-header">
           <div class="row d-flex flex-row">
             <div class="col-sm-6 text-left">
-              <h5 class="card-category">Eventos de Sociedad Gallistica La Angostura</h5>
+              <h5 class="card-category">
+                Eventos de Sociedad Gallistica La Angostura
+              </h5>
             </div>
             <div class="col-sm-6"></div>
           </div>
           <div class="row d-flex flex-row">
-            <div class="p-2">
-              <h2 class="card-title">Calendario de eventos</h2>
+            <div class="col-sm-4 text-left">
+              <div class="p-2">
+                <h2 class="card-title">Calendario de eventos</h2>
+              </div>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4 align-items-right d-flex justify-content-end">
+              <div class="events-page-header__actions">
+                <button
+                  type="button"
+                  class="btn events-page-header__primary-btn"
+                >
+                  <i class="pi pi-plus"></i>
+                  <span>Nuevo Evento</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
         <div class="card-body p-4">
           <div class="row">
-            <full-calendar
-              [options]="calendarOptions"
-            ></full-calendar>
+            <full-calendar [options]="calendarOptions"></full-calendar>
           </div>
         </div>
       </div>
@@ -34,11 +48,15 @@
   rejectButtonStyleClass="p-button-danger"
 ></p-confirmDialog>
 
-<p-dialog *ngIf="eventoSeleccionado" header="Detalles del evento" [(visible)]="display">
+<p-dialog
+  *ngIf="eventoSeleccionado"
+  header="Detalles del evento"
+  [(visible)]="display"
+>
   <p>{{ eventoSeleccionado.title }}</p>
-  <p>Arma: {{ eventoSeleccionado.information.arma}}</p>
+  <p>Arma: {{ eventoSeleccionado.information.arma }}</p>
   <p>Fecha: {{ eventoSeleccionado.start | date }}</p>
   <p>Puntos: {{ eventoSeleccionado.information.puntos }}</p>
   <p>Pesos: {{ eventoSeleccionado.information.pesos }}</p>
-  <p>Horario de bascula: {{ eventoSeleccionado.information.horarioBascula}}</p>
+  <p>Horario de bascula: {{ eventoSeleccionado.information.horarioBascula }}</p>
 </p-dialog>
