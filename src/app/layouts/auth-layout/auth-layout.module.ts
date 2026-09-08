@@ -12,6 +12,7 @@ import { RegisterComponent } from "src/app/pages/auth/register/register.componen
 import { PasswordModule } from "primeng/password";
 import { ActivateComponent } from "src/app/pages/auth/activate/activate.component";
 import { ButtonModule } from "primeng/button";
+import { KPIModule } from "src/app/components/kpi/kpi.module";
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { ButtonModule } from "primeng/button";
     PasswordModule,
     ProgressSpinnerModule,
     ButtonModule,
+    KPIModule,
   ],
   declarations: [LoginComponent, RegisterComponent, ActivateComponent],
 })

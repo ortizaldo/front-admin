@@ -22,6 +22,7 @@ import { TabViewModule } from "primeng/tabview";
 import { AvatarModule } from "primeng/avatar";
 import { TagModule } from "primeng/tag";
 import { CalendarModule } from "primeng/calendar";
+import { InputNumberModule } from "primeng/inputnumber";
 import { BetStubComponent } from "./bet-stub/bet-stub.component";
 
 import {
@@ -29,6 +30,7 @@ import {
   DlDateTimePickerModule,
 } from "angular-bootstrap-datetimepicker";
 import { UserAddComponent } from "./user-add/user-add.component";
+import { EventFormComponent } from "./event-form/event-form.component";
 
 @NgModule({
   imports: [
@@ -47,6 +49,7 @@ import { UserAddComponent } from "./user-add/user-add.component";
     AvatarModule,
     TagModule,
     CalendarModule,
+    InputNumberModule,
   ],
   declarations: [
     UserReadComponent,
@@ -60,6 +63,7 @@ import { UserAddComponent } from "./user-add/user-add.component";
     DerbyTeamsComponent,
     BrookerComponent,
     BetStubComponent,
+    EventFormComponent,
   ],
   // declarations: [SimpleDatatable],
   exports: [
@@ -73,6 +77,7 @@ import { UserAddComponent } from "./user-add/user-add.component";
     BrookerComponent,
     BetStubComponent,
     UserAddComponent,
+    EventFormComponent,
   ],
 })
 export class FormGralModule {}

@@ -21,10 +21,7 @@
             <div class="col-sm-4"></div>
             <div class="col-sm-4 align-items-right d-flex justify-content-end">
               <div class="events-page-header__actions">
-                <button
-                  type="button"
-                  class="btn events-page-header__primary-btn"
-                >
+                <button type="button" class="btn events-page-header__primary-btn" (click)="sidebarVisible = true">
                   <i class="pi pi-plus"></i>
                   <span>Nuevo Evento</span>
                 </button>
@@ -34,7 +31,26 @@
         </div>
         <div class="card-body p-4">
           <div class="row">
-            <full-calendar [options]="calendarOptions"></full-calendar>
+            <app-event-kpi [kpis]="kpis"></app-event-kpi>
+          </div>
+          <div class="row pt-2">
+            <p-tabView>
+              <p-tabPanel header="Calendario">
+                <full-calendar [options]="calendarOptions"></full-calendar>
+              </p-tabPanel>
+              <p-tabPanel header="Lista">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </p>
+              </p-tabPanel>
+            </p-tabView>
           </div>
         </div>
       </div>
@@ -42,21 +58,74 @@
   </div>
 </div>
 
-<p-confirmDialog
-  [style]="{ width: '450px' }"
-  acceptButtonStyleClass="p-button-success"
-  rejectButtonStyleClass="p-button-danger"
-></p-confirmDialog>
+<div *ngIf="previewVisible && selectedEvent" class="event-preview" [style.top.px]="previewPosition.top"
+  [style.left.px]="previewPosition.left" (mouseenter)="cancelHidePreview()" (mouseleave)="hideEventPreview()">
 
-<p-dialog
-  *ngIf="eventoSeleccionado"
-  header="Detalles del evento"
-  [(visible)]="display"
->
+  <div class="event-preview__header">
+
+    <div class="event-preview__date">
+      {{ selectedEvent.fechaEvento | date:'dd' }}
+    </div>
+
+    <div class="event-preview__info">
+
+      <h3>
+        {{ selectedEvent.title }}
+      </h3>
+
+      <div class="event-preview__meta">
+        {{ selectedEvent.weapon }}
+        ·
+        {{ selectedEvent.roosters }} pollos
+      </div>
+
+      <div class="event-preview__meta">
+        De {{ selectedEvent.pesoMinimo | number }} a {{ selectedEvent.pesoMaximo | number }} Kgs
+      </div>
+
+      <span class="event-preview__status" [ngClass]="
+                          'event-preview__status--' +
+                          selectedEvent.status?.toLowerCase()
+                        ">
+        {{ getStatusLabel(selectedEvent.status) }}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="event-preview__details">
+
+    <div class="event-preview__detail">
+
+      <span>
+        Créditos
+      </span>
+
+      <strong>
+        ${{ selectedEvent.creditos | number }}
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+<p-confirmDialog [style]="{ width: '450px' }" acceptButtonStyleClass="p-button-success"
+  rejectButtonStyleClass="p-button-danger"></p-confirmDialog>
+
+<!-- <p-dialog *ngIf="eventoSeleccionado" header="Detalles del evento" [(visible)]="display">
   <p>{{ eventoSeleccionado.title }}</p>
   <p>Arma: {{ eventoSeleccionado.information.arma }}</p>
   <p>Fecha: {{ eventoSeleccionado.start | date }}</p>
   <p>Puntos: {{ eventoSeleccionado.information.puntos }}</p>
   <p>Pesos: {{ eventoSeleccionado.information.pesos }}</p>
   <p>Horario de bascula: {{ eventoSeleccionado.information.horarioBascula }}</p>
-</p-dialog>
+</p-dialog> -->
+
+<p-sidebar [(visible)]="sidebarVisible" position="right" [style]="{ width: '600px' }">
+  <app-event-form [data]="selectedEvent" [eventForm]="eventForm" (save)="onSave($event)" (close)="onClose()"
+    (saveDraftEM)="onSaveDraft($event)"></app-event-form>
+</p-sidebar>

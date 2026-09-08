@@ -1,0 +1,322 @@
+<!-- profile.component.html -->
+<div class="container-fluid py-4">
+  <div class="pt-2">
+    <form class="event-form" [formGroup]="eventForm" (ngSubmit)="saveEvent()">
+      <!-- HEADER -->
+      <div class="event-form__header">
+        <div>
+          <h2>Nuevo evento</h2>
+          <p>Configura la información general del evento.</p>
+        </div>
+      </div>
+
+      <div class="event-form__content">
+        <!-- INFORMACIÓN GENERAL -->
+        <section class="form-section">
+          <h3>Información general</h3>
+
+          <div class="form-grid">
+            <!-- Nombre -->
+            <div class="form-field">
+              <label for="nombre">
+                Nombre del evento <span class="required">*</span>
+              </label>
+
+              <input
+                id="nombre"
+                type="text"
+                pInputText
+                formControlName="nombre"
+                placeholder="Ej. Master Breeder VIP"
+              />
+
+              <small
+                class="field-error"
+                *ngIf="
+                  eventForm.get('nombre')?.invalid &&
+                  eventForm.get('nombre')?.touched
+                "
+              >
+                El nombre del evento es obligatorio.
+              </small>
+            </div>
+
+            <!-- Número de gallos -->
+            <div class="form-field">
+              <label for="numGallos">
+                Número de gallos <span class="required">*</span>
+              </label>
+
+              <p-inputNumber
+                inputId="numGallos"
+                formControlName="numGallos"
+                [useGrouping]="false"
+                [min]="1"
+                [showButtons]="false"
+              />
+            </div>
+
+            <!-- Tipo evento -->
+            <div class="form-field">
+              <label for="tipoEvento">
+                Tipo de evento <span class="required">*</span>
+              </label>
+
+              <p-dropdown
+                inputId="tipoEvento"
+                formControlName="tipoEvento"
+                [options]="eventTypes"
+                optionLabel="name"
+                optionValue="value"
+                placeholder="Selecciona un tipo"
+                [showClear]="true"
+                appendTo="body"
+              />
+            </div>
+
+            <!-- Arma -->
+            <div class="form-field">
+              <label for="arma"> Arma <span class="required">*</span> </label>
+
+              <p-dropdown
+                inputId="arma"
+                formControlName="arma"
+                [options]="weapons"
+                optionLabel="name"
+                optionValue="value"
+                placeholder="Selecciona el arma"
+                appendTo="body"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- PESOS -->
+        <section class="form-section">
+          <h3>Pesos</h3>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="pesoMinimo">Peso mínimo</label>
+
+              <p-inputNumber
+                inputId="pesoMinimo"
+                formControlName="pesoMinimo"
+                [useGrouping]="false"
+                suffix=" g"
+                [min]="0"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="pesoMaximo">Peso máximo</label>
+
+              <p-inputNumber
+                inputId="pesoMaximo"
+                formControlName="pesoMaximo"
+                [useGrouping]="false"
+                suffix=" g"
+                [min]="0"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="tolerancia">Tolerancia (g)</label>
+
+              <p-inputNumber
+                inputId="tolerancia"
+                formControlName="tolerancia"
+                [useGrouping]="false"
+                suffix=" g"
+                [min]="0"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- CRÉDITOS -->
+        <section class="form-section">
+          <h3>Créditos</h3>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="creditos">
+                Créditos <span class="required">*</span>
+              </label>
+
+              <p-inputNumber
+                inputId="creditos"
+                formControlName="creditos"
+                mode="decimal"
+                locale="es-MX"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="0"
+                [min]="0"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="peleaXDentro">Costo por pelea</label>
+
+              <p-inputNumber
+                inputId="peleaXDentro"
+                formControlName="peleaXDentro"
+                mode="decimal"
+                locale="es-MX"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="0"
+                [min]="0"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- FECHA Y HORARIOS -->
+        <section class="form-section">
+          <h3>Fecha y horarios</h3>
+
+          <div class="form-grid">
+            <!-- Fecha -->
+            <div class="form-field">
+              <label for="fechaEvento">
+                Fecha del evento <span class="required">*</span>
+              </label>
+
+              <p-calendar
+                inputId="fechaEvento"
+                formControlName="fechaEvento"
+                dateFormat="dd/mm/yy"
+                [showIcon]="true"
+                appendTo="body"
+                placeholder="DD/MM/AAAA"
+              />
+            </div>
+
+            <!-- Inicio báscula -->
+            <div class="form-field">
+              <label for="horarioBasculaInicio">Inicio báscula</label>
+
+              <p-calendar
+                inputId="horarioBasculaInicio"
+                formControlName="horarioBasculaInicio"
+                [timeOnly]="true"
+                hourFormat="12"
+                appendTo="body"
+              />
+            </div>
+
+            <!-- Fin báscula -->
+            <div class="form-field">
+              <label for="horarioBasculaFin">Fin báscula</label>
+
+              <p-calendar
+                inputId="horarioBasculaFin"
+                formControlName="horarioBasculaFin"
+                [timeOnly]="true"
+                hourFormat="12"
+                appendTo="body"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- FLYER -->
+        <section class="form-section flyer-section">
+          <h3>Flyer del evento</h3>
+
+          <div
+            class="flyer-upload"
+            [class.flyer-upload--dragging]="isDragging"
+            [class.flyer-upload--has-image]="flyerPreview"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+          >
+            <!-- Preview -->
+            <ng-container *ngIf="flyerPreview; else uploadPlaceholder">
+              <div class="flyer-preview">
+                <img [src]="flyerPreview" alt="Flyer del evento" />
+
+                <div class="flyer-preview__actions">
+                  <button
+                    pButton
+                    type="button"
+                    icon="pi pi-pencil"
+                    label="Cambiar"
+                    class="p-button-sm p-button-secondary"
+                    (click)="fileInput.click()"
+                  ></button>
+
+                  <button
+                    pButton
+                    type="button"
+                    icon="pi pi-trash"
+                    label="Eliminar"
+                    class="p-button-sm p-button-danger p-button-outlined"
+                    (click)="removeFlyer()"
+                  ></button>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Placeholder -->
+            <ng-template #uploadPlaceholder>
+              <div
+                class="flyer-upload__placeholder"
+                (click)="fileInput.click()"
+              >
+                <i class="pi pi-image"></i>
+
+                <strong>Arrastra el flyer aquí</strong>
+
+                <span> o selecciona archivo · JPG, PNG · Máx. 5 MB </span>
+              </div>
+            </ng-template>
+
+            <input
+              #fileInput
+              hidden
+              type="file"
+              accept="image/png,image/jpeg"
+              (change)="onFlyerSelected($event)"
+            />
+          </div>
+
+          <small class="field-error" *ngIf="flyerError">
+            {{ flyerError }}
+          </small>
+        </section>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="event-form__footer">
+        <button
+          pButton
+          type="button"
+          label="Cancelar"
+          class="p-button-outlined p-button-secondary"
+          (click)="close()"
+        ></button>
+
+        <button
+          pButton
+          type="button"
+          label="Guardar borrador"
+          class="p-button-outlined"
+          icon="pi pi-save"
+          (click)="saveDraft()"
+          [disabled]="saving"
+        ></button>
+
+        <button
+          pButton
+          type="submit"
+          label="Publicar evento"
+          icon="pi pi-check"
+          [loading]="saving"
+          [disabled]="eventForm.invalid"
+        ></button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,564 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.event-form__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding: 20px 24px 16px;
+
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+
+  h2 {
+    margin: 0 0 4px;
+
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+
+    color: #1f2937;
+  }
+
+  p {
+    margin: 0;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: #64748b;
+  }
+}
+
+.close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: #f1f5f9;
+    color: #1f2937;
+  }
+
+  i {
+    font-size: 14px;
+  }
+}
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.event-form__content {
+  flex: 1;
+
+  padding: 20px 24px 24px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.form-section {
+  margin-bottom: 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    margin: 0 0 14px;
+
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+
+    color: #1f2937;
+  }
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  column-gap: 16px;
+  row-gap: 12px;
+}
+
+/* =========================================================
+   FIELD
+   ========================================================= */
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+
+  label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    color: #64748b;
+  }
+
+  .required {
+    color: #be123c;
+  }
+}
+
+.field-error {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 11px;
+  line-height: 1.3;
+
+  color: #dc2626;
+}
+
+/* =========================================================
+   PRIMENG - INPUTS
+   ========================================================= */
+
+:host ::ng-deep {
+  /* InputText */
+  .form-field .p-inputtext {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 10px;
+
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    font-size: 12px;
+    color: #1f2937;
+
+    box-shadow: none;
+
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+
+    &:enabled:hover {
+      border-color: #cbd5e1;
+    }
+
+    &:enabled:focus {
+      border-color: #be123c;
+
+      box-shadow: 0 0 0 2px rgba(190, 18, 60, 0.08);
+    }
+  }
+
+  /* InputNumber */
+  .form-field .p-inputnumber {
+    width: 100%;
+
+    .p-inputtext {
+      width: 100%;
+    }
+  }
+
+  /* Dropdown */
+  .form-field .p-dropdown {
+    width: 100%;
+    height: 38px;
+
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+
+    box-shadow: none;
+
+    .p-dropdown-label {
+      display: flex;
+      align-items: center;
+
+      padding: 0 10px;
+
+      font-size: 12px;
+      color: #1f2937;
+    }
+
+    .p-dropdown-trigger {
+      width: 34px;
+
+      color: #64748b;
+
+      .p-dropdown-trigger-icon {
+        width: 11px;
+        height: 11px;
+      }
+    }
+
+    &:not(.p-disabled):hover {
+      border-color: #cbd5e1;
+    }
+
+    &:not(.p-disabled).p-focus {
+      border-color: #be123c;
+
+      box-shadow: 0 0 0 2px rgba(190, 18, 60, 0.08);
+    }
+  }
+
+  /* Calendar */
+  .form-field .p-calendar {
+    width: 100%;
+
+    .p-inputtext {
+      width: 100%;
+    }
+
+    .p-datepicker-trigger {
+      width: 38px;
+
+      border-color: #dfe3e8;
+
+      background: #ffffff;
+      color: #64748b;
+    }
+  }
+
+  /* Invalid */
+  .form-field .ng-invalid.ng-touched {
+    &.p-inputtext,
+    &.p-dropdown {
+      border-color: #dc2626;
+    }
+  }
+}
+
+/* =========================================================
+   FLYER
+   ========================================================= */
+
+.flyer-section {
+  margin-top: 2px;
+}
+
+.flyer-upload {
+  position: relative;
+
+  width: 100%;
+  min-height: 115px;
+
+  overflow: hidden;
+
+  border: 1px solid #f0a1b5;
+  border-radius: 8px;
+
+  background: #fff9fa;
+
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: #be123c;
+    background: #fff5f7;
+  }
+
+  &--dragging {
+    border-color: #be123c;
+    background: #fff1f4;
+
+    box-shadow: 0 0 0 3px rgba(190, 18, 60, 0.08);
+  }
+
+  &--has-image {
+    min-height: auto;
+    background: #ffffff;
+  }
+}
+
+/* Placeholder */
+
+.flyer-upload__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 115px;
+
+  padding: 16px;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  i {
+    margin-bottom: 8px;
+
+    font-size: 22px;
+    color: #be123c;
+  }
+
+  strong {
+    margin-bottom: 3px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #1f2937;
+  }
+
+  span {
+    font-size: 10px;
+    color: #64748b;
+  }
+}
+
+/* =========================================================
+   FLYER PREVIEW
+   ========================================================= */
+
+.flyer-preview {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  padding: 12px;
+
+  img {
+    width: 90px;
+    height: 120px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+  }
+}
+
+.flyer-preview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.event-form__footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 24px;
+
+  border-top: 1px solid #e5e7eb;
+
+  background: #ffffff;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+:host ::ng-deep {
+  .event-form__footer .p-button {
+    height: 38px;
+
+    padding: 0 16px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    box-shadow: none;
+  }
+
+  /* Cancelar */
+  .event-form__footer .p-button.p-button-secondary.p-button-outlined {
+    border-color: #dfe3e8;
+
+    background: #ffffff;
+    color: #374151;
+
+    &:hover {
+      border-color: #cbd5e1;
+
+      background: #f8fafc;
+      color: #1f2937;
+    }
+  }
+
+  /* Guardar borrador */
+  .event-form__footer > .p-button:nth-child(2) {
+    border-color: #dfe3e8;
+
+    background: #ffffff;
+    color: #374151;
+
+    &:hover {
+      background: #f8fafc;
+    }
+  }
+
+  /* Publicar */
+  .event-form__footer > .p-button:last-child {
+    flex: 1;
+
+    border-color: #be123c;
+
+    background: #be123c;
+    color: #ffffff;
+
+    &:enabled:hover {
+      border-color: #9f1239;
+      background: #9f1239;
+    }
+
+    &:enabled:active {
+      border-color: #881337;
+      background: #881337;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(190, 18, 60, 0.15);
+    }
+  }
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.event-form__content {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #cbd5e1;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+/* =========================================================
+   SIDEBAR
+   Poner preferentemente en styles.scss
+   ========================================================= */
+
+:host ::ng-deep .event-sidebar {
+  width: min(600px, 100vw);
+
+  .p-sidebar-header {
+    display: none;
+  }
+
+  .p-sidebar-content {
+    height: 100%;
+    padding: 0;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .event-form__header {
+    padding: 18px 16px 14px;
+  }
+
+  .event-form__content {
+    padding: 18px 16px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .event-form__footer {
+    flex-wrap: wrap;
+
+    padding: 12px 16px;
+  }
+
+  :host ::ng-deep {
+    .event-form__footer .p-button {
+      flex: 1;
+    }
+
+    .event-form__footer > .p-button:last-child {
+      flex-basis: 100%;
+    }
+  }
+}

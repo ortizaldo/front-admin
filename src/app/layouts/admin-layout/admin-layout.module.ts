@@ -43,6 +43,8 @@ import { CardModule } from "primeng/card";
 import { BreadcrumbModule } from "primeng/breadcrumb";
 import { BrowserModule } from "@angular/platform-browser";
 import { CatalogDashboardComponent } from "src/app/pages/admin/catalog-dashboard/catalog-dashboard.component";
+import { KPIModule } from "src/app/components/kpi/kpi.module";
+import { SidebarModule } from "primeng/sidebar";
 @NgModule({
   imports: [
     CommonModule,
@@ -74,6 +76,8 @@ import { CatalogDashboardComponent } from "src/app/pages/admin/catalog-dashboard
     AutoCompleteModule,
     CardModule,
     BreadcrumbModule,
+    KPIModule,
+    SidebarModule,
   ],
   declarations: [
     DashboardComponent,

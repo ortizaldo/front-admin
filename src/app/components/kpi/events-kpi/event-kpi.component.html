@@ -1,0 +1,18 @@
+<div class="kpi-grid">
+  @for (kpi of kpis; track kpi.type) {
+    <div class="kpi-card">
+      <div class="kpi-indicator" [ngClass]="'kpi-' + kpi.type"></div>
+
+      <div class="kpi-content">
+        <span class="kpi-label">
+          {{ kpi.label }}
+        </span>
+
+        <span class="kpi-value">
+          {{ kpi.value }}
+          {{ kpi.value === 1 ? "evento" : "eventos" }}
+        </span>
+      </div>
+    </div>
+  }
+</div>

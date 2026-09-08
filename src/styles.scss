@@ -47,3 +47,331 @@
   background: transparent !important;
   transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
 }
+
+.fc .fc-daygrid-day-frame {
+  min-height: 116px;
+}
+
+.fc .fc-daygrid-day-events {
+  margin: 2px 4px 4px;
+}
+
+.fc .fc-daygrid-event {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.calendar-event-card {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-width: 0;
+
+  height: 82px;
+
+  box-sizing: border-box;
+
+  padding: 7px;
+
+  border: 1px solid #f4c6d2;
+  border-radius: 8px;
+
+  background: #fff9fb;
+
+  overflow: hidden;
+}
+
+.calendar-event-card__date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 34px;
+
+  width: 34px;
+  min-width: 34px;
+
+  border-radius: 6px;
+
+  background: #c51d4d;
+
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.calendar-event-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+
+  min-width: 0;
+
+  padding-left: 7px;
+
+  overflow: hidden;
+}
+
+.calendar-event-card__title {
+  width: 100%;
+
+  margin-bottom: 4px;
+
+  overflow: hidden;
+
+  color: #1f2937;
+
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.15;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.calendar-event-card__meta {
+  width: 100%;
+
+  margin-bottom: 5px;
+
+  overflow: hidden;
+
+  color: #7c879a;
+
+  font-size: 9px;
+  line-height: 1.1;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.calendar-event-card__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  align-self: flex-start;
+
+  max-width: 100%;
+  height: 20px;
+
+  padding: 0 7px;
+
+  box-sizing: border-box;
+
+  border-radius: 999px;
+
+  color: #fff;
+
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-event-card__status--published {
+  background: #3478df;
+}
+
+.calendar-event-card__status--open {
+  background: #239264;
+}
+
+.calendar-event-card__status--draft {
+  background: #788397;
+}
+
+.event-preview {
+  position: absolute;
+
+  z-index: 9999;
+
+  width: 330px;
+
+  box-sizing: border-box;
+
+  padding: 16px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+
+  animation: eventPreviewIn 0.12s ease-out;
+}
+
+@keyframes eventPreviewIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.event-preview__header {
+  display: flex;
+  align-items: stretch;
+
+  gap: 14px;
+}
+
+/* =========================================
+   DATE
+   ========================================= */
+
+.event-preview__date {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 72px;
+
+  min-height: 100px;
+
+  border-radius: 10px;
+
+  background: #c51d4d;
+
+  color: #ffffff;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* =========================================
+   INFO
+   ========================================= */
+
+.event-preview__info {
+  display: flex;
+
+  flex: 1;
+  flex-direction: column;
+
+  justify-content: center;
+
+  min-width: 0;
+}
+
+.event-preview__info h3 {
+  margin: 0 0 8px;
+
+  color: #1f2937;
+
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.event-preview__meta {
+  margin-bottom: 10px;
+
+  color: #7c879a;
+
+  font-size: 14px;
+}
+
+/* =========================================
+   STATUS
+   ========================================= */
+
+.event-preview__status {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  align-self: flex-start;
+
+  min-width: 125px;
+  height: 32px;
+
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.event-preview__status--published {
+  background: #3478df;
+}
+
+.event-preview__status--open {
+  background: #239264;
+}
+
+.event-preview__status--draft {
+  background: #788397;
+}
+
+.event-preview__status--closed {
+  background: #dc2626;
+}
+
+.event-preview__status--finished {
+  background: #475569;
+}
+
+/* =========================================
+   DETAILS
+   ========================================= */
+
+.event-preview__details {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+
+  margin-top: 16px;
+  padding-top: 14px;
+
+  border-top: 1px solid #eef0f3;
+}
+
+.event-preview__detail {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.event-preview__detail span {
+  color: #94a3b8;
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.event-preview__detail strong {
+  color: #1f2937;
+
+  font-size: 14px;
+  font-weight: 600;
+}
