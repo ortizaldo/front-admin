@@ -115,6 +115,7 @@ export class EventsComponent implements OnInit {
 
   ngOnInit() {
     this.getEvents("events", {}, []);
+    this.getkpiEvents("event-kpis", {}, []);
 
     this.eventForm = this.fb.group({
       nombre: ["", Validators.required],
@@ -289,6 +290,32 @@ export class EventsComponent implements OnInit {
           );
           self.currentEvents = result;
           self.changeDetector.detectChanges();
+        }),
+        catchError((err) => {
+          return err;
+        }),
+      )
+      .subscribe();
+  }
+
+  getkpiEvents(endpoint, select, populate) {
+    let params = {
+      select,
+      populate,
+      filters: {
+        deleted: false,
+      },
+    };
+    const self = this;
+    this.crudService
+      .getMany(endpoint, null, params)
+      .pipe(
+        tap((data: any) => {
+          console.log("🚀 ~ EventsComponent ~ getKpiEvents ~ data.data:", data);
+          this.kpis[0].value = data.proximos;
+          this.kpis[1].value = data.esteMes;
+          this.kpis[2].value = data.enCurso;
+          this.kpis[3].value = data.finalizados;
         }),
         catchError((err) => {
           return err;
