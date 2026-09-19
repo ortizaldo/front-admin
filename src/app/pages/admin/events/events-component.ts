@@ -28,6 +28,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import InteractionPlugin from "@fullcalendar/interaction";
 import { EventKpi } from "src/app/interfaces/kpiEvents";
 import { ToastrService } from "ngx-toastr";
+import moment from "moment";
+import { Sidebar } from "primeng/sidebar";
 @Component({
   selector: "app-events",
   templateUrl: "events.component.html",
@@ -91,6 +93,7 @@ export class EventsComponent implements OnInit {
   display: boolean;
 
   previewVisible = false;
+  title = "";
 
   previewPosition = {
     top: 0,
@@ -98,6 +101,8 @@ export class EventsComponent implements OnInit {
   };
 
   private hidePreviewTimeout: any;
+
+  @ViewChild("sidebarRef") sidebarRef!: Sidebar;
   constructor(
     private fb: UntypedFormBuilder,
     private changeDetector: ChangeDetectorRef,
@@ -137,20 +142,109 @@ export class EventsComponent implements OnInit {
 
       flyer: [null],
     });
+  }
 
-    console.log(
-      "%cfront-admin/src/app/pages/admin/events/events-component.ts:141 this.calendarOptions",
-      "color: #007acc;",
-      this.calendarOptions,
-    );
+  openSidebar() {
+    this.sidebarVisible = true;
+    this.title = "Nuevo evento";
+    this.eventForm.reset();
   }
 
   onEventClick(data: any) {
     const dataEvent = this.currentEvents.find(
       (event) => event.id == data.event._def.publicId,
     );
-    this.eventoSeleccionado = dataEvent;
-    this.display = true;
+    this.getEvent(dataEvent);
+  }
+
+  getEvent(event: any) {
+    const params = {
+      select: [],
+      populate: [],
+    };
+    this.crudService
+      .getMany("events", event.id, params)
+      .pipe(
+        tap((data: any) => {
+          const _data = data.data;
+          this.eventoSeleccionado = _data;
+          this.title = "Editar evento";
+          this.sidebarVisible = true;
+
+          // console.log(utcDate);
+          this.eventForm.patchValue({
+            nombre: _data.nombre,
+            numGallos: _data.numGallos,
+            tipoEvento: _data.tipoEvento,
+            arma: _data.arma,
+            pesoMinimo: _data.pesoMinimo,
+            pesoMaximo: _data.pesoMaximo,
+            tolerancia: _data.tolerancia,
+            creditos: _data.creditos,
+            peleaXDentro: _data.peleaXDentro,
+            fechaEvento: new Date(_data.fechaEvento),
+            horarioBasculaInicio: this.parseTime12Hours(
+              this.formatHour(new Date(_data.horarioBasculaInicio)),
+            ),
+            horarioBasculaFin: this.parseTime12Hours(
+              this.formatHour(new Date(_data.horarioBasculaFin)),
+            ),
+            flyer: _data.flyer,
+          });
+        }),
+        catchError((err) => {
+          return err;
+        }),
+      )
+      .subscribe();
+  }
+
+  private parseTime12Hours(time: string): Date | null {
+    if (!time) {
+      return null;
+    }
+
+    // Acepta: 03:00 p.m., 03:00 PM, 3:00 a. m., etc.
+    const normalizedTime = time
+      .trim()
+      .toLowerCase()
+      .replace(/\s/g, "")
+      .replace(/\./g, "");
+
+    const match = normalizedTime.match(
+      /^(\d{1,2}):(\d{2})(?::(\d{2}))?(am|pm)$/,
+    );
+
+    if (!match) {
+      return null;
+    }
+
+    let hours = Number(match[1]);
+    const minutes = Number(match[2]);
+    const seconds = Number(match[3] ?? 0);
+    const period = match[4];
+
+    if (period === "pm" && hours !== 12) {
+      hours += 12;
+    }
+
+    if (period === "am" && hours === 12) {
+      hours = 0;
+    }
+
+    const result = new Date();
+    result.setHours(hours, minutes, seconds, 0);
+
+    return result;
+  }
+
+  formatHour(date: Date): string {
+    const options: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+    return new Intl.DateTimeFormat("es-MX", options).format(date);
   }
 
   getEvents(endpoint, select, populate) {
@@ -373,9 +467,20 @@ export class EventsComponent implements OnInit {
 
   onSave(event: any) {}
   onSaveDraft(event: any) {
-    console.log("onSaveDraft", event);
+    if (event.editing) {
+      this.editEvent(event.form, event._id);
+    } else {
+      this.saveEvent(event.form);
+    }
+  }
+
+  onPublish(event: any) {
+    this.editEvent(event.data, event._id);
+  }
+
+  saveEvent(form: any) {
     this.crudService
-      .post(event.form, "events")
+      .post(form, "events")
       .pipe(
         tap((data: any) => {
           console.log("🚀 ~ EventsComponent ~ onSaveDraft ~ data:", data);
@@ -384,6 +489,13 @@ export class EventsComponent implements OnInit {
           this.eventForm.reset();
           this.sidebarVisible = false;
           this.selectedEvent = null;
+          this.showNotification(
+            "top",
+            "right",
+            "Creación de evento",
+            "El evento se creo correctamente.",
+            "alert-success",
+          );
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;
@@ -400,7 +512,40 @@ export class EventsComponent implements OnInit {
       )
       .subscribe();
   }
-  onClose() {}
+  editEvent(form: any, id: string) {
+    this.crudService
+      .put(form, id, "events")
+      .pipe(
+        tap((data: any) => {
+          this.getEvents("events", {}, []);
+          this.eventForm.reset();
+          this.sidebarVisible = false;
+          this.selectedEvent = null;
+          this.showNotification(
+            "top",
+            "right",
+            "Edición de evento",
+            "El evento se modifico correctamente.",
+            "alert-success",
+          );
+        }),
+        catchError((err) => {
+          const _err = err.error ? err.error.err : err;
+          this.showNotification(
+            "top",
+            "right",
+            "Error al registrar",
+            _err.code == 11000 ? "Registro duplicado" : _err.message,
+            "alert-warning",
+          );
+          return err;
+        }),
+      )
+      .subscribe();
+  }
+  onClose(e) {
+    this.sidebarRef.close(e);
+  }
 
   showNotification(
     from: string,

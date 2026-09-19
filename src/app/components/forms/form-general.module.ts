@@ -21,6 +21,10 @@ import { InputSwitchModule } from "primeng/inputswitch";
 import { TabViewModule } from "primeng/tabview";
 import { AvatarModule } from "primeng/avatar";
 import { TagModule } from "primeng/tag";
+import { ProgressBarModule } from "primeng/progressbar";
+import { ToastModule } from "primeng/toast";
+import { BadgeModule } from "primeng/badge";
+import { FileUploadModule } from "primeng/fileupload";
 import { CalendarModule } from "primeng/calendar";
 import { InputNumberModule } from "primeng/inputnumber";
 import { BetStubComponent } from "./bet-stub/bet-stub.component";
@@ -50,6 +54,10 @@ import { EventFormComponent } from "./event-form/event-form.component";
     TagModule,
     CalendarModule,
     InputNumberModule,
+    FileUploadModule,
+    BadgeModule,
+    ProgressBarModule,
+    ToastModule,
   ],
   declarations: [
     UserReadComponent,

@@ -6,21 +6,9 @@ import {
   Output,
   ViewEncapsulation,
 } from "@angular/core";
-import {
-  UntypedFormBuilder,
-  FormControl,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
-import { User } from "src/app/interfaces/user";
+import { UntypedFormGroup } from "@angular/forms";
 import * as _ from "underscore";
-import { ConfirmationService, MessageService, SelectItem } from "primeng/api";
-import { SelectItemGroup } from "primeng/api";
-import { CrudService } from "src/app/_services/crud.service";
-import { catchError, tap } from "rxjs";
-import { Country } from "src/app/interfaces/country";
-import { State } from "src/app/interfaces/state";
-import { Municipality } from "src/app/interfaces/municipality";
+import { PrimeNGConfig, SelectItem } from "primeng/api";
 
 @Component({
   selector: "app-event-form",
@@ -31,6 +19,14 @@ import { Municipality } from "src/app/interfaces/municipality";
 export class EventFormComponent implements OnInit {
   @Input() data: any | undefined;
   @Input() eventForm: UntypedFormGroup;
+
+  @Input() title: string = "Nuevo evento";
+
+  files = [];
+
+  totalSize: number = 0;
+
+  totalSizePercent: number = 0;
 
   items: SelectItem[];
 
@@ -72,16 +68,20 @@ export class EventFormComponent implements OnInit {
     },
   ];
 
-  flyerPreview: boolean = false;
   flyerError: boolean = false;
   saving: boolean = false;
   isDragging: boolean = false;
 
-  @Output() save: EventEmitter<any> = new EventEmitter<any>();
-  @Output() saveDraftEM: EventEmitter<any> = new EventEmitter<any>();
-  constructor() {}
+  flyerFile: File | null = null;
+  flyerPreview: string | null = null;
 
-  ngOnInit(): void {}
+  @Output() save: EventEmitter<any> = new EventEmitter<any>();
+  @Output() closeForm: EventEmitter<any> = new EventEmitter<any>();
+  @Output() publish: EventEmitter<any> = new EventEmitter<any>();
+  @Output() saveDraftEM: EventEmitter<any> = new EventEmitter<any>();
+  constructor(private config: PrimeNGConfig) {}
+
+  ngOnInit() {}
 
   saveEvent() {
     this.saving = true;
@@ -92,15 +92,93 @@ export class EventFormComponent implements OnInit {
     });
   }
 
-  onFlyerSelected(event: any) {}
+  onFlyerSelect(event: { files: File[] }): void {
+    const file = event.files[0];
+    if (!file) return;
+
+    this.flyerFile = file;
+    this.flyerPreview = URL.createObjectURL(file);
+  }
+
+  removeFlyer(): void {
+    if (this.flyerPreview?.startsWith("blob:")) {
+      URL.revokeObjectURL(this.flyerPreview);
+    }
+
+    this.flyerFile = null;
+    this.flyerPreview = null;
+  }
   onDrop(event: any) {}
   onDragLeave(event: any) {}
   onDragOver(event: any) {}
 
-  close() {}
+  close() {
+    this.closeForm.emit(true);
+  }
   saveDraft() {
     this.saveDraftEM.emit({
       form: this.eventForm.value,
+      _id: this.data._id,
+      editing: this.data._id ? true : false,
     });
+  }
+
+  publishEvent() {
+    this.data.status = "PUBLISHED";
+    this.publish.emit({
+      _id: this.data._id,
+      data: this.data,
+    });
+  }
+
+  choose(event, callback) {
+    callback();
+  }
+
+  onRemoveTemplatingFile(event, file, removeFileCallback, index) {
+    removeFileCallback(event, index);
+    this.totalSize -= parseInt(this.formatSize(file.size));
+    this.totalSizePercent = this.totalSize / 10;
+  }
+
+  onClearTemplatingUpload(clear) {
+    clear();
+    this.totalSize = 0;
+    this.totalSizePercent = 0;
+  }
+
+  onTemplatedUpload() {
+    // this.messageService.add({
+    //   severity: "info",
+    //   summary: "Success",
+    //   detail: "File Uploaded",
+    //   life: 3000,
+    // });
+  }
+
+  onSelectedFiles(event) {
+    this.files = event.currentFiles;
+    this.files.forEach((file) => {
+      this.totalSize += parseInt(this.formatSize(file.size));
+    });
+    this.totalSizePercent = this.totalSize / 10;
+  }
+
+  uploadEvent(callback) {
+    callback();
+  }
+
+  formatSize(bytes) {
+    const k = 1024;
+    const dm = 3;
+    const sizes = this.config.translation.fileSizeTypes;
+    if (bytes === 0) {
+      return `0 ${sizes[0]}`;
+    }
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+
+    return `${formattedSize} ${sizes[i]}`;
   }
 }

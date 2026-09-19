@@ -21,7 +21,7 @@
             <div class="col-sm-4"></div>
             <div class="col-sm-4 align-items-right d-flex justify-content-end">
               <div class="events-page-header__actions">
-                <button type="button" class="btn events-page-header__primary-btn" (click)="sidebarVisible = true">
+                <button type="button" class="btn events-page-header__primary-btn" (click)="openSidebar() ">
                   <i class="pi pi-plus"></i>
                   <span>Nuevo Evento</span>
                 </button>
@@ -113,19 +113,7 @@
 
 </div>
 
-<p-confirmDialog [style]="{ width: '450px' }" acceptButtonStyleClass="p-button-success"
-  rejectButtonStyleClass="p-button-danger"></p-confirmDialog>
-
-<!-- <p-dialog *ngIf="eventoSeleccionado" header="Detalles del evento" [(visible)]="display">
-  <p>{{ eventoSeleccionado.title }}</p>
-  <p>Arma: {{ eventoSeleccionado.information.arma }}</p>
-  <p>Fecha: {{ eventoSeleccionado.start | date }}</p>
-  <p>Puntos: {{ eventoSeleccionado.information.puntos }}</p>
-  <p>Pesos: {{ eventoSeleccionado.information.pesos }}</p>
-  <p>Horario de bascula: {{ eventoSeleccionado.information.horarioBascula }}</p>
-</p-dialog> -->
-
-<p-sidebar [(visible)]="sidebarVisible" position="right" [style]="{ width: '600px' }">
-  <app-event-form [data]="selectedEvent" [eventForm]="eventForm" (save)="onSave($event)" (close)="onClose()"
-    (saveDraftEM)="onSaveDraft($event)"></app-event-form>
+<p-sidebar #sidebarRef [(visible)]="sidebarVisible" position="right" [style]="{ width: '600px' }">
+  <app-event-form [title]="title" [data]="eventoSeleccionado" [eventForm]="eventForm" (save)="onSave($event)"
+    (close)="onClose($event)" (saveDraftEM)="onSaveDraft($event)" (publish)="onPublish($event)"></app-event-form>
 </p-sidebar>
