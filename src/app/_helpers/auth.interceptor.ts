@@ -33,7 +33,12 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    if (!request.headers.has("Content-Type")) {
+    if (request.body instanceof FormData) {
+      // El navegador agrega multipart/form-data con el boundary del formulario.
+      request = request.clone({
+        headers: request.headers.delete("Content-Type"),
+      });
+    } else if (!request.headers.has("Content-Type")) {
       request = request.clone({
         setHeaders: {
           "content-type": "application/json",

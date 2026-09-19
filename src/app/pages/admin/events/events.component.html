@@ -113,7 +113,7 @@
 
 </div>
 
-<p-sidebar #sidebarRef [(visible)]="sidebarVisible" position="right" [style]="{ width: '600px' }">
+<p-sidebar #sidebarRef [(visible)]="sidebarVisible" position="right" [style]="{ width: '600px' }" [dismissible]="false">
   <app-event-form [title]="title" [data]="eventoSeleccionado" [eventForm]="eventForm" (save)="onSave($event)"
-    (close)="onClose($event)" (saveDraftEM)="onSaveDraft($event)" (publish)="onPublish($event)"></app-event-form>
+    (saveDraftEM)="onSaveDraft($event)" (publish)="onPublish($event)"></app-event-form>
 </p-sidebar>

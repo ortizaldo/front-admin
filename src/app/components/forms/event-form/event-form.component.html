@@ -158,9 +158,6 @@
                 <img [src]="flyerPreview" alt="Flyer del evento" />
 
                 <div class="flyer-preview__actions">
-                  <button pButton type="button" icon="pi pi-pencil" label="Cambiar"
-                    class="p-button-sm p-button-secondary" (click)="fileInput.click()"></button>
-
                   <button pButton type="button" icon="pi pi-trash" label="Eliminar"
                     class="p-button-sm p-button-danger p-button-outlined" (click)="removeFlyer()"></button>
                 </div>
@@ -169,7 +166,7 @@
 
             <!-- Placeholder -->
             <ng-template #uploadPlaceholder>
-              <label class="block font-semibold mb-2">Flyer del evento</label>
+              <label class="block font-semibold mb-2 ml-2 mt-1">Flyer del evento</label>
 
               <div class="flyer-field">
                 <img *ngIf="flyerPreview" [src]="flyerPreview" alt="Vista previa del flyer" class="flyer-preview" />
@@ -198,9 +195,6 @@
 
       <!-- FOOTER -->
       <div class="event-form__footer">
-        <button pButton type="button" label="Cancelar" class="p-button-outlined p-button-secondary"
-          (click)="close()"></button>
-
         <button pButton type="button" label="Guardar borrador" class="p-button-outlined" icon="pi pi-save"
           (click)="saveDraft()" [disabled]="saving"></button>
 

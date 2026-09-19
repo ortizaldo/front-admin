@@ -528,6 +528,8 @@ export class EventsComponent implements OnInit {
             "El evento se modifico correctamente.",
             "alert-success",
           );
+
+          this.uploadFlyer(id, form.flyer);
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;
@@ -545,6 +547,41 @@ export class EventsComponent implements OnInit {
   }
   onClose(e) {
     this.sidebarRef.close(e);
+  }
+
+  uploadFlyer(eventId: string, flyerFile: File) {
+    const formData = new FormData();
+    formData.append("flyer", flyerFile);
+    this.crudService
+      .uploadImage(formData, `events/${eventId}/flyer`)
+      .pipe(
+        tap((data: any) => {
+          console.log("🚀 ~ EventsComponent ~ uploadFlyer ~ data:", data);
+          // this.getEvents("events", {}, []);
+          // this.eventForm.reset();
+          // this.sidebarVisible = false;
+          // this.selectedEvent = null;
+          // this.showNotification(
+          //   "top",
+          //   "right",
+          //   "Edición de evento",
+          //   "El evento se modifico correctamente.",
+          //   "alert-success",
+          // );
+        }),
+        catchError((err) => {
+          const _err = err.error ? err.error.err : err;
+          this.showNotification(
+            "top",
+            "right",
+            "Error al registrar",
+            _err.code == 11000 ? "Registro duplicado" : _err.message,
+            "alert-warning",
+          );
+          return err;
+        }),
+      )
+      .subscribe();
   }
 
   showNotification(

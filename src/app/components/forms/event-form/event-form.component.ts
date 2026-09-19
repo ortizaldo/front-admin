@@ -97,6 +97,7 @@ export class EventFormComponent implements OnInit {
     if (!file) return;
 
     this.flyerFile = file;
+    this.eventForm.patchValue({ flyer: file });
     this.flyerPreview = URL.createObjectURL(file);
   }
 
