@@ -1,4 +1,5 @@
 <p-toast></p-toast>
+<!-- <p-progressSpinner ariaLabel="loading" /> -->
 <div class="content">
   <div class="row">
     <div class="col-12">
@@ -89,6 +90,8 @@
                         ">
         {{ getStatusLabel(selectedEvent.status) }}
       </span>
+      <br>
+      <a href="{{ selectedEvent.flyer?.url }}" target="_blank">Click para ver el flyer</a>
 
     </div>
 
@@ -114,6 +117,6 @@
 </div>
 
 <p-sidebar #sidebarRef [(visible)]="sidebarVisible" position="right" [style]="{ width: '600px' }" [dismissible]="false">
-  <app-event-form [title]="title" [data]="eventoSeleccionado" [eventForm]="eventForm" (save)="onSave($event)"
-    (saveDraftEM)="onSaveDraft($event)" (publish)="onPublish($event)"></app-event-form>
+  <app-event-form [flyerPreview]="flyerPreview" [title]="title" [data]="eventoSeleccionado" [eventForm]="eventForm"
+    (save)="onSave($event)" (saveDraftEM)="onSaveDraft($event)" (publish)="onPublish($event)"></app-event-form>
 </p-sidebar>

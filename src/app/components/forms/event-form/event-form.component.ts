@@ -21,6 +21,7 @@ export class EventFormComponent implements OnInit {
   @Input() eventForm: UntypedFormGroup;
 
   @Input() title: string = "Nuevo evento";
+  @Input() flyerPreview: string | null = null;
 
   files = [];
 
@@ -73,7 +74,6 @@ export class EventFormComponent implements OnInit {
   isDragging: boolean = false;
 
   flyerFile: File | null = null;
-  flyerPreview: string | null = null;
 
   @Output() save: EventEmitter<any> = new EventEmitter<any>();
   @Output() closeForm: EventEmitter<any> = new EventEmitter<any>();

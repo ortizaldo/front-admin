@@ -90,6 +90,7 @@ export class EventsComponent implements OnInit {
   selectedEvent: any = null;
 
   eventoSeleccionado: any;
+  flyerPreview: string | null = null;
   display: boolean;
 
   previewVisible = false;
@@ -167,7 +168,9 @@ export class EventsComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           const _data = data.data;
+          console.log("🚀 ~ EventsComponent ~ getEvent ~ _data:", _data);
           this.eventoSeleccionado = _data;
+          this.flyerPreview = _data.flyer?.url || null;
           this.title = "Editar evento";
           this.sidebarVisible = true;
 
@@ -483,19 +486,8 @@ export class EventsComponent implements OnInit {
       .post(form, "events")
       .pipe(
         tap((data: any) => {
-          console.log("🚀 ~ EventsComponent ~ onSaveDraft ~ data:", data);
-          this.getEvents("events", {}, []);
-          // this.loading = false;
-          this.eventForm.reset();
-          this.sidebarVisible = false;
-          this.selectedEvent = null;
-          this.showNotification(
-            "top",
-            "right",
-            "Creación de evento",
-            "El evento se creo correctamente.",
-            "alert-success",
-          );
+          const event = data.data;
+          this.uploadFlyer(event._id, form.flyer, event);
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;
@@ -513,23 +505,13 @@ export class EventsComponent implements OnInit {
       .subscribe();
   }
   editEvent(form: any, id: string) {
+    const flyer = form.flyer;
+    delete form.flyer;
     this.crudService
       .put(form, id, "events")
       .pipe(
         tap((data: any) => {
-          this.getEvents("events", {}, []);
-          this.eventForm.reset();
-          this.sidebarVisible = false;
-          this.selectedEvent = null;
-          this.showNotification(
-            "top",
-            "right",
-            "Edición de evento",
-            "El evento se modifico correctamente.",
-            "alert-success",
-          );
-
-          this.uploadFlyer(id, form.flyer);
+          this.uploadFlyer(data.data._id, flyer, data.data);
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;
@@ -549,25 +531,26 @@ export class EventsComponent implements OnInit {
     this.sidebarRef.close(e);
   }
 
-  uploadFlyer(eventId: string, flyerFile: File) {
+  uploadFlyer(eventId: string, flyerFile: File, event?: any) {
     const formData = new FormData();
     formData.append("flyer", flyerFile);
     this.crudService
       .uploadImage(formData, `events/${eventId}/flyer`)
       .pipe(
         tap((data: any) => {
-          console.log("🚀 ~ EventsComponent ~ uploadFlyer ~ data:", data);
-          // this.getEvents("events", {}, []);
-          // this.eventForm.reset();
-          // this.sidebarVisible = false;
-          // this.selectedEvent = null;
-          // this.showNotification(
-          //   "top",
-          //   "right",
-          //   "Edición de evento",
-          //   "El evento se modifico correctamente.",
-          //   "alert-success",
-          // );
+          this.getEvents("events", {}, []);
+          this.eventForm.reset();
+          this.sidebarVisible = false;
+          this.selectedEvent = null;
+          this.showNotification(
+            "top",
+            "right",
+            "Creación de evento",
+            "El evento se creo correctamente.",
+            "alert-success",
+          );
+          const flyer = data.flyer;
+          this.flyerPreview = flyer.url;
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;
