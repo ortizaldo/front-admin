@@ -30,6 +30,12 @@ import { EventKpi } from "src/app/interfaces/kpiEvents";
 import { ToastrService } from "ngx-toastr";
 import moment from "moment";
 import { Sidebar } from "primeng/sidebar";
+import localeEsMx from "@angular/common/locales/es-MX";
+import { registerLocaleData } from "@angular/common";
+import { Menu } from "primeng/menu/public_api";
+
+registerLocaleData(localeEsMx);
+
 @Component({
   selector: "app-events",
   templateUrl: "events.component.html",
@@ -86,6 +92,7 @@ export class EventsComponent implements OnInit {
     },
   ];
 
+  allEvents: any[] = [];
   currentEvents: any[] = [];
   selectedEvent: any = null;
 
@@ -94,6 +101,7 @@ export class EventsComponent implements OnInit {
   display: boolean;
 
   previewVisible = false;
+  edit = false;
   title = "";
 
   previewPosition = {
@@ -101,9 +109,14 @@ export class EventsComponent implements OnInit {
     left: 0,
   };
 
+  menuEvento = [];
+
+  menuItems: MenuItem[] = [];
+
   private hidePreviewTimeout: any;
 
   @ViewChild("sidebarRef") sidebarRef!: Sidebar;
+  @ViewChild("menu") menu!: MenuItem;
   constructor(
     private fb: UntypedFormBuilder,
     private changeDetector: ChangeDetectorRef,
@@ -159,6 +172,12 @@ export class EventsComponent implements OnInit {
     this.getEvent(dataEvent);
   }
 
+  openEditSidebar(event: any) {
+    console.log("🚀 ~ EventsComponent ~ openEditSidebar ~ event:", event);
+    event.id = event._id || event.id;
+    this.getEvent(event);
+  }
+
   getEvent(event: any) {
     const params = {
       select: [],
@@ -169,10 +188,10 @@ export class EventsComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           const _data = data.data;
-          console.log("🚀 ~ EventsComponent ~ getEvent ~ _data:", _data);
           this.eventoSeleccionado = _data;
           this.flyerPreview = _data.flyer?.url || null;
           this.title = "Editar evento";
+          this.edit = true;
           this.sidebarVisible = true;
 
           // console.log(utcDate);
@@ -264,6 +283,7 @@ export class EventsComponent implements OnInit {
       .getMany(endpoint, null, params)
       .pipe(
         tap((data: any) => {
+          this.allEvents = data.data;
           const result = data.data.map((event: any) => {
             return {
               id: event._id,
@@ -284,10 +304,6 @@ export class EventsComponent implements OnInit {
             };
           });
           self.calendarOptions.events = result;
-          console.log(
-            "🚀 ~ EventsComponent ~ getEvents ~ self.calendarOptions.events:",
-            self.calendarOptions.events,
-          );
           self.currentEvents = result;
           self.changeDetector.detectChanges();
         }),
@@ -311,7 +327,6 @@ export class EventsComponent implements OnInit {
       .getMany(endpoint, null, params)
       .pipe(
         tap((data: any) => {
-          console.log("🚀 ~ EventsComponent ~ getKpiEvents ~ data.data:", data);
           this.kpis[0].value = data.proximos;
           this.kpis[1].value = data.esteMes;
           this.kpis[2].value = data.enCurso;
@@ -357,7 +372,7 @@ export class EventsComponent implements OnInit {
 
     const meta = document.createElement("div");
     meta.className = "calendar-event-card__meta";
-    meta.textContent = `${weapon} · ${roosters} pollos`;
+    meta.textContent = `${weapon} · ${roosters} Gallos`;
 
     /* Status */
 
@@ -514,11 +529,14 @@ export class EventsComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           const event = data.data;
-          this.uploadFlyer(event._id, form.flyer, event);
+          if (!_.isEmpty(form.flyer)) {
+            this.uploadFlyer(event._id, form.flyer, event);
+          } else {
+            this.retrieveEvents("Creación de evento");
+          }
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;
-          console.log("🚀 ~ EventsComponent ~ onSaveDraft ~ _err:", _err);
           this.showNotification(
             "top",
             "right",
@@ -538,7 +556,11 @@ export class EventsComponent implements OnInit {
       .put(form, id, "events")
       .pipe(
         tap((data: any) => {
-          this.uploadFlyer(data.data._id, flyer, data.data);
+          if (!_.isEmpty(flyer)) {
+            this.uploadFlyer(data.data._id, flyer, data.data);
+          } else {
+            this.retrieveEvents("Se actualizo el evento correctamente");
+          }
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;
@@ -558,6 +580,20 @@ export class EventsComponent implements OnInit {
     this.sidebarRef.close(e);
   }
 
+  retrieveEvents(title = "Creación de evento") {
+    this.getEvents("events", {}, []);
+    this.eventForm.reset();
+    this.sidebarVisible = false;
+    this.selectedEvent = null;
+    this.showNotification(
+      "top",
+      "right",
+      title,
+      "El evento se creo correctamente.",
+      "alert-success",
+    );
+  }
+
   uploadFlyer(eventId: string, flyerFile: File, event?: any) {
     const formData = new FormData();
     formData.append("flyer", flyerFile);
@@ -565,10 +601,7 @@ export class EventsComponent implements OnInit {
       .uploadImage(formData, `events/${eventId}/flyer`)
       .pipe(
         tap((data: any) => {
-          this.getEvents("events", {}, []);
-          this.eventForm.reset();
-          this.sidebarVisible = false;
-          this.selectedEvent = null;
+          this.retrieveEvents("Se actualizo el evento correctamente");
           this.showNotification(
             "top",
             "right",
@@ -592,6 +625,125 @@ export class EventsComponent implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  obtenerAcciones(evento: any): MenuItem[] {
+    const acciones: MenuItem[] = [
+      {
+        label: "Editar",
+        icon: "pi pi-pencil",
+        command: () => {
+          this.openEditSidebar(evento);
+        },
+      },
+      {
+        label: "Eliminar",
+        icon: "pi pi-trash",
+        command: () => {
+          this.confirmationService.confirm({
+            message: `¿Está seguro de eliminar el evento "${evento.title}"?`,
+            header: "Confirmación",
+            icon: "pi pi-exclamation-triangle",
+            acceptLabel: "Sí, eliminar",
+            rejectLabel: "Cancelar",
+            accept: () => {
+              this.crudService
+                .deleteOne("events", evento.id)
+                .pipe(
+                  tap((data) => {
+                    this.showNotification(
+                      "top",
+                      "right",
+                      "Evento eliminado",
+                      `El evento "${evento.title}" ha sido eliminado correctamente.`,
+                      "alert-success",
+                    );
+                    this.getEvents("events", {}, []);
+                  }),
+                  catchError((err) => {
+                    const _err = err.error ? err.error.err : err;
+                    this.showNotification(
+                      "top",
+                      "right",
+                      "Error al eliminar",
+                      _err.code == 11000 ? "Registro duplicado" : _err.message,
+                      "alert-warning",
+                    );
+                    return err;
+                  }),
+                )
+                .subscribe();
+            },
+          });
+        },
+      },
+    ];
+
+    return acciones;
+  }
+
+  abrirMenu(event: MouseEvent, evento: any, menu: Menu): void {
+    event.stopPropagation();
+
+    this.eventoSeleccionado = evento;
+
+    this.menuItems = [
+      {
+        label: "Editar",
+        icon: "pi pi-pencil",
+        command: () => {
+          console.log("Editar:", this.eventoSeleccionado);
+          this.openEditSidebar(this.eventoSeleccionado);
+        },
+      },
+    ];
+
+    if (evento.status == "DRAFT") {
+      this.menuItems.push({
+        label: "Eliminar",
+        icon: "pi pi-trash",
+        command: () => {
+          console.log("Eliminar:", this.eventoSeleccionado);
+          this.confirmationService.confirm({
+            message: `¿Está seguro de eliminar el evento "${this.eventoSeleccionado.title}"?`,
+            header: "Confirmación",
+            icon: "pi pi-exclamation-triangle",
+            acceptLabel: "Sí, eliminar",
+            rejectLabel: "Cancelar",
+            accept: () => {
+              this.crudService
+                .deleteOne("events", this.eventoSeleccionado.id)
+                .pipe(
+                  tap((data) => {
+                    this.showNotification(
+                      "top",
+                      "right",
+                      "Evento eliminado",
+                      `El evento "${this.eventoSeleccionado.title}" ha sido eliminado correctamente.`,
+                      "alert-success",
+                    );
+                    this.getEvents("events", {}, []);
+                  }),
+                  catchError((err) => {
+                    const _err = err.error ? err.error.err : err;
+                    this.showNotification(
+                      "top",
+                      "right",
+                      "Error al eliminar",
+                      _err.code == 11000 ? "Registro duplicado" : _err.message,
+                      "alert-warning",
+                    );
+                    return err;
+                  }),
+                )
+                .subscribe();
+            },
+          });
+        },
+      });
+    }
+
+    menu.toggle(event);
   }
 
   showNotification(

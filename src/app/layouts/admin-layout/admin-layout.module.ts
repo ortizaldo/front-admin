@@ -46,6 +46,7 @@ import { CatalogDashboardComponent } from "src/app/pages/admin/catalog-dashboard
 import { KPIModule } from "src/app/components/kpi/kpi.module";
 import { SidebarModule } from "primeng/sidebar";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { MenuModule } from "primeng/menu";
 @NgModule({
   imports: [
     CommonModule,
@@ -80,6 +81,7 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
     KPIModule,
     SidebarModule,
     ProgressSpinnerModule,
+    MenuModule,
   ],
   declarations: [
     DashboardComponent,

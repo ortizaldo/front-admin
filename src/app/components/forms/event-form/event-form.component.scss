@@ -562,3 +562,165 @@
     }
   }
 }
+
+.eventos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.evento-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  min-height: 122px;
+  padding: 7px 12px 7px 5px;
+  background: #fff;
+  border: 1px solid #e0e5ed;
+  border-radius: 8px;
+}
+
+.evento-flyer {
+  flex: 0 0 76px;
+  width: 76px;
+  height: 106px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #f5f8fb;
+}
+
+.evento-flyer img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.evento-sin-flyer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  color: #506079;
+  border: 1px solid #e0e5ed;
+  border-radius: 6px;
+  font-size: 9px;
+
+  .pi {
+    font-size: 15px;
+  }
+}
+
+.evento-info {
+  flex: 1;
+  min-width: 0;
+  padding-top: 5px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.evento-encabezado {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 8px;
+
+  h3 {
+    margin: 0;
+    color: #202a38;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}
+
+.evento-estado {
+  padding: 4px 9px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+
+  &.publicado {
+    background: #2c64c5;
+  }
+  &.abierto {
+    background: #24855b;
+  }
+  &.borrador {
+    background: #657083;
+  }
+}
+
+.evento-fecha,
+.evento-peso {
+  color: #657287;
+  font-size: 10px;
+}
+
+.evento-fecha {
+  margin-bottom: 6px !important;
+}
+
+.evento-detalle {
+  margin-bottom: 5px !important;
+  color: #253043;
+  font-size: 10px;
+}
+
+.evento-peso {
+  margin-bottom: 7px !important;
+}
+
+.evento-creditos {
+  color: #ae1e42;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.evento-acciones {
+  margin-left: auto;
+}
+
+@media (max-width: 480px) {
+  .evento-card {
+    gap: 12px;
+  }
+
+  .evento-flyer {
+    flex-basis: 64px;
+    width: 64px;
+    height: 96px;
+  }
+
+  .evento-encabezado h3 {
+    font-size: 12px;
+  }
+}
+
+p-tabview a {
+  color: #111111;
+  font-weight: 300;
+}
+
+p-tabview a:hover,
+a:focus {
+  color: #fc450d;
+}
+
+a:hover,
+a:focus {
+  color: #111111;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: #ffffff;
+  border-color: #fc450d;
+  color: #fc450d;
+}

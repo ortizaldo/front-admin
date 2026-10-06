@@ -40,16 +40,61 @@
                 <full-calendar [options]="calendarOptions"></full-calendar>
               </p-tabPanel>
               <p-tabPanel header="Lista">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
-                </p>
+                <div class="eventos-lista">
+                  @for (evento of allEvents; track evento._id) {
+                  <article class="evento-card">
+                    <div class="evento-flyer">
+                      @if (evento.flyer) {
+                      <img [src]="evento.flyer?.url" [alt]="'Flyer de ' + evento.nombre" />
+                      } @else {
+                      <div class="evento-sin-flyer">
+                        <i class="pi pi-image"></i>
+                        <span>Sin flyer</span>
+                      </div>
+                      }
+                    </div>
+
+                    <div class="evento-info">
+                      <div class="evento-encabezado">
+                        <h3>{{ evento.nombre }}</h3>
+                        <span class="evento-estado" [class.publicado]="evento.status === 'PUBLISHED'"
+                          [class.abierto]="evento.status === 'OPEN'" [class.borrador]="evento.status === 'DRAFT'">
+                          {{ evento.status }}
+                        </span>
+                      </div>
+
+                      <p class="evento-fecha">
+                        {{ evento.fechaEvento | date: "d 'de' MMMM 'de' y · h:mm a" : '' : 'es-MX' }}
+                      </p>
+
+                      <p class="evento-detalle">
+                        {{ evento.arma === '1' ? '1 pulgada' : evento.arma + ' de filo' }}
+                        · {{ evento.numGallos }} gallos
+                      </p>
+
+                      <p class="evento-peso">
+                        {{ evento.pesoMinimo }}–{{ evento.pesoMaximo }} g
+                        · tolerancia {{ evento.tolerancia }} g
+                      </p>
+
+                      <p class="evento-creditos">
+                        {{ evento.creditos | number: '1.0-0' }} créditos
+                      </p>
+                    </div>
+
+                    <div class="evento-acciones">
+                      <p-menu #menu [model]="obtenerAcciones(evento)" [popup]="true" appendTo="body" />
+
+                      <button pButton type="button" icon="pi pi-ellipsis-v"
+                        class="p-button-text p-button-rounded p-button-secondary"
+                        (click)="abrirMenu($event, evento, menuEventos)">
+                      </button>
+                    </div>
+                  </article>
+                  }
+                </div>
+                <p-menu #menuEventos [model]="menuItems" [popup]="true" appendTo="body">
+                </p-menu>
               </p-tabPanel>
             </p-tabView>
           </div>
@@ -91,7 +136,7 @@
         {{ getStatusLabel(selectedEvent.status) }}
       </span>
       <br>
-      <a href="{{ selectedEvent.flyer?.url }}" target="_blank">Click para ver el flyer</a>
+      <a *ngIf="selectedEvent.flyer?.url" [href]="selectedEvent.flyer?.url" target="_blank">Click para ver el flyer</a>
 
     </div>
 
@@ -117,6 +162,7 @@
 </div>
 
 <p-sidebar #sidebarRef [(visible)]="sidebarVisible" position="right" [style]="{ width: '600px' }" [dismissible]="false">
-  <app-event-form [flyerPreview]="flyerPreview" [title]="title" [data]="eventoSeleccionado" [eventForm]="eventForm"
-    (save)="onSave($event)" (saveDraftEM)="onSaveDraft($event)" (publish)="onPublish($event)"></app-event-form>
+  <app-event-form [flyerPreview]="flyerPreview" [title]="title" [edit]="edit" [data]="eventoSeleccionado"
+    [eventForm]="eventForm" (save)="onSave($event)" (saveDraftEM)="onSaveDraft($event)"
+    (publish)="onPublish($event)"></app-event-form>
 </p-sidebar>

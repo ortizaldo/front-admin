@@ -21,6 +21,7 @@ export class EventFormComponent implements OnInit {
   @Input() eventForm: UntypedFormGroup;
 
   @Input() title: string = "Nuevo evento";
+  @Input() edit: boolean = false;
   @Input() flyerPreview: string | null = null;
 
   files = [];
@@ -119,8 +120,8 @@ export class EventFormComponent implements OnInit {
   saveDraft() {
     this.saveDraftEM.emit({
       form: this.eventForm.value,
-      _id: this.data._id,
-      editing: this.data._id ? true : false,
+      _id: this.edit ? this.data._id : null,
+      editing: this.edit,
     });
   }
 
