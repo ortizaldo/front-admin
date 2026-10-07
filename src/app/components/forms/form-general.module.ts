@@ -35,6 +35,7 @@ import {
 } from "angular-bootstrap-datetimepicker";
 import { UserAddComponent } from "./user-add/user-add.component";
 import { EventFormComponent } from "./event-form/event-form.component";
+import { EventDetailComponent } from "./event-detail/event-detail.component";
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { EventFormComponent } from "./event-form/event-form.component";
     BrookerComponent,
     BetStubComponent,
     EventFormComponent,
+    EventDetailComponent,
   ],
   // declarations: [SimpleDatatable],
   exports: [
@@ -86,6 +88,7 @@ import { EventFormComponent } from "./event-form/event-form.component";
     BetStubComponent,
     UserAddComponent,
     EventFormComponent,
+    EventDetailComponent,
   ],
 })
 export class FormGralModule {}
