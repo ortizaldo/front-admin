@@ -1,206 +1,163 @@
-<div class="container-fluid">
-  <div class="pt-2">
-    <form class="event-form" [formGroup]="eventForm" (ngSubmit)="saveEvent()">
-      <!-- HEADER -->
-      <div class="event-form__header">
-        <div>
-          <h2>{{ title }}</h2>
-          <p>Configura la información general del evento.</p>
+<section class="event-detail" *ngIf="evento">
+  <header class="event-header">
+    <div class="event-header__content">
+      <div class="event-header__title">
+        <h1>{{ evento.nombre }}</h1>
+
+        <p-tag [value]="getStatusLabel(evento.status)" [severity]="getStatusSeverity(evento.status)" [rounded]="true">
+        </p-tag>
+      </div>
+
+      <p class="event-header__date">
+        {{ evento.fechaEvento | date: "d 'de' MMMM 'de' y" }}
+      </p>
+    </div>
+  </header>
+
+  <div class="event-content">
+    <section class="event-summary">
+      <div class="event-flyer">
+        @if (evento.flyer && evento.flyer.url) {
+        <img [src]="evento.flyer.url" [alt]="'Flyer de ' + evento.nombre" />
+        } @else {
+        <div class="event-flyer__empty">
+          <i class="pi pi-image"></i>
+          <span>Sin flyer</span>
         </div>
+        }
       </div>
 
-      <div class="event-form__content">
-        <!-- INFORMACIÓN GENERAL -->
-        <section class="form-section">
-          <h3>Información general</h3>
+      <div class="event-information">
+        <h2>Información del evento</h2>
 
-          <div class="form-grid">
-            <!-- Nombre -->
-            <div class="form-field">
-              <label for="nombre">
-                Nombre del evento <span class="required">*</span>
-              </label>
-
-              <input id="nombre" type="text" pInputText formControlName="nombre" placeholder="Ej. Master Breeder VIP" />
-
-              <small class="field-error" *ngIf="
-                  eventForm.get('nombre')?.invalid &&
-                  eventForm.get('nombre')?.touched
-                ">
-                El nombre del evento es obligatorio.
-              </small>
-            </div>
-
-            <!-- Número de gallos -->
-            <div class="form-field">
-              <label for="numGallos">
-                Número de gallos <span class="required">*</span>
-              </label>
-
-              <p-inputNumber inputId="numGallos" formControlName="numGallos" [useGrouping]="false" [min]="1"
-                [showButtons]="false" />
-            </div>
-
-            <!-- Tipo evento -->
-            <div class="form-field">
-              <label for="tipoEvento">
-                Tipo de evento <span class="required">*</span>
-              </label>
-
-              <p-dropdown inputId="tipoEvento" formControlName="tipoEvento" [options]="eventTypes" optionLabel="name"
-                optionValue="value" placeholder="Selecciona un tipo" [showClear]="true" appendTo="body" />
-            </div>
-
-            <!-- Arma -->
-            <div class="form-field">
-              <label for="arma"> Arma <span class="required">*</span> </label>
-
-              <p-dropdown inputId="arma" formControlName="arma" [options]="weapons" optionLabel="name"
-                optionValue="value" placeholder="Selecciona el arma" appendTo="body" />
-            </div>
-          </div>
-        </section>
-
-        <!-- PESOS -->
-        <section class="form-section">
-          <h3>Pesos</h3>
-
-          <div class="form-grid">
-            <div class="form-field">
-              <label for="pesoMinimo">Peso mínimo</label>
-
-              <p-inputNumber inputId="pesoMinimo" formControlName="pesoMinimo" [useGrouping]="false" suffix=" g"
-                [min]="0" />
-            </div>
-
-            <div class="form-field">
-              <label for="pesoMaximo">Peso máximo</label>
-
-              <p-inputNumber inputId="pesoMaximo" formControlName="pesoMaximo" [useGrouping]="false" suffix=" g"
-                [min]="0" />
-            </div>
-
-            <div class="form-field">
-              <label for="tolerancia">Tolerancia (g)</label>
-
-              <p-inputNumber inputId="tolerancia" formControlName="tolerancia" [useGrouping]="false" suffix=" g"
-                [min]="0" />
-            </div>
-          </div>
-        </section>
-
-        <!-- CRÉDITOS -->
-        <section class="form-section">
-          <h3>Créditos</h3>
-
-          <div class="form-grid">
-            <div class="form-field">
-              <label for="creditos">
-                Créditos <span class="required">*</span>
-              </label>
-
-              <p-inputNumber inputId="creditos" formControlName="creditos" mode="decimal" locale="es-MX"
-                [minFractionDigits]="0" [maxFractionDigits]="0" [min]="0" />
-            </div>
-
-            <div class="form-field">
-              <label for="peleaXDentro">Costo por pelea</label>
-
-              <p-inputNumber inputId="peleaXDentro" formControlName="peleaXDentro" mode="decimal" locale="es-MX"
-                [minFractionDigits]="0" [maxFractionDigits]="0" [min]="0" />
-            </div>
-          </div>
-        </section>
-
-        <!-- FECHA Y HORARIOS -->
-        <section class="form-section">
-          <h3>Fecha y horarios</h3>
-
-          <div class="form-grid">
-            <!-- Fecha -->
-            <div class="form-field">
-              <label for="fechaEvento">
-                Fecha del evento <span class="required">*</span>
-              </label>
-
-              <p-calendar inputId="fechaEvento" formControlName="fechaEvento" dateFormat="dd/mm/yy" [showIcon]="true"
-                appendTo="body" placeholder="DD/MM/AAAA" />
-            </div>
-
-            <!-- Inicio báscula -->
-            <div class="form-field">
-              <label for="horarioBasculaInicio">Inicio báscula</label>
-
-              <p-calendar inputId="horarioBasculaInicio" formControlName="horarioBasculaInicio" [timeOnly]="true"
-                hourFormat="12" appendTo="body" />
-            </div>
-
-            <!-- Fin báscula -->
-            <div class="form-field">
-              <label for="horarioBasculaFin">Fin báscula</label>
-
-              <p-calendar inputId="horarioBasculaFin" formControlName="horarioBasculaFin" [timeOnly]="true"
-                hourFormat="12" appendTo="body" />
-            </div>
-          </div>
-        </section>
-
-        <!-- FLYER -->
-        <section class="form-section flyer-section">
-          <h3>Flyer del evento</h3>
-
-          <div class="flyer-upload" [class.flyer-upload--dragging]="isDragging"
-            [class.flyer-upload--has-image]="flyerPreview" (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-            <!-- Preview -->
-            <ng-container *ngIf="flyerPreview; else uploadPlaceholder">
-              <div class="flyer-preview">
-                <img [src]="flyerPreview" alt="Flyer del evento" />
-
-                <div class="flyer-preview__actions">
-                  <button pButton type="button" icon="pi pi-trash" label="Eliminar"
-                    class="p-button-sm p-button-danger p-button-outlined" (click)="removeFlyer()"></button>
-                </div>
-              </div>
-            </ng-container>
-
-            <!-- Placeholder -->
-            <ng-template #uploadPlaceholder>
-              <label class="block font-semibold mb-2 ml-2 mt-1">Flyer del evento</label>
-
-              <div class="flyer-field">
-                <img *ngIf="flyerPreview" [src]="flyerPreview" alt="Vista previa del flyer" class="flyer-preview" />
-
-                <div class="flyer-actions">
-                  <p-fileUpload mode="basic" name="flyer" accept="image/png,image/jpeg,image/webp"
-                    [maxFileSize]="5000000" chooseLabel="Seleccionar imagen" chooseIcon="pi pi-image"
-                    [customUpload]="true" (onSelect)="onFlyerSelect($event)"></p-fileUpload>
-
-                  <button *ngIf="flyerPreview" pButton type="button" label="Quitar" icon="pi pi-trash"
-                    class="p-button-text p-button-danger" (click)="removeFlyer()"></button>
-                </div>
-
-                <small>JPG, PNG o WebP · máximo 5 MB</small>
-              </div>
-            </ng-template>
-
-            <!-- <input #fileInput hidden type="file" accept="image/png,image/jpeg" (change)="onFlyerSelected($event)" /> -->
+        <dl class="information-list">
+          <div class="information-row">
+            <dt>Modalidad</dt>
+            <dd>{{ getArmaLabel(evento.arma) }}</dd>
           </div>
 
-          <small class="field-error" *ngIf="flyerError">
-            {{ flyerError }}
-          </small>
-        </section>
+          <div class="information-row">
+            <dt>Participación</dt>
+            <dd>
+              {{ evento.numGallos }} gallos ·
+              {{ evento.numRondas }} rondas
+            </dd>
+          </div>
+
+          <div class="information-row">
+            <dt>Pesos</dt>
+            <dd>
+              {{ evento.pesoMinimo }}–{{ evento.pesoMaximo }} g
+            </dd>
+          </div>
+
+          <div class="information-row">
+            <dt>Tolerancia</dt>
+            <dd>{{ evento.tolerancia }} g</dd>
+          </div>
+
+          <div class="information-row">
+            <dt>Créditos</dt>
+            <dd class="credits">
+              {{ evento.creditos | number: '1.0-0' }}
+            </dd>
+          </div>
+        </dl>
       </div>
+    </section>
 
-      <!-- FOOTER -->
-      <div class="event-form__footer">
-        <button pButton type="button" label="Guardar borrador" class="p-button-outlined" icon="pi pi-save"
-          (click)="saveDraft()" [disabled]="saving"></button>
+    <p-divider></p-divider>
 
-        <button *ngIf="data && data._id" pButton type="button" label="Publicar evento" icon="pi pi-check"
-          [loading]="saving" [disabled]="eventForm.invalid" (click)="publishEvent()"></button>
+    <section class="operation-section">
+      <h2>Operación del evento</h2>
+
+      <div class="operation-grid">
+        <article class="operation-card">
+          <div class="operation-card__header">
+            <span class="operation-card__number">01</span>
+            <h3>Participantes</h3>
+          </div>
+
+          <p>{{ evento.totalParticipantes }} registrados</p>
+
+          <button pButton type="button" label="Administrar" class="p-button-outlined p-button-secondary"
+            (click)="administrarParticipantes()">
+          </button>
+        </article>
+
+        <article class="operation-card">
+          <div class="operation-card__header">
+            <span class="operation-card__number">02</span>
+            <h3>Rondas</h3>
+          </div>
+
+          <p>{{ evento.numRondas }} rondas</p>
+
+          <button pButton type="button" label="Administrar" class="p-button-outlined p-button-secondary"
+            (click)="administrarRondas()">
+          </button>
+        </article>
+
+        <article class="operation-card">
+          <div class="operation-card__header">
+            <span class="operation-card__number">03</span>
+            <h3>Peleas</h3>
+          </div>
+
+          <p>
+            {{ evento.peleasFinalizadas }} /
+            {{ evento.totalPeleas }} finalizadas
+          </p>
+
+          <button pButton type="button" label="Administrar" class="p-button-outlined p-button-secondary"
+            (click)="administrarPeleas()">
+          </button>
+        </article>
+
+        <article class="operation-card operation-card--primary"
+          [class.operation-card--active]="evento.operacionIniciada">
+
+          <div class="operation-card__header">
+            <span class="operation-card__number">04</span>
+            <h3>Operación</h3>
+          </div>
+
+          @if (evento.operacionIniciada) {
+          <p class="operation-status operation-status--active">
+            <span class="status-dot"></span>
+            Operación en curso
+          </p>
+
+          <button pButton type="button" label="Continuar" icon="pi pi-play" class="operation-button"
+            (click)="continuarOperacion()">
+          </button>
+          } @else {
+          <p class="operation-status">
+            Iniciar operación
+          </p>
+
+          <button pButton type="button" label="Iniciar" class="operation-button" [disabled]="!puedeIniciarOperacion"
+            (click)="confirmarInicioOperacion()">
+          </button>
+          }
+        </article>
       </div>
-    </form>
+    </section>
+
+    <section class="administrative-actions">
+      <h2>Acciones administrativas</h2>
+
+      <div class="administrative-actions__buttons">
+        <button pButton type="button" label="Ver participantes" class="p-button-outlined p-button-secondary"
+          (click)="verParticipantes()">
+        </button>
+
+        <button pButton type="button" label="Cancelar evento" class="p-button-outlined p-button-danger"
+          (click)="confirmarCancelacion()">
+        </button>
+      </div>
+    </section>
   </div>
-</div>
+</section>
+
+<p-confirmDialog></p-confirmDialog>

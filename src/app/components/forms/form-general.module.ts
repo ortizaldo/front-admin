@@ -36,6 +36,8 @@ import {
 import { UserAddComponent } from "./user-add/user-add.component";
 import { EventFormComponent } from "./event-form/event-form.component";
 import { EventDetailComponent } from "./event-detail/event-detail.component";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { DividerModule } from "primeng/divider";
 
 @NgModule({
   imports: [
@@ -59,6 +61,9 @@ import { EventDetailComponent } from "./event-detail/event-detail.component";
     BadgeModule,
     ProgressBarModule,
     ToastModule,
+    ConfirmDialogModule,
+    DividerModule,
+    TagModule,
   ],
   declarations: [
     UserReadComponent,

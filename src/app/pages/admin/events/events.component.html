@@ -166,3 +166,8 @@
     [eventForm]="eventForm" (save)="onSave($event)" (saveDraftEM)="onSaveDraft($event)"
     (publish)="onPublish($event)"></app-event-form>
 </p-sidebar>
+
+<p-sidebar #sidebarRefPub [(visible)]="sidebarVisiblePub" position="right" [style]="{ width: '600px' }"
+  [dismissible]="false">
+  <app-event-detail [evento]="eventoSeleccionado"></app-event-detail>
+</p-sidebar>

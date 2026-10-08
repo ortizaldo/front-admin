@@ -195,11 +195,22 @@
 
       <!-- FOOTER -->
       <div class="event-form__footer">
-        <button pButton type="button" label="Guardar borrador" class="p-button-outlined" icon="pi pi-save"
-          (click)="saveDraft()" [disabled]="saving"></button>
+        <div *ngIf="data && data._id">
+          <button *ngIf="data.status === 'DRAFT'" pButton type="button" label="Guardar borrador"
+            class="p-button-outlined" icon="pi pi-save" (click)="saveDraft()" [disabled]="saving"></button>
+          &nbsp;
+          <button *ngIf="data.status === 'DRAFT'" pButton type="button" label="Publicar evento" icon="pi pi-check"
+            [loading]="saving" [disabled]="eventForm.invalid" (click)="publishEvent()"></button>
 
-        <button *ngIf="data && data._id" pButton type="button" label="Publicar evento" icon="pi pi-check"
-          [loading]="saving" [disabled]="eventForm.invalid" (click)="publishEvent()"></button>
+          <button *ngIf="data.status === 'PUBLISHED'" pButton type="button" class="p-button-outlined"
+            label="Guardar Cambios" icon="pi pi-save" [loading]="saving" [disabled]="eventForm.invalid"
+            (click)="publishEvent()"></button>
+        </div>
+
+        <div *ngIf="!data || !data._id">
+          <button pButton type="button" label="Guardar borrador" class="p-button-outlined" icon="pi pi-save"
+            (click)="saveDraft()" [disabled]="saving"></button>
+        </div>
       </div>
     </form>
   </div>

@@ -110,6 +110,7 @@ export class EventFormComponent implements OnInit {
     this.flyerFile = null;
     this.flyerPreview = null;
   }
+
   onDrop(event: any) {}
   onDragLeave(event: any) {}
   onDragOver(event: any) {}
@@ -117,6 +118,7 @@ export class EventFormComponent implements OnInit {
   close() {
     this.closeForm.emit(true);
   }
+
   saveDraft() {
     this.saveDraftEM.emit({
       form: this.eventForm.value,
@@ -147,15 +149,6 @@ export class EventFormComponent implements OnInit {
     clear();
     this.totalSize = 0;
     this.totalSizePercent = 0;
-  }
-
-  onTemplatedUpload() {
-    // this.messageService.add({
-    //   severity: "info",
-    //   summary: "Success",
-    //   detail: "File Uploaded",
-    //   life: 3000,
-    // });
   }
 
   onSelectedFiles(event) {

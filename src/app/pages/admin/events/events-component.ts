@@ -32,7 +32,7 @@ import moment from "moment";
 import { Sidebar } from "primeng/sidebar";
 import localeEsMx from "@angular/common/locales/es-MX";
 import { registerLocaleData } from "@angular/common";
-import { Menu } from "primeng/menu/public_api";
+import { Menu } from "primeng/menu";
 
 registerLocaleData(localeEsMx);
 
@@ -45,6 +45,7 @@ registerLocaleData(localeEsMx);
 export class EventsComponent implements OnInit {
   eventForm!: UntypedFormGroup;
   sidebarVisible: boolean = false;
+  sidebarVisiblePub: boolean = false;
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, InteractionPlugin],
     initialView: "dayGridMonth",
@@ -116,6 +117,7 @@ export class EventsComponent implements OnInit {
   private hidePreviewTimeout: any;
 
   @ViewChild("sidebarRef") sidebarRef!: Sidebar;
+  @ViewChild("sidebarRefPub") sidebarRefPub!: Sidebar;
   @ViewChild("menu") menu!: MenuItem;
   constructor(
     private fb: UntypedFormBuilder,
@@ -169,16 +171,22 @@ export class EventsComponent implements OnInit {
     const dataEvent = this.currentEvents.find(
       (event) => event.id == data.event._def.publicId,
     );
-    this.getEvent(dataEvent);
+    this.getEvent(dataEvent, false, true);
   }
 
   openEditSidebar(event: any) {
     console.log("🚀 ~ EventsComponent ~ openEditSidebar ~ event:", event);
     event.id = event._id || event.id;
-    this.getEvent(event);
+    this.getEvent(event, false, true);
   }
 
-  getEvent(event: any) {
+  openOperativeSidebar(event: any) {
+    console.log("🚀 ~ EventsComponent ~ openOperativeSidebar ~ event:", event);
+    event.id = event._id || event.id;
+    this.getEvent(event, true, false);
+  }
+
+  getEvent(event: any, operative = false, form = false) {
     const params = {
       select: [],
       populate: [],
@@ -191,29 +199,37 @@ export class EventsComponent implements OnInit {
           this.eventoSeleccionado = _data;
           this.flyerPreview = _data.flyer?.url || null;
           this.title = "Editar evento";
+
           this.edit = true;
-          this.sidebarVisible = true;
+
+          this.sidebarVisible = form;
 
           // console.log(utcDate);
-          this.eventForm.patchValue({
-            nombre: _data.nombre,
-            numGallos: _data.numGallos,
-            tipoEvento: _data.tipoEvento,
-            arma: _data.arma,
-            pesoMinimo: _data.pesoMinimo,
-            pesoMaximo: _data.pesoMaximo,
-            tolerancia: _data.tolerancia,
-            creditos: _data.creditos,
-            peleaXDentro: _data.peleaXDentro,
-            fechaEvento: new Date(_data.fechaEvento),
-            horarioBasculaInicio: this.parseTime12Hours(
-              this.formatHour(new Date(_data.horarioBasculaInicio)),
-            ),
-            horarioBasculaFin: this.parseTime12Hours(
-              this.formatHour(new Date(_data.horarioBasculaFin)),
-            ),
-            flyer: _data.flyer,
-          });
+          if (operative) {
+            this.sidebarVisiblePub = true;
+          }
+
+          if (form) {
+            this.eventForm.patchValue({
+              nombre: _data.nombre,
+              numGallos: _data.numGallos,
+              tipoEvento: _data.tipoEvento,
+              arma: _data.arma,
+              pesoMinimo: _data.pesoMinimo,
+              pesoMaximo: _data.pesoMaximo,
+              tolerancia: _data.tolerancia,
+              creditos: _data.creditos,
+              peleaXDentro: _data.peleaXDentro,
+              fechaEvento: new Date(_data.fechaEvento),
+              horarioBasculaInicio: this.parseTime12Hours(
+                this.formatHour(new Date(_data.horarioBasculaInicio)),
+              ),
+              horarioBasculaFin: this.parseTime12Hours(
+                this.formatHour(new Date(_data.horarioBasculaFin)),
+              ),
+              flyer: _data.flyer,
+            });
+          }
         }),
         catchError((err) => {
           return err;
@@ -692,7 +708,6 @@ export class EventsComponent implements OnInit {
         label: "Editar",
         icon: "pi pi-pencil",
         command: () => {
-          console.log("Editar:", this.eventoSeleccionado);
           this.openEditSidebar(this.eventoSeleccionado);
         },
       },
@@ -739,6 +754,16 @@ export class EventsComponent implements OnInit {
                 .subscribe();
             },
           });
+        },
+      });
+    }
+
+    if (evento.status == "PUBLISHED") {
+      this.menuItems.push({
+        label: "Iniciar operación",
+        icon: "pi pi-briefcase",
+        command: () => {
+          this.openOperativeSidebar(this.eventoSeleccionado);
         },
       });
     }
