@@ -1,4 +1,4 @@
-<p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
+<!-- <p-contextMenu #contextMenuDT [model]="items"></p-contextMenu> -->
 
 <div class="row">
   <p-table #dt [value]="data" [(selection)]="selectedData" dataKey="_id" styleClass="p-datatable-customers"
@@ -23,14 +23,9 @@
               <span>Nuevo Participante</span>
             </button>
 
-            <button *ngIf="export" type="button" class="btn users-page-header__secondary-btn">
+            <button type="file" class="btn users-page-header__secondary-btn">
               <i class="pi pi-upload"></i>
               <span>Importar</span>
-            </button>
-
-            <button *ngIf="export" type="button" class="btn users-page-header__secondary-btn">
-              <i class="pi pi-download"></i>
-              <span>Exportar</span>
             </button>
           </div>
         </div>
@@ -74,16 +69,6 @@
         </td>
 
         <td ngbDropdown>
-          <button type="button" class="btn btn-info btn-fab btn-icon btn-round" (click)="editSelected(data)">
-            <i class="pi pi-pencil"></i>
-          </button>
-        </td>
-
-        <td ngbDropdown>
-          <button type="button" class="btn btn-info btn-fab btn-icon btn-round" (click)="editSelected(data)">
-            <i class="pi pi-pencil"></i>
-          </button>
-          &nbsp;
           <button type="button" class="btn btn-danger btn-fab btn-icon btn-round" (click)="delete(data)">
             <i class="pi pi-trash"></i>
           </button>

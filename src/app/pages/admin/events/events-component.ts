@@ -94,6 +94,7 @@ export class EventsComponent implements OnInit {
   ];
 
   allEvents: any[] = [];
+  roosters: any[] = [];
   currentEvents: any[] = [];
   selectedEvent: any = null;
 
@@ -107,7 +108,7 @@ export class EventsComponent implements OnInit {
 
   roostersDialog = false;
   isEditing = false;
-  headerDetails = "Listado de participantes del evento";
+  headerDetails = "";
 
   previewPosition = {
     top: 0,
@@ -346,10 +347,15 @@ export class EventsComponent implements OnInit {
       .subscribe();
   }
 
-  getRoosters(endpoint, select, populate) {
+  getRoosters(endpoint, select, populate, id) {
     let params = {
       select,
       populate,
+      filtersId: {
+        event: {
+          value: id,
+        },
+      },
       filters: {
         deleted: false,
       },
@@ -359,10 +365,10 @@ export class EventsComponent implements OnInit {
       .getMany(endpoint, null, params)
       .pipe(
         tap((data: any) => {
+          this.roosters = data.data;
           console.log(
-            "%cfront-admin/src/app/pages/admin/events/events-component.ts:362 data",
-            "color: #007acc;",
-            data,
+            "🚀 ~ EventsComponent ~ getRoosters ~ this.roosters:",
+            this.roosters,
           );
           this.roostersDialog = true;
         }),
@@ -817,16 +823,6 @@ export class EventsComponent implements OnInit {
   showParticipantes(cmd) {
     console.log("🚀 ~ EventsComponent ~ showParticipantes ~ cmd:", cmd);
     this.isEditing = false;
-    // const { openDialog } = cmd;
-    let params: any = {};
-    params = {
-      filtersId: {
-        event: {
-          value: cmd._id,
-        },
-      },
-      select: ["numero", "nombre", "_id"],
-    };
 
     const populate = [
       {
@@ -834,7 +830,7 @@ export class EventsComponent implements OnInit {
         select: "nombre",
       },
     ];
-    this.getRoosters("rooster", params, populate);
+    this.getRoosters("rooster", ["numero", "nombre", "_id"], populate, cmd._id);
   }
 
   hideDialog() {
