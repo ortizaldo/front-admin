@@ -1,0 +1,71 @@
+// .p-dialog .p-dialog-footer {
+//   border-top: 1px solid #7d86c3;
+//   background: #4b5179;
+//   color: #dddddd;
+//   padding: .5rem;
+//   text-align: right;
+//   border-bottom-right-radius: 3px;
+//   border-bottom-left-radius: 3px;
+// }
+
+// .p-dialog .p-dialog-header {
+//   border-bottom: 1px solid #7d86c3;
+//   background: #4b5179;
+//   color: #dddddd;
+//   padding: .5rem;
+//   border-top-right-radius: 3px;
+//   border-top-left-radius: 3px;
+// }
+
+// .p-dialog .p-dialog-content {
+//   background: #4b5179;
+//   color: #dddddd;
+//   padding: 1.2rem;
+// }
+
+// app-dialog-form .p-dropdown .p-dropdown-trigger {
+//     background: transparent;
+//       color: #6c757d;
+//       width: 2.357rem;
+//       border-top-right-radius: 3px;
+//       border-bottom-right-radius: 3px;
+//       margin-top: -2rem;
+//       margin-left: 27rem;
+//   }
+
+/* configurar-compadres.component.css */
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.partido .team {
+  font-weight: 600;
+}
+
+.grupo .fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.grupo .nombre {
+  font-weight: 700;
+}
+.badge {
+  padding: 0 0.5rem;
+  border-radius: 1rem;
+  background: #eef;
+  font-size: 0.8rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.chip {
+  background: #f3f4f6;
+  border-radius: 9999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.8rem;
+}

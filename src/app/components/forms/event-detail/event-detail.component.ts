@@ -35,6 +35,7 @@ export class EventDetailComponent implements OnInit {
   @Output() startOperation = new EventEmitter<EventoDetalle>();
 
   @Output() cancelEvent = new EventEmitter<EventoDetalle>();
+  @Output() verParticipantes = new EventEmitter<EventoDetalle>();
 
   constructor(
     private readonly router: Router,
@@ -102,7 +103,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   administrarParticipantes(): void {
-    this.router.navigate(["/admin/eventos", this.evento._id, "participantes"]);
+    // this.router.navigate(["/admin/eventos", this.evento._id, "participantes"]);
   }
 
   administrarRondas(): void {
@@ -137,8 +138,12 @@ export class EventDetailComponent implements OnInit {
     this.router.navigate(["/admin/eventos", this.evento._id, "editar"]);
   }
 
-  verParticipantes(): void {
-    this.administrarParticipantes();
+  showParticipantes(): void {
+    console.log(
+      "🚀 ~ EventDetailComponent ~ showParticipantes ~ this.evento:",
+      this.evento,
+    );
+    this.verParticipantes.emit(this.evento);
   }
 
   confirmarCancelacion(): void {

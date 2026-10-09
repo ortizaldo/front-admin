@@ -169,5 +169,26 @@
 
 <p-sidebar #sidebarRefPub [(visible)]="sidebarVisiblePub" position="right" [style]="{ width: '600px' }"
   [dismissible]="false">
-  <app-event-detail [evento]="eventoSeleccionado"></app-event-detail>
+  <app-event-detail [evento]="eventoSeleccionado" (verParticipantes)="showParticipantes($event)"></app-event-detail>
 </p-sidebar>
+
+<!-- dialogo de participantes -->
+<app-dialog-participantes [openDialog]="roostersDialog" [size]="{ width: '50vw' }" [headerDetails]="headerDetails"
+  (closeDialog)="hideDialog()" [model]="myModel">
+</app-dialog-participantes>
+
+<ng-template #catalogTemplate>
+  <div class="row">
+    <div class="col-12">
+      <!-- <app-participantes-datatable *ngIf="data" [loading]="false" [title]="title" [emptyMessage]="emptyMessage" [data]="data"
+        [columns]="columns" [selectedData]="selectedAny" [items]="itemsDT" (dialogChange)="openNew($event)"
+        (deleteRecords)="deleteSelected($event)" (editRecords)="editSelected($event)"></app-participantes-datatable> -->
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #buttonsTemplate>
+  <button pButton pRipple label="Cancel" icon="pi pi-trash" class="p-button-danger" (click)="hideDialog()"></button>
+  <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-success p-mr-2" type="submit"
+    [disabled]="catalogForm.invalid" (click)="!isEditing ? save() : edit()"></button>
+</ng-template>

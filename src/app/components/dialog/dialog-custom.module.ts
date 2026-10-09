@@ -9,6 +9,7 @@ import { DialogModule } from "primeng/dialog";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogFormComponent } from "./dialog-form/dialog-form.component";
 import { DialogCompadresComponent } from "./dialog-compadres/dialog-compadres.component";
+import { DialogParticipantesComponent } from "./dialog-participantes/dialog-participantes.component";
 
 @NgModule({
   imports: [
@@ -20,7 +21,15 @@ import { DialogCompadresComponent } from "./dialog-compadres/dialog-compadres.co
     ButtonModule,
   ],
   providers: [ConfirmationService],
-  declarations: [DialogFormComponent, DialogCompadresComponent],
-  exports: [DialogFormComponent, DialogCompadresComponent],
+  declarations: [
+    DialogFormComponent,
+    DialogCompadresComponent,
+    DialogParticipantesComponent,
+  ],
+  exports: [
+    DialogFormComponent,
+    DialogCompadresComponent,
+    DialogParticipantesComponent,
+  ],
 })
 export class DialogCustomModule {}

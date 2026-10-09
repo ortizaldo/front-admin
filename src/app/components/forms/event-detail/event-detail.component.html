@@ -81,7 +81,7 @@
           <p>{{ evento.totalParticipantes }} registrados</p>
 
           <button pButton type="button" label="Administrar" class="p-button-outlined p-button-secondary"
-            (click)="administrarParticipantes()">
+            (click)="showParticipantes()">
           </button>
         </article>
 
@@ -148,10 +148,6 @@
       <h2>Acciones administrativas</h2>
 
       <div class="administrative-actions__buttons">
-        <button pButton type="button" label="Ver participantes" class="p-button-outlined p-button-secondary"
-          (click)="verParticipantes()">
-        </button>
-
         <button pButton type="button" label="Cancelar evento" class="p-button-outlined p-button-danger"
           (click)="confirmarCancelacion()">
         </button>

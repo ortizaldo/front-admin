@@ -31,6 +31,7 @@ import { AvatarGroupModule } from "primeng/avatargroup";
 import { ErrorPipe } from "src/app/utils/error-pipe";
 import { UsersDatatable } from "./users-datatable/users-datatable.component";
 import { SplitButtonModule } from "primeng/splitbutton";
+import { ParticipantesDatatable } from "./participantes-datatable/participantes-datatable.component";
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
     UsersDatatable,
     WeightPipe,
     ErrorPipe,
+    ParticipantesDatatable,
   ],
   exports: [
     SimpleDatatable,
@@ -75,6 +77,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
     UsersDatatable,
     WeightPipe,
     ErrorPipe,
+    ParticipantesDatatable,
   ],
   providers: [MessageService, ConfirmationService],
 })

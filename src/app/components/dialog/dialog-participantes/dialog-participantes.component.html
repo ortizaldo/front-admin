@@ -1,0 +1,12 @@
+<p-dialog
+  [(visible)]="openDialog"
+  [style]="size"
+  header="{{ headerDetails }}"
+  [modal]="true"
+  (onHide)="hideDialog()"
+  styleClass="p-fluid"
+>
+  <ng-container *ngTemplateOutlet="model.template"></ng-container>
+</p-dialog>
+
+<!-- <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog> -->

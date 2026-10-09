@@ -105,6 +105,10 @@ export class EventsComponent implements OnInit {
   edit = false;
   title = "";
 
+  roostersDialog = false;
+  isEditing = false;
+  headerDetails = "Listado de participantes del evento";
+
   previewPosition = {
     top: 0,
     left: 0,
@@ -114,11 +118,18 @@ export class EventsComponent implements OnInit {
 
   menuItems: MenuItem[] = [];
 
+  myModel = {};
+
   private hidePreviewTimeout: any;
 
   @ViewChild("sidebarRef") sidebarRef!: Sidebar;
   @ViewChild("sidebarRefPub") sidebarRefPub!: Sidebar;
   @ViewChild("menu") menu!: MenuItem;
+
+  @ViewChild("catalogTemplate", { static: true })
+  catalogTemplate: TemplateRef<any>;
+  @ViewChild("buttonsTemplate", { static: true })
+  buttonsTemplate: TemplateRef<any>;
   constructor(
     private fb: UntypedFormBuilder,
     private changeDetector: ChangeDetectorRef,
@@ -159,6 +170,11 @@ export class EventsComponent implements OnInit {
 
       flyer: [null],
     });
+
+    this.myModel = {
+      template: this.catalogTemplate,
+      templateButtons: this.buttonsTemplate,
+    };
   }
 
   openSidebar() {
@@ -322,6 +338,33 @@ export class EventsComponent implements OnInit {
           self.calendarOptions.events = result;
           self.currentEvents = result;
           self.changeDetector.detectChanges();
+        }),
+        catchError((err) => {
+          return err;
+        }),
+      )
+      .subscribe();
+  }
+
+  getRoosters(endpoint, select, populate) {
+    let params = {
+      select,
+      populate,
+      filters: {
+        deleted: false,
+      },
+    };
+    const self = this;
+    this.crudService
+      .getMany(endpoint, null, params)
+      .pipe(
+        tap((data: any) => {
+          console.log(
+            "%cfront-admin/src/app/pages/admin/events/events-component.ts:362 data",
+            "color: #007acc;",
+            data,
+          );
+          this.roostersDialog = true;
         }),
         catchError((err) => {
           return err;
@@ -769,6 +812,35 @@ export class EventsComponent implements OnInit {
     }
 
     menu.toggle(event);
+  }
+
+  showParticipantes(cmd) {
+    console.log("🚀 ~ EventsComponent ~ showParticipantes ~ cmd:", cmd);
+    this.isEditing = false;
+    // const { openDialog } = cmd;
+    let params: any = {};
+    params = {
+      filtersId: {
+        event: {
+          value: cmd._id,
+        },
+      },
+      select: ["numero", "nombre", "_id"],
+    };
+
+    const populate = [
+      {
+        path: "event",
+        select: "nombre",
+      },
+    ];
+    this.getRoosters("rooster", params, populate);
+  }
+
+  hideDialog() {
+    // this.selectedAny = [];
+    // this.catalogForm.reset();
+    this.roostersDialog = false;
   }
 
   showNotification(
