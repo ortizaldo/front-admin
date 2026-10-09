@@ -19,7 +19,7 @@ import { TabViewModule } from "primeng/tabview";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { TeamsDatatable } from "./teams-datatable/teams-datatable.component";
 import { CorretajeDatatable } from "./corretaje-datatable/corretaje-datatable.component";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DividerModule } from "primeng/divider";
 import { CheckboxModule } from "primeng/checkbox";
 import { FileUploadModule } from "primeng/fileupload";
@@ -50,6 +50,7 @@ import { ParticipantesDatatable } from "./participantes-datatable/participantes-
     InputMaskModule,
     TabViewModule,
     InputNumberModule,
+    FormsModule,
     ReactiveFormsModule,
     ToastModule,
     DividerModule,

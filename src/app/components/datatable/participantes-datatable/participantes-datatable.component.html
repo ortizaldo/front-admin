@@ -1,9 +1,9 @@
-<!-- <p-contextMenu #contextMenuDT [model]="items"></p-contextMenu> -->
+<p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
 
 <div class="row">
-  <p-table #dt [value]="data" [(selection)]="selectedData" dataKey="_id" styleClass="p-datatable-customers"
-    [rowHover]="true" [scrollable]="false" [rows]="10" [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [loading]="loading"
+  <p-table #dt [value]="data" [(selection)]="selectedData" dataKey="_id"
+    styleClass="p-datatable-customers p-datatable-striped" [rowHover]="true" [scrollable]="false" [rows]="10"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [loading]="loading"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [filterDelay]="0"
     [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="globalFilter">
     <ng-template pTemplate="caption">
@@ -54,7 +54,7 @@
         <th class="th-custom" style="width: 8rem"></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-data>
+    <ng-template pTemplate="body" let-data let-editing="true" let-ri="rowIndex">
       <tr class="p-selectable-row">
         <td>
           <p-tableCheckbox [value]="data"></p-tableCheckbox>
@@ -64,8 +64,15 @@
           {{ data.numero }}
         </td>
 
-        <td>
-          {{ data.nombre }}
+        <td [pEditableColumn]="data.nombre" pEditableColumnField="nombre">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="data.nombre" />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ data.nombre }}
+            </ng-template>
+          </p-cellEditor>
         </td>
 
         <td ngbDropdown>
