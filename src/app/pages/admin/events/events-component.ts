@@ -365,9 +365,16 @@ export class EventsComponent implements OnInit {
       .getMany(endpoint, null, params)
       .pipe(
         tap((data: any) => {
-          this.roosters = data.data;
+          this.roosters = data.data.map((rooster: any, idx: number) => ({
+            ...rooster,
+            numero: idx + 1,
+            event: rooster.event?.nombre ?? "",
+          }));
+
+          // this.roosters = data.data;
           console.log(
-            "🚀 ~ EventsComponent ~ getRoosters ~ this.roosters:",
+            "%cfront-admin/src/app/pages/admin/events/events-component.ts:375 this.roosters",
+            "color: #007acc;",
             this.roosters,
           );
           this.roostersDialog = true;
@@ -377,6 +384,21 @@ export class EventsComponent implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  refreshRoosters() {
+    const populate = [
+      {
+        path: "event",
+        select: "nombre",
+      },
+    ];
+    this.getRoosters(
+      "rooster",
+      ["numero", "nombre", "_id"],
+      populate,
+      this.eventoSeleccionado._id,
+    );
   }
 
   getkpiEvents(endpoint, select, populate) {

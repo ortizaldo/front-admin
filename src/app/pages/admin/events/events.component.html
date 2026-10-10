@@ -180,9 +180,10 @@
 <ng-template #catalogTemplate>
   <div class="row">
     <div class="col-12">
-      <app-participantes-datatable [loading]="false" [data]="roosters" [selectedData]="selectedAny" [items]="itemsDT"
-        (dialogChange)="openNew($event)" (deleteRecords)="deleteSelected($event)"
-        (editRecords)="editSelected($event)"></app-participantes-datatable>
+      <app-participantes-datatable *ngIf="eventoSeleccionado" [event_id]="eventoSeleccionado._id" [loading]="false"
+        [data]="roosters" [selectedData]="selectedAny" [items]="itemsDT" (dialogChange)="openNew($event)"
+        (deleteRecords)="deleteSelected($event)" (editRecords)="editSelected($event)"
+        (refreshRoosters)="refreshRoosters($event)"></app-participantes-datatable>
     </div>
   </div>
 </ng-template>

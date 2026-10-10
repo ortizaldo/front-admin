@@ -54,11 +54,6 @@ export class UserAddComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(
-      "%cfront-admin/src/app/components/forms/user-add/user-add.component.ts:57 this.data",
-      "color: #007acc;",
-      this.data,
-    );
     this.getCountries();
   }
 

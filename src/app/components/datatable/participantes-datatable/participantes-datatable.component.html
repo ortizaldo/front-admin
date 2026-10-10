@@ -18,7 +18,7 @@
           </div>
 
           <div class="users-page-header__actions">
-            <button type="button" (click)="openDialog()" class="btn users-page-header__primary-btn">
+            <button type="button" (click)="showDialog()" class="btn users-page-header__primary-btn">
               <i class="pi pi-plus"></i>
               <span>Nuevo Participante</span>
             </button>
@@ -89,3 +89,23 @@
     </ng-template>
   </p-table>
 </div>
+
+<p-dialog header="Agregar Participante" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+  <!-- <span class="p-text-secondary block mb-5">Agregar Participante</span> -->
+  <form [formGroup]="roosterForm">
+    <div class="flex align-items-center gap-3 mb-5">
+      <label for="nombre" class="font-semibold w-6rem">Participante</label>
+      <input pInputText id="nombre" formControlName="nombre" class="flex-auto" autocomplete="off" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+      <div class="row">
+        <div class="col">
+          <p-button label="Cancel" severity="secondary" (onClick)="closeDialog()" />
+        </div>
+        <div class="col">
+          <p-button [disabled]="roosterForm.invalid" label="Save" (onClick)="saveRooster()" />
+        </div>
+      </div>
+    </div>
+  </form>
+</p-dialog>

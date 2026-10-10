@@ -32,6 +32,8 @@ import { ErrorPipe } from "src/app/utils/error-pipe";
 import { UsersDatatable } from "./users-datatable/users-datatable.component";
 import { SplitButtonModule } from "primeng/splitbutton";
 import { ParticipantesDatatable } from "./participantes-datatable/participantes-datatable.component";
+import { DialogModule } from "primeng/dialog";
+import { InputTextModule } from "primeng/inputtext";
 
 @NgModule({
   imports: [
@@ -61,6 +63,8 @@ import { ParticipantesDatatable } from "./participantes-datatable/participantes-
     AvatarModule,
     AvatarGroupModule,
     SplitButtonModule,
+    DialogModule,
+    InputTextModule,
   ],
   declarations: [
     SimpleDatatable,
