@@ -183,7 +183,7 @@
       <app-participantes-datatable *ngIf="eventoSeleccionado" [event_id]="eventoSeleccionado._id" [loading]="false"
         [data]="roosters" [selectedData]="selectedAny" [items]="itemsDT" (dialogChange)="openNew($event)"
         (deleteRecords)="deleteSelected($event)" (editRecords)="editSelected($event)"
-        (refreshRoosters)="refreshRoosters($event)"></app-participantes-datatable>
+        (refreshRoosters)="refreshRoosters($event)" appendTo="body"></app-participantes-datatable>
     </div>
   </div>
 </ng-template>

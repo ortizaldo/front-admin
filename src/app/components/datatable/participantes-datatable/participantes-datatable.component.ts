@@ -56,6 +56,7 @@ export class ParticipantesDatatable implements OnInit {
     private fb: UntypedFormBuilder,
     private primengConfig: PrimeNGConfig,
     private toastr: ToastrService,
+    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit() {
@@ -71,11 +72,26 @@ export class ParticipantesDatatable implements OnInit {
   }
 
   deleteSelected() {
-    this.deleteRecords.emit({ data: this.selectedData });
+    this.confirmationService.confirm({
+      message: "Estas seguro de eliminar este registro?",
+      header: "Eliminar registro",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        // this.deleteRecords.emit({ data: this.selectedData });
+      },
+    });
   }
 
   delete(data) {
-    this.deleteRecords.emit({ data: [data] });
+    this.confirmationService.confirm({
+      message: "Estas seguro de eliminar este registro?",
+      header: "Eliminar registro",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        this.deleteRecords.emit({ data: data });
+      },
+    });
+    // this.deleteRecords.emit({ data: [data] });
   }
 
   editSelected(data) {
@@ -93,15 +109,13 @@ export class ParticipantesDatatable implements OnInit {
 
   saveRooster() {
     const rooster = this.roosterForm.value;
-    rooster.event = this.event_id; // Replace with the actual event ID
+    rooster.event = this.event_id;
+    rooster.numero = this.data.length + 1;
+    rooster.fieldsDuplicated = ["nombre"];
     this.crudService
       .post(rooster, "rooster")
       .pipe(
         tap((data: any) => {
-          console.log(
-            "🚀 ~ ParticipantesDatatable ~ saveRooster ~ data:",
-            data.data,
-          );
           this.showNotification(
             "top",
             "right",
@@ -114,12 +128,11 @@ export class ParticipantesDatatable implements OnInit {
           this.roosterForm.reset();
         }),
         catchError((err) => {
-          const _err = err.error ? err.error.err : err;
           this.showNotification(
             "top",
             "right",
             "Error al registrar",
-            _err.code == 11000 ? "Registro duplicado" : _err.message,
+            err.error.code == 11000 ? "Registro duplicado" : err.error.message,
             "alert-warning",
           );
           return err;

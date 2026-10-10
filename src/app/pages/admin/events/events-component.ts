@@ -104,6 +104,7 @@ export class EventsComponent implements OnInit {
 
   previewVisible = false;
   edit = false;
+  loading = false;
   title = "";
 
   roostersDialog = false;
@@ -301,6 +302,69 @@ export class EventsComponent implements OnInit {
       hour12: true,
     };
     return new Intl.DateTimeFormat("es-MX", options).format(date);
+  }
+
+  deleteSelected(event) {
+    if (event.data.length > 1) {
+      let items = [];
+      event.data.forEach((item: any) => {
+        items.push(item._id);
+      });
+      this.deleteMany(items);
+    } else {
+      this.deleteOne(event.data[0]);
+    }
+  }
+
+  deleteMany(items: any[]) {
+    this.crudService
+      .deleteMany("rooster", items, {
+        filters: {
+          hardDelete: true,
+        },
+      })
+      .pipe(
+        tap((data: any) => {
+          this.loading = false;
+
+          this.messageService.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Registro Eliminado",
+            life: 3000,
+          });
+        }),
+        catchError((err) => {
+          this.loading = false;
+          return err;
+        }),
+      )
+      .subscribe();
+  }
+
+  deleteOne(item: any) {
+    this.crudService
+      .deleteOne("rooster", item._id, {
+        filters: {
+          hardDelete: true,
+        },
+      })
+      .pipe(
+        tap((data: any) => {
+          this.loading = false;
+          this.messageService.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Registro Eliminado",
+            life: 3000,
+          });
+        }),
+        catchError((err) => {
+          this.loading = false;
+          return err;
+        }),
+      )
+      .subscribe();
   }
 
   getEvents(endpoint, select, populate) {
