@@ -1,4 +1,5 @@
 <p-contextMenu #contextMenuDT [model]="items"></p-contextMenu>
+<p-confirmDialog appendTo="body" [autoZIndex]="true" [baseZIndex]="10000"></p-confirmDialog>
 
 <div class="row">
   <p-table #dt [value]="data" [(selection)]="selectedData" dataKey="_id"
@@ -22,11 +23,6 @@
               <i class="pi pi-plus"></i>
               <span>Nuevo Participante</span>
             </button>
-
-            <button type="file" class="btn users-page-header__secondary-btn">
-              <i class="pi pi-upload"></i>
-              <span>Importar</span>
-            </button>
           </div>
         </div>
 
@@ -37,6 +33,31 @@
             <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
               placeholder="Buscar por nombre..." />
           </span>
+        </div>
+
+        <div class="pt-2 users-page-header__actions">
+          <!-- <label for="fileInput" class="btn users-page-header__primary-btn">
+            Importar score desde PDF
+            <input class="hidden" id="fileInput" type="file" (change)="onFileSelected($event)" />
+          </label> -->
+
+          <div class="card flex justify-content-center">
+            <p-toast />
+            <p-fileUpload name="archivo[]" (onUpload)="onUpload($event)" [multiple]="false" accept="application/pdf"
+              maxFileSize="1000000" customUpload="true" (uploadHandler)="onUpload($event)">
+              <ng-template pTemplate="content">
+                <!-- <ul *ngIf="uploadedFiles.length">
+                  <li *ngFor="let file of uploadedFiles">
+                    {{ file.name }} - {{ file.size }} bytes
+                  </li>
+                </ul>-->
+              </ng-template>
+            </p-fileUpload>
+          </div>
+
+          <!-- <p-fileUpload mode="basic" name="flyer" styleClass="btn btn-sm users-page-header__primary-btn"
+            accept="application/pdf" [maxFileSize]="5000000" chooseLabel="Seleccionar archivo"
+            chooseIcon="pi-file-import" [customUpload]="true" (onSelect)="onFileSelected($event)"></p-fileUpload> -->
         </div>
       </div>
     </ng-template>

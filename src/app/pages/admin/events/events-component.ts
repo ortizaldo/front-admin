@@ -326,7 +326,7 @@ export class EventsComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.loading = false;
-
+          this.refreshRoosters();
           this.messageService.add({
             severity: "success",
             summary: "Successful",
@@ -352,6 +352,7 @@ export class EventsComponent implements OnInit {
       .pipe(
         tap((data: any) => {
           this.loading = false;
+          this.refreshRoosters();
           this.messageService.add({
             severity: "success",
             summary: "Successful",
@@ -762,6 +763,39 @@ export class EventsComponent implements OnInit {
           );
           const flyer = data.flyer;
           this.flyerPreview = flyer.url;
+        }),
+        catchError((err) => {
+          const _err = err.error ? err.error.err : err;
+          this.showNotification(
+            "top",
+            "right",
+            "Error al registrar",
+            _err.code == 11000 ? "Registro duplicado" : _err.message,
+            "alert-warning",
+          );
+          return err;
+        }),
+      )
+      .subscribe();
+  }
+
+  importScore(event: { file: File; event_id: string }) {
+    const formData = new FormData();
+    formData.append("archivo", event.file);
+    this.crudService
+      .uploadImage(formData, `${event.event_id}/participantes/importar`)
+      .pipe(
+        tap((data: any) => {
+          this.refreshRoosters();
+          // this.showNotification(
+          //   "top",
+          //   "right",
+          //   "Creación de evento",
+          //   "El evento se creo correctamente.",
+          //   "alert-success",
+          // );
+          // const flyer = data.flyer;
+          // this.flyerPreview = flyer.url;
         }),
         catchError((err) => {
           const _err = err.error ? err.error.err : err;

@@ -38,6 +38,13 @@ export const ROUTES: any[] = [
     roles: ["ADMIN"],
   },
   {
+    path: "/operation-events",
+    title: "Operación Eventos",
+    icon: "pi pi-calendar",
+    class: "",
+    roles: ["ADMIN"],
+  },
+  {
     path: "/catalogs",
     title: "Catálogos",
     icon: "pi pi-folder",

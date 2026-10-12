@@ -14,6 +14,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: "users", component: UserComponent },
   { path: "catalogs", component: CatalogsComponent },
   { path: "catalog-dashboard/:id", component: CatalogDashboardComponent },
+  { path: "operation-events", component: EventsComponent },
   { path: "events", component: EventsComponent },
   { path: "betting-brokerage", component: BettingBrokerageComponent },
 ];

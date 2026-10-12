@@ -393,3 +393,47 @@ app-participantes-datatable .p-datatable .p-datatable-tbody > tr > td {
   padding: 0;
   padding-left: 15px;
 }
+
+app-participantes-datatable .p-fileupload .p-fileupload-buttonbar {
+  background: #f8f9fa;
+  padding: 0.2rem;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  border-bottom: 0 none;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+app-participantes-datatable .p-fileupload .p-fileupload-content {
+  background: #ffffff;
+  padding: 0;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+app-participantes-datatable .p-fileupload-choose:not(.p-disabled):active {
+  background: linear-gradient(135deg, #ff5b93 0%, #ff2f55 100%);
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+app-participantes-datatable .p-fileupload-choose:not(.p-disabled) {
+  background: linear-gradient(135deg, #ff5b93 0%, #ff2f55 100%);
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+app-participantes-datatable .p-fileupload .p-fileupload-row > div {
+  padding: 0.2rem 0.2rem;
+}
+
+app-participantes-datatable .card {
+  background: #27293d;
+  border: 0;
+  position: relative;
+  width: 100%;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+}

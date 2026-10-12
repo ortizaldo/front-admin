@@ -24,10 +24,16 @@ import { Table } from "primeng/table";
 import { catchError, tap } from "rxjs";
 import { CrudService } from "src/app/_services/crud.service";
 
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
+
 @Component({
   selector: "app-participantes-datatable",
   templateUrl: "participantes-datatable.component.html",
   styleUrls: ["participantes-datatable.component.css"],
+  providers: [ConfirmationService],
   encapsulation: ViewEncapsulation.None,
 })
 export class ParticipantesDatatable implements OnInit {
@@ -46,6 +52,7 @@ export class ParticipantesDatatable implements OnInit {
   @Output() deleteRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() editRecords: EventEmitter<any> = new EventEmitter<any>();
   @Output() refreshRoosters: EventEmitter<any> = new EventEmitter<any>();
+  @Output() uploadScore: EventEmitter<any> = new EventEmitter<any>();
 
   visible: boolean = false;
 
@@ -88,7 +95,7 @@ export class ParticipantesDatatable implements OnInit {
       header: "Eliminar registro",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
-        this.deleteRecords.emit({ data: data });
+        this.deleteRecords.emit({ data: [data] });
       },
     });
     // this.deleteRecords.emit({ data: [data] });
@@ -159,5 +166,10 @@ export class ParticipantesDatatable implements OnInit {
         positionClass: "toast-" + from + "-" + align,
       },
     );
+  }
+
+  onUpload(event: any) {
+    const archivo: File = event.files[0];
+    this.uploadScore.emit({ file: archivo, event_id: this.event_id });
   }
 }
