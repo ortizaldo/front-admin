@@ -110,6 +110,7 @@ export class EventsComponent implements OnInit {
   roostersDialog = false;
   isEditing = false;
   headerDetails = "";
+  totalParticipantes = 0;
 
   previewPosition = {
     top: 0,
