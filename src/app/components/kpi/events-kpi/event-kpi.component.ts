@@ -10,14 +10,10 @@ export class EventKpiComponent implements OnInit {
   test: Date = new Date();
 
   @Input() kpis: EventKpi[] = [];
+  @Input() titleSingle: string = "Evento";
+  @Input() titleMany: string = "Eventos";
 
   constructor() {}
 
-  ngOnInit() {
-    console.log(
-      "%cfront-admin/src/app/components/kpi/events-kpi/event-kpi.component.ts:17 this.kpis",
-      "color: #007acc;",
-      this.kpis,
-    );
-  }
+  ngOnInit() {}
 }

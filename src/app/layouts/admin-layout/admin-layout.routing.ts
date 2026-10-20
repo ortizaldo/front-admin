@@ -7,6 +7,7 @@ import { CatalogsComponent } from "src/app/pages/admin/catalogs/catalogs.compone
 import { BettingBrokerageComponent } from "src/app/pages/admin/betting-brokerage/betting-brokerage.component";
 import { EventsComponent } from "src/app/pages/admin/events/events-component";
 import { CatalogDashboardComponent } from "src/app/pages/admin/catalog-dashboard/catalog-dashboard.component";
+import { OperationEventsComponent } from "src/app/pages/admin/operation-events/operation-events-component";
 
 export const AdminLayoutRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
@@ -14,7 +15,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: "users", component: UserComponent },
   { path: "catalogs", component: CatalogsComponent },
   { path: "catalog-dashboard/:id", component: CatalogDashboardComponent },
-  { path: "operation-events", component: EventsComponent },
+  { path: "operation-events", component: OperationEventsComponent },
   { path: "events", component: EventsComponent },
   { path: "betting-brokerage", component: BettingBrokerageComponent },
 ];

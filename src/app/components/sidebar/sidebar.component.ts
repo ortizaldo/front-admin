@@ -39,8 +39,8 @@ export const ROUTES: any[] = [
   },
   {
     path: "/operation-events",
-    title: "Operación Eventos",
-    icon: "pi pi-calendar",
+    title: "Operación de Eventos",
+    icon: "pi pi-clipboard",
     class: "",
     roles: ["ADMIN"],
   },

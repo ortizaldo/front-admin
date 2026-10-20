@@ -1,0 +1,184 @@
+<p-toast></p-toast>
+<!-- <p-progressSpinner ariaLabel="loading" /> -->
+<div class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-chart">
+        <div class="card-header">
+          <div class="row d-flex flex-row">
+            <div class="col-sm-6 text-left">
+              <h5 class="card-category">
+                Eventos de Sociedad Gallistica La Angostura
+              </h5>
+            </div>
+            <div class="col-sm-6"></div>
+          </div>
+          <div class="row d-flex flex-row">
+            <div class="container-fluid px-3 py-4">
+              <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                <div class="mb-2">
+                  <label for="eventoSelect">Seleccionar evento</label>
+                  <select id="eventoSelect" class="form-select form-select-sm" [(ngModel)]="eventoSeleccionado"
+                    (ngModelChange)="cambiarEvento($event)">
+                    <option [ngValue]="null" disabled>Selecciona un evento</option>
+                    <option *ngFor="let evento of allEvents" [ngValue]="evento">
+                      {{ evento.nombre }} - {{ evento.fechaEvento | date: 'dd/MM/yyyy' }}
+                    </option>
+                  </select>
+                </div>
+
+                <div *ngIf="eventoSeleccionado" class="mb-2">
+                  <h1 class="h2 fw-bold mb-2">Peleas del {{ eventoSeleccionado.nombre }}</h1>
+                  <p class="text-secondary mb-0"
+                    style="font-size: 0.9rem; color: black !important; text-align: center;">
+                    {{ eventoSeleccionado.fechaEvento | date: 'dd/MM/yyyy' }}
+                    <span class="mx-1">·</span>
+                    66 cotejos
+                    <span class="mx-1">·</span>
+                    {{eventoSeleccionado.totalParticipantes}} participantes
+                  </p>
+                </div>
+
+                <div class="mb-2">
+                  <button type="button" class="btn btn-subtle theme-danger fw-semibold px-3 py-2">
+                    Importar cotejo PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-sm-4 text-left">
+              <div class="p-2">
+                <h2 class="card-title">Listado de peleas</h2>
+              </div>
+              <div class="col-sm-6 text-left">
+                <h5 class="card-category">
+                  Eventos de Sociedad Gallistica La Angostura
+                </h5>
+              </div>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4 align-items-right d-flex justify-content-end">
+              <div class="events-page-header__actions">
+                <button type="button" class="btn events-page-header__primary-btn" (click)="openSidebar() ">
+                  <i class="pi pi-plus"></i>
+                  <span>Nuevo Evento</span>
+                </button>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="row d-flex align-items-center">
+            <app-event-kpi [kpis]="kpis" [titleSingle]="'Pelea'" [titleMany]="'Peleas'"></app-event-kpi>
+          </div>
+          <div class="row d-flex align-items-center pt-2">
+            <section class="cartelera card border-0">
+              <div class="card-body p-3 p-lg-4">
+                <h2 class="cartelera__title">Cartelera</h2>
+
+                <div class="row g-2 cartelera__filters">
+                  <div class="col-12 col-md-5">
+                    <div class="search-box">
+                      <i class="pi pi-search" aria-hidden="true"></i>
+                      <input pInputText type="text" [(ngModel)]="busqueda" placeholder="Buscar cotejo o partido"
+                        aria-label="Buscar cotejo o partido" />
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-2">
+                    <p-dropdown [options]="opcionesRonda" [(ngModel)]="rondaSeleccionada" optionLabel="label"
+                      optionValue="value" placeholder="Todas las rondas" styleClass="filtro-dropdown w-100"
+                      ariaLabel="Filtrar por ronda"></p-dropdown>
+                  </div>
+
+                  <div class="col-6 col-md-2">
+                    <p-dropdown [options]="opcionesEstado" [(ngModel)]="estadoSeleccionado" optionLabel="label"
+                      optionValue="value" placeholder="Todos los estados" styleClass="filtro-dropdown w-100"
+                      ariaLabel="Filtrar por estado"></p-dropdown>
+                  </div>
+                </div>
+
+                <div class="table-responsive cartelera__table-wrap">
+                  <table class="table cartelera__table mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col">COTEJO / RONDA</th>
+                        <th scope="col" class="text-verde">VERDE · PARTIDO / PESO / ANILLO</th>
+                        <th scope="col" class="text-rojo">ROJO · PARTIDO / PESO / ANILLO</th>
+                        <th scope="col">ESTADO</th>
+                        <th scope="col">RESULTADO / TIEMPO</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let pelea of peleasFiltradas; trackBy: trackById">
+                        <td data-label="Cotejo / ronda">
+                          <div class="cotejo-numero">#{{ pelea.cotejo }}</div>
+                          <div class="dato-secundario">Ronda {{ pelea.ronda }}</div>
+                        </td>
+
+                        <td data-label="Partido verde">
+                          <div class="partido-nombre">{{ pelea.verde.partido }}</div>
+                          <div class="dato-secundario">
+                            {{ pelea.verde.peso | number: '1.3-3' }} kg · #{{ pelea.verde.anillo }}
+                          </div>
+                        </td>
+
+                        <td data-label="Partido rojo">
+                          <div class="partido-nombre">{{ pelea.rojo.partido }}</div>
+                          <div class="dato-secundario">
+                            {{ pelea.rojo.peso | number: '1.3-3' }} kg · #{{ pelea.rojo.anillo }}
+                          </div>
+                        </td>
+
+                        <td data-label="Estado">
+                          <span class="estado-badge" [ngClass]="'estado-' + pelea.estado">
+                            {{ textoEstado(pelea.estado) }}
+                          </span>
+                        </td>
+
+                        <td data-label="Resultado / tiempo">
+                          <div class="resultado">
+                            <ng-container *ngIf="pelea.resultado; else sinResultado">
+                              {{ pelea.resultado }}
+                              <span *ngIf="pelea.duracion"> · {{ pelea.duracion }}</span>
+                            </ng-container>
+
+                            <ng-template #sinResultado>
+                              <button *ngIf="pelea.estado === 'encurso'; else guion" type="button"
+                                class="link-accion link-accion--registrar" (click)="registrarResultado(pelea)">
+                                Registrar
+                              </button>
+                            </ng-template>
+
+                            <ng-template #guion>—</ng-template>
+                          </div>
+
+                          <div class="acciones">
+                            <button type="button" class="link-accion" (click)="verPelea(pelea)">
+                              Ver
+                            </button>
+                            <span aria-hidden="true">·</span>
+                            <button type="button" class="link-accion" (click)="editarPelea(pelea)">
+                              Editar
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr *ngIf="peleasFiltradas.length === 0">
+                        <td colspan="5" class="sin-resultados">
+                          No se encontraron peleas con esos filtros.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

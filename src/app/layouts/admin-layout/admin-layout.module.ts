@@ -47,6 +47,7 @@ import { KPIModule } from "src/app/components/kpi/kpi.module";
 import { SidebarModule } from "primeng/sidebar";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { MenuModule } from "primeng/menu";
+import { OperationEventsComponent } from "src/app/pages/admin/operation-events/operation-events-component";
 @NgModule({
   imports: [
     CommonModule,
@@ -97,6 +98,7 @@ import { MenuModule } from "primeng/menu";
     BettingBrokerageComponent,
     BettingBrokerageComponent,
     EventsComponent,
+    OperationEventsComponent,
   ],
 })
 export class AdminLayoutModule {}
