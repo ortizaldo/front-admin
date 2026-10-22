@@ -36,10 +36,10 @@ import { Menu } from "primeng/menu";
 
 registerLocaleData(localeEsMx);
 
-type EstadoPelea = "finalizada" | "encurso" | "programada" | "cancelada";
+type EstadoPelea = "PROGRAMADA" | "EN_CURSO" | "FINALIZADA";
 
 interface Partido {
-  partido: string;
+  nombre: string;
   peso: number;
   anillo: number;
 }
@@ -85,6 +85,7 @@ export class OperationEventsComponent implements OnInit {
   ];
 
   allEvents: any[] = [];
+  allFights: any[] = [];
   roosters: any[] = [];
   currentEvents: any[] = [];
   selectedEvent: any = null;
@@ -116,63 +117,10 @@ export class OperationEventsComponent implements OnInit {
 
   opcionesEstado = [
     { label: "Todos los estados", value: null },
-    { label: "Finalizada", value: "finalizada" },
+    { label: "FINALIZADA", value: "FINALIZADA" },
     { label: "En curso", value: "encurso" },
     { label: "Programada", value: "programada" },
     { label: "Cancelada", value: "cancelada" },
-  ];
-
-  peleas: Pelea[] = [
-    {
-      id: 1,
-      cotejo: "01",
-      ronda: 1,
-      verde: { partido: "Violín y Qta Fénix-1", peso: 1.76, anillo: 101 },
-      rojo: { partido: "Nicos y Pérez-2", peso: 1.76, anillo: 122 },
-      estado: "finalizada",
-      resultado: "Gana verde",
-      duracion: "08:35",
-    },
-    {
-      id: 2,
-      cotejo: "02",
-      ronda: 1,
-      verde: { partido: "San Ángel", peso: 1.56, anillo: 102 },
-      rojo: { partido: "Rentería Ranch", peso: 1.56, anillo: 269 },
-      estado: "finalizada",
-      resultado: "Empate",
-      duracion: "12:04",
-    },
-    {
-      id: 3,
-      cotejo: "03",
-      ronda: 1,
-      verde: { partido: "Qta de la Rosa-1", peso: 1.67, anillo: 253 },
-      rojo: { partido: "Aguilar", peso: 1.69, anillo: 115 },
-      estado: "encurso",
-      resultado: null,
-      duracion: null,
-    },
-    {
-      id: 4,
-      cotejo: "04",
-      ronda: 1,
-      verde: { partido: "Nicos y Pérez-1", peso: 1.96, anillo: 105 },
-      rojo: { partido: "La Chaliniza", peso: 1.97, anillo: 186 },
-      estado: "programada",
-      resultado: null,
-      duracion: null,
-    },
-    {
-      id: 5,
-      cotejo: "05",
-      ronda: 1,
-      verde: { partido: "Alondra", peso: 1.63, anillo: 266 },
-      rojo: { partido: "Violín y Qta Fénix-2", peso: 1.64, anillo: 152 },
-      estado: "cancelada",
-      resultado: null,
-      duracion: null,
-    },
   ];
 
   previewPosition = {
@@ -207,6 +155,7 @@ export class OperationEventsComponent implements OnInit {
 
   ngOnInit() {
     this.getEvents("events", {}, []);
+    this.getFights("rooster-fights", {}, []);
     // this.getkpiEvents("event-kpis", {}, []);
 
     this.myModel = {
@@ -232,6 +181,47 @@ export class OperationEventsComponent implements OnInit {
         }),
         catchError((error) => {
           console.error("Error fetching events:", error);
+          return [];
+        }),
+      )
+      .subscribe();
+  }
+
+  getFights(endpoint: string, select: any = {}, populate: any = []) {
+    let params = {
+      select,
+      populate: [
+        {
+          path: "event",
+          select: "nombre",
+        },
+        {
+          path: "verde._id",
+          select: "nombre",
+        },
+        {
+          path: "rojo._id",
+          select: "nombre",
+        },
+      ],
+      filters: {
+        deleted: false,
+      },
+    };
+    this.crudService
+      .getMany(endpoint, null, params)
+      .pipe(
+        tap((response: any) => {
+          this.allFights = response.data;
+          console.log(
+            "🚀 ~ OperationEventsComponent ~ getFights ~ this.allFights:",
+            this.allFights,
+          );
+
+          // this.peleasFiltradas(this.allFights);
+        }),
+        catchError((error) => {
+          console.error("Error fetching fights:", error);
           return [];
         }),
       )
@@ -277,12 +267,16 @@ export class OperationEventsComponent implements OnInit {
   get peleasFiltradas(): Pelea[] {
     const termino = this.normalizar(this.busqueda);
 
-    return this.peleas.filter((pelea) => {
+    return this.allFights.filter((pelea) => {
+      console.log(
+        "🚀 ~ OperationEventsComponent ~ peleasFiltradas ~ pelea:",
+        pelea,
+      );
       const coincideBusqueda =
         !termino ||
         this.normalizar(pelea.cotejo).includes(termino) ||
-        this.normalizar(pelea.verde.partido).includes(termino) ||
-        this.normalizar(pelea.rojo.partido).includes(termino);
+        this.normalizar(pelea.verde._id.nombre).includes(termino) ||
+        this.normalizar(pelea.rojo._id.nombre).includes(termino);
 
       const coincideRonda =
         this.rondaSeleccionada === null ||
@@ -298,10 +292,9 @@ export class OperationEventsComponent implements OnInit {
 
   textoEstado(estado: EstadoPelea): string {
     const textos: Record<EstadoPelea, string> = {
-      finalizada: "Finalizada",
-      encurso: "En curso",
-      programada: "Programada",
-      cancelada: "Cancelada",
+      FINALIZADA: "Finalizada",
+      EN_CURSO: "En curso",
+      PROGRAMADA: "Programada",
     };
 
     return textos[estado];
