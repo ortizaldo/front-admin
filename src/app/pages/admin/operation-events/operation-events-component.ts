@@ -155,8 +155,6 @@ export class OperationEventsComponent implements OnInit {
 
   ngOnInit() {
     this.getEvents("events", {}, []);
-    this.getFights("rooster-fights", {}, []);
-    // this.getkpiEvents("event-kpis", {}, []);
 
     this.myModel = {
       template: this.catalogTemplate,
@@ -187,7 +185,12 @@ export class OperationEventsComponent implements OnInit {
       .subscribe();
   }
 
-  getFights(endpoint: string, select: any = {}, populate: any = []) {
+  getFights(
+    endpoint: string,
+    select: any = {},
+    populate: any = [],
+    eventId?: string,
+  ) {
     let params = {
       select,
       populate: [
@@ -207,18 +210,17 @@ export class OperationEventsComponent implements OnInit {
       filters: {
         deleted: false,
       },
+      filtersId: {
+        event: {
+          value: eventId,
+        },
+      },
     };
     this.crudService
       .getMany(endpoint, null, params)
       .pipe(
         tap((response: any) => {
           this.allFights = response.data;
-          console.log(
-            "🚀 ~ OperationEventsComponent ~ getFights ~ this.allFights:",
-            this.allFights,
-          );
-
-          // this.peleasFiltradas(this.allFights);
         }),
         catchError((error) => {
           console.error("Error fetching fights:", error);
@@ -228,32 +230,12 @@ export class OperationEventsComponent implements OnInit {
       .subscribe();
   }
 
-  getkpiRoosters(endpoint, select, populate, evento) {
-    let params = {
-      select,
-      populate,
-      filters: {
-        deleted: false,
-      },
-    };
-    this.crudService
-      .getMany(endpoint, evento._id, params)
-      .pipe(
-        tap((data: any) => {
-          console.log("total", data.total);
-          this.eventoSeleccionado = evento;
-          this.eventoSeleccionado.totalParticipantes = data.total;
-        }),
-        catchError((err) => {
-          return err;
-        }),
-      )
-      .subscribe();
-  }
-
   cambiarEvento(evento: any) {
-    this.getkpiRoosters("event-kpi-roosters", {}, [], evento);
-    // this.sidebarVisible = true;
+    this.eventoSeleccionado = evento;
+    this.kpis[0].value = evento.numeroPeleas;
+    this.kpis[1].value = evento.peleasEnCurso;
+    this.kpis[2].value = evento.peleasFinalizadas;
+    this.getFights("rooster-fights", {}, [], evento._id);
   }
 
   closeSidebar() {
@@ -268,10 +250,6 @@ export class OperationEventsComponent implements OnInit {
     const termino = this.normalizar(this.busqueda);
 
     return this.allFights.filter((pelea) => {
-      console.log(
-        "🚀 ~ OperationEventsComponent ~ peleasFiltradas ~ pelea:",
-        pelea,
-      );
       const coincideBusqueda =
         !termino ||
         this.normalizar(pelea.cotejo).includes(termino) ||

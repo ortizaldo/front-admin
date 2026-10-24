@@ -33,9 +33,9 @@
                     style="font-size: 0.9rem; color: black !important; text-align: center;">
                     {{ eventoSeleccionado.fechaEvento | date: 'dd/MM/yyyy' }}
                     <span class="mx-1">·</span>
-                    66 cotejos
+                    {{kpis[0].value}} cotejos
                     <span class="mx-1">·</span>
-                    {{eventoSeleccionado.totalParticipantes}} participantes
+                    {{eventoSeleccionado.numeroParticipantes}} participantes
                   </p>
                 </div>
 
@@ -69,7 +69,8 @@
         </div>
         <div class="card-body p-4">
           <div class="row d-flex align-items-center">
-            <app-event-kpi [kpis]="kpis" [titleSingle]="'Pelea'" [titleMany]="'Peleas'"></app-event-kpi>
+            <app-event-kpi *ngIf="eventoSeleccionado" [kpis]="kpis" [titleSingle]="'Pelea'"
+              [titleMany]="'Peleas'"></app-event-kpi>
           </div>
           <div class="row d-flex align-items-center pt-2">
             <section class="cartelera card border-0">

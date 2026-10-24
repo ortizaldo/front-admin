@@ -413,7 +413,7 @@ app-events .text-bg-success {
   white-space: nowrap;
 }
 
-.estado-finalizada {
+.estado-FINALIZADA {
   color: #18764f;
   background: #e0f3ea;
 }
@@ -423,12 +423,12 @@ app-events .text-bg-success {
   background: #e7edff;
 }
 
-.estado-programada {
+.estado-PROGRAMADA {
   color: #a36500;
   background: #fff0d5;
 }
 
-.estado-cancelada {
+.estado-CANCELADA {
   color: #bd3540;
   background: #fde9eb;
 }
